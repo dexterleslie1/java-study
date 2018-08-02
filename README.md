@@ -1,1 +1,1 @@
-# java-3rdparty-study
+# 学习java相关第三方开源项目
