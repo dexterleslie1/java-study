@@ -1,0 +1,7 @@
+# Eclipse files
+.settings
+.classpath
+.project
+.externalToolBuilders
+.checkstyle
+target
