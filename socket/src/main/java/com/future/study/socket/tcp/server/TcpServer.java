@@ -2,6 +2,7 @@ package com.future.study.socket.tcp.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,11 @@ public class TcpServer {
 					wrapper.close();
 				}
 			}catch(IOException e){
-				// 忽略
+				if(e instanceof SocketException){
+					// 忽略
+				}else{
+					logger.error("服务器accept socket异常",e);
+				}
 			}
 		}
 	}
