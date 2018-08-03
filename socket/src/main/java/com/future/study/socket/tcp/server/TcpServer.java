@@ -36,8 +36,8 @@ public class TcpServer {
 		while(!isStopped){
 			try{
 				if(serverSocket!=null){
-					SocketWrapper wrapper=new SocketWrapper(serverSocket.accept());
-					wrapper.close();
+					SocketThread socketThread=new SocketThread(serverSocket.accept());
+					socketThread.start();
 				}
 			}catch(IOException e){
 				if(e instanceof SocketException){

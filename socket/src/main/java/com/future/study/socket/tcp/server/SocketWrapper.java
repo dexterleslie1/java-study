@@ -63,12 +63,14 @@ public class SocketWrapper {
 	 * 
 	 * @return
 	 * @throws IOException 
+	 * @throws EndOfStreamException 
 	 */
-	public String read() throws IOException{
+	public String read() throws IOException, EndOfStreamException{
 		byte []bytes=new byte[1024];
 		int length=this.inputStream.read(bytes);
+		// -1表示socket流结束
 		if(length==-1){
-			return null;
+			throw new EndOfStreamException();
 		}
 		String stringReturn=new String(bytes,0,length);
 		return stringReturn;
@@ -86,5 +88,14 @@ public class SocketWrapper {
 			}
 			this.socket=null;
 		}
+	}
+	
+	/**
+	 * 获取socket信息
+	 * @return
+	 */
+	public String getInfo(){
+		String remoteAddress=this.socket.getRemoteSocketAddress().toString();
+		return remoteAddress;
 	}
 }

@@ -35,9 +35,9 @@ public class TcpServerStopperClientTest {
 			}
 		});
 		
-		// 等待3秒后关闭服务器
+		// 1秒时间等待TcpServer、TcpServerStopper启动
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			// 忽略
 		}
@@ -47,6 +47,13 @@ public class TcpServerStopperClientTest {
 		Assert.assertTrue("TcpServer没有启动",isOpened);
 		isOpened=PortCheckerUtils.check("localhost", 8089);
 		Assert.assertTrue("TcpServerStopper没有启动",isOpened);
+		
+		// 等待8秒后关闭服务器
+		try{
+			Thread.sleep(8000);
+		}catch(InterruptedException e1){
+			// 忽略
+		}
 		
 		TcpServerStopperClient stopperClient=null;
 		try{

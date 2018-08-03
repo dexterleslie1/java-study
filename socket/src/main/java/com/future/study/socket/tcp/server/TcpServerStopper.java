@@ -47,10 +47,17 @@ public class TcpServerStopper {
 			// 接收terminate命令则关闭服务器
 			String command=null;
 			while(StringUtils.isBlank(command)||!"terminate".equals(command)){
-				wrapper=new SocketWrapper(this.serverSocket.accept());
-				command=wrapper.read();
-				wrapper.close();
-				wrapper=null;
+				try{
+					wrapper=new SocketWrapper(this.serverSocket.accept());
+					command=wrapper.read();
+				}catch(EndOfStreamException e){
+					// socket流结束抛出EndOfStreamException作为SocketWrapper流结束提示
+				}finally{
+					if(wrapper!=null){
+						wrapper.close();
+						wrapper=null;
+					}
+				}
 			}
 		}catch(IOException e){
 			logger.error("处理socket异常",e);
