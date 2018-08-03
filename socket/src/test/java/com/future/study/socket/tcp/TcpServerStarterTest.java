@@ -35,9 +35,9 @@ public class TcpServerStarterTest {
 			}
 		});
 		
-		// 等待3秒后关闭服务器
+		// 等待2秒后关闭服务器
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e1) {
 			// 忽略
 		}
