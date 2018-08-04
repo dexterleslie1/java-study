@@ -5,7 +5,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,10 +46,30 @@ public class SocketThread {
 			public void run() {
 				while(!isStopped){
 					try {
-						String string=wrapper.read();
-//						if(!StringUtils.isBlank(string)){
-							logger.info("客户端消息："+string);
-//						}
+						// 读取客户端请求
+						String requestString=wrapper.read();
+						String responseString="{}";
+						try{
+							JSONObject requestObject=new JSONObject(requestString);
+							boolean hasType=requestObject.has("type");
+							if(!hasType){
+								JSONObject responseObject=new JSONObject();
+								responseObject.put("errorCode", 5000);
+								responseObject.put("errorMessage", "错误请求，请指定请求类型");
+								responseString=responseObject.toString();
+							}else{
+								JSONObject responseObject=new JSONObject();
+								responseObject.put("welcome","欢迎连接TcpServer服务器");
+								responseString=responseObject.toString();
+							}
+						}catch(JSONException e){
+							JSONObject responseObject=new JSONObject();
+							responseObject.put("errorCode", 5000);
+							responseObject.put("errorMessage", "请求数据错误，不符合json格式");
+							responseString=responseObject.toString();
+						}finally{
+							SocketThread.this.wrapper.send(responseString);
+						}
 					} catch (IOException e) {
 						logger.error("服务器处理客户端请求失败",e);
 					} catch (EndOfStreamException e){
