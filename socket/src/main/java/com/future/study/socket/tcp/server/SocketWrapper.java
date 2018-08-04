@@ -44,10 +44,11 @@ public class SocketWrapper {
 	 */
 	public void send(String message) throws IOException{
 		if(StringUtils.isBlank(message)){
-			return ;
-		}
+		    return ;
+        }
 		byte []bytes=message.getBytes();
 		this.outputStream.write(bytes);
+		this.outputStream.flush();
 	}
 	
 	/**

@@ -18,7 +18,7 @@ import com.future.study.socket.tcp.server.EndOfStreamException;
  */
 public class TcpClientTest {
 	@Test
-	public void t1() throws UnknownHostException, IOException, EndOfStreamException{
+	public void test_push() throws IOException{
 		ExecutorService executorService=Executors.newFixedThreadPool(1);
 		executorService.submit(new Callable<Object>(){
 			@Override
@@ -36,6 +36,31 @@ public class TcpClientTest {
 		}
 		
 		TcpClient client=new TcpClient("localhost",8080);
-		client.send();
+		client.connect();
+		client.send("join","testGroup",null);
+
+        TcpClient client1=new TcpClient("localhost",8080);
+        client1.connect();
+        client1.send("join","testGroup",null);
+        
+        TcpClient client2=new TcpClient("localhost",8080);
+        client2.connect();
+        client2.send("join", "testGroup", null);
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+
+        client.send("push","testGroup","你好用户B");
+
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+        
+		client.close();
+		client1.close();
+		client2.close();
 	}
 }

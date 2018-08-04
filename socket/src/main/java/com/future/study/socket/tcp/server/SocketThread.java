@@ -2,16 +2,18 @@ package com.future.study.socket.tcp.server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ *
  * @author Dexterleslie
  * @date 2018年8月3日
  * @time 下午5:03:27
@@ -48,20 +50,27 @@ public class SocketThread {
 					try {
 						// 读取客户端请求
 						String requestString=wrapper.read();
-						String responseString="{}";
+						String responseString=null;
 						try{
 							JSONObject requestObject=new JSONObject(requestString);
-							boolean hasType=requestObject.has("type");
-							if(!hasType){
+							String type=requestObject.has("type")?requestObject.getString("type"):null;
+							String groupId=requestObject.has("groupId")?requestObject.getString("groupId"):null;
+							if(StringUtils.isBlank(type) ||StringUtils.isBlank(groupId)){
 								JSONObject responseObject=new JSONObject();
 								responseObject.put("errorCode", 5000);
-								responseObject.put("errorMessage", "错误请求，请指定请求类型");
+								responseObject.put("errorMessage", "错误请求，请指定请求类型和groupId");
 								responseString=responseObject.toString();
-							}else{
-								JSONObject responseObject=new JSONObject();
-								responseObject.put("welcome","欢迎连接TcpServer服务器");
-								responseString=responseObject.toString();
-							}
+							}else if("join".equals(type)){
+                                SocketWrapperContainer container=SocketWrapperContainer.getIntance();
+                                container.add(groupId,SocketThread.this.wrapper);
+							}else if("push".equals(type)){
+							    List<SocketWrapper> wrappers=SocketWrapperContainer.getIntance().get(groupId);
+							    for(SocketWrapper wrapper:wrappers){
+							        if(wrapper!=SocketThread.this.wrapper){
+							            wrapper.send(requestString);
+                                    }
+                                }
+                            }
 						}catch(JSONException e){
 							JSONObject responseObject=new JSONObject();
 							responseObject.put("errorCode", 5000);
@@ -71,19 +80,30 @@ public class SocketThread {
 							SocketThread.this.wrapper.send(responseString);
 						}
 					} catch (IOException e) {
-						logger.error("服务器处理客户端请求失败",e);
-					} catch (EndOfStreamException e){
+					    String message="服务器处理客户端请求失败";
+						logger.error(message,e);
+                        JSONObject responseObject=new JSONObject();
+                        responseObject.put("errorCode", 5000);
+                        responseObject.put("errorMessage", message);
+                        String responseString=responseObject.toString();
+                        try {
+                            SocketThread.this.wrapper.send(responseString);
+                        } catch (IOException e1) {
+                            // 忽略
+                        }
+                    } catch (EndOfStreamException e){
 						isStopped=true;
 						break;
 					}
 				}
+				SocketThread.this.close();
 			}});
 	}
 	
 	/**
 	 * 停止SocketThread线程
 	 */
-	public void close(){
+	private void close(){
 		this.isStopped=true;
 		if(this.wrapper!=null){
 			this.wrapper.close();
