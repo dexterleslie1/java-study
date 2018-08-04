@@ -1,3 +1,6 @@
+# Idea files
+.idea
+
 # Eclipse files
 .settings
 .classpath
