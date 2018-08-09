@@ -20,9 +20,9 @@ import java.security.Principal;
  * @date 2018年08月06日
  * @time 12:20
  */
-@Configuration
+//@Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfigWithSockJS implements WebSocketMessageBrokerConfigurer {
 
     /**
      *
