@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.*;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
@@ -20,7 +19,6 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +29,10 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes={Application.class},
+        classes={ApplicationWithoutSockJS.class},
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ApplicationTest {
-    private final static Logger logger=LoggerFactory.getLogger(ApplicationTest.class);
+public class ApplicationWithoutSockJSTest {
+    private final static Logger logger=LoggerFactory.getLogger(ApplicationWithoutSockJSTest.class);
 
     /**
      * 测试用户a发送消息给用户b
@@ -118,10 +116,11 @@ public class ApplicationTest {
      * @return
      */
     public WebSocketStompClient getStompClient(String userId,StompSessionHandler stompSessionHandler){
-        List<Transport> transports = new ArrayList<>();
-        transports.add(new WebSocketTransport(new StandardWebSocketClient()));
-        SockJsClient sockJsClient = new SockJsClient(transports);
-        WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
+//        List<Transport> transports = new ArrayList<>();
+//        transports.add(new WebSocketTransport(new StandardWebSocketClient()));
+//        SockJsClient sockJsClient = new SockJsClient(transports);
+        WebSocketClient websocketClient=new StandardWebSocketClient();
+        WebSocketStompClient stompClient = new WebSocketStompClient(websocketClient);
         stompClient.setMessageConverter(new StringMessageConverter());
         stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
         String url = "ws://localhost:8080/portfolio";

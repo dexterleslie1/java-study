@@ -10,12 +10,13 @@ import org.springframework.context.annotation.Import;
  * @time 12:20
  */
 @SpringBootApplication
-public class Application {
+@Import(value={WebSocketConfigWithSockJS.class})
+public class ApplicationWithSockJS {
     /**
      *
      * @param args
      */
     public static void main(String []args){
-        SpringApplication.run(Application.class,args);
+        SpringApplication.run(ApplicationWithSockJS.class,args);
     }
 }
