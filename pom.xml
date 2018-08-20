@@ -12,7 +12,8 @@
         <module>socket</module>
         <module>spring-stomp</module>
 		<module>spring-security-web</module>
-	</modules>
+        <module>java-annotation</module>
+    </modules>
 
 	<build>
 		<plugins>
