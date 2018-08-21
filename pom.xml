@@ -13,6 +13,7 @@
         <module>spring-stomp</module>
 		<module>spring-security-web</module>
         <module>java-annotation</module>
+        <module>common-logging</module>
     </modules>
 
 	<build>
