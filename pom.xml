@@ -14,7 +14,8 @@
 		<module>spring-security-web</module>
         <module>java-annotation</module>
         <module>common-logging</module>
-    </modules>
+		<module>selenium-firefox</module>
+	</modules>
 
 	<build>
 		<plugins>
