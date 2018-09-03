@@ -1,5 +1,6 @@
 # Idea files
 .idea
+*.iml
 
 # Eclipse files
 .settings
@@ -8,3 +9,6 @@
 .externalToolBuilders
 .checkstyle
 target
+.metadata
+Servers
+
