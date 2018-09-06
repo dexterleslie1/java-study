@@ -15,7 +15,8 @@
         <module>java-annotation</module>
         <module>common-logging</module>
 		<module>selenium-firefox</module>
-	</modules>
+        <module>slf4j</module>
+    </modules>
 
 	<build>
 		<plugins>
