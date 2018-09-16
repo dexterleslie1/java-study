@@ -16,6 +16,7 @@
         <module>common-logging</module>
 		<module>selenium-firefox</module>
         <module>slf4j</module>
+        <module>redis-load-test</module>
     </modules>
 
 	<build>
