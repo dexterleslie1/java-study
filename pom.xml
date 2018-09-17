@@ -17,6 +17,7 @@
 		<module>selenium-firefox</module>
         <module>slf4j</module>
         <module>redis-load-test</module>
+        <module>http-send-large-json</module>
     </modules>
 
 	<build>
