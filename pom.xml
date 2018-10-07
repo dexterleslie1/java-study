@@ -19,6 +19,7 @@
         <module>redis-load-test</module>
         <module>http-send-large-json</module>
 		<module>http-library-testing-api</module>
+        <module>spring-boot-actuator</module>
     </modules>
 
 	<build>
