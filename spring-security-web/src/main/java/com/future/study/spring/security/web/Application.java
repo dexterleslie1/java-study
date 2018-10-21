@@ -9,16 +9,13 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * @date 2018年08月14日
  * @time 8:53
  */
-@SpringBootApplication(
-        exclude = {
-                // 取消Security自动配置，否则在没有配置@EnableWebSecurity
-                // 时security自动启动会默认拦截所有请求
-                SecurityAutoConfiguration.class
-        })
+@SpringBootApplication
 public class Application {
-
-    public static void main(String[] args) throws Throwable {
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
 }
