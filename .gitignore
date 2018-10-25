@@ -10,5 +10,7 @@
 .checkstyle
 target
 .metadata
+.recommenders
 Servers
+
 

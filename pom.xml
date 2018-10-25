@@ -21,6 +21,7 @@
 		<module>http-library-testing-api</module>
         <module>spring-boot-actuator</module>
         <module>bootstrap</module>
+		<module>android-media-study-library-server</module>
     </modules>
 
 	<build>
