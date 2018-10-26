@@ -36,6 +36,7 @@ public class ApiController {
 		if(Utils.userId2!=null&&Utils.userId2.equals(currentUserId)){
 			toUserId=Utils.userId1;
 		}
+//		toUserId=principal.getName();
 		
 		if(toUserId!=null){
 			JSONObject object=new JSONObject(json);
