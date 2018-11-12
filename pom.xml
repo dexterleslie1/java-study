@@ -12,6 +12,7 @@
         <module>socket</module>
         <module>spring-stomp</module>
 		<module>spring-security-web</module>
+		<module>spring-boot-thymeleaf</module>
         <module>java-annotation</module>
         <module>common-logging</module>
 		<module>selenium-firefox</module>
