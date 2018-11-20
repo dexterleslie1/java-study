@@ -29,10 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -157,5 +154,62 @@ public class ElasticsearchTests {
 
         executorService.shutdown();
         while(!executorService.awaitTermination(1,TimeUnit.SECONDS));
+    }
+
+    @Test
+    public void testWritePerformance() throws InterruptedException {
+        List<Integer> sex = new ArrayList<Integer>();
+        sex.add(0);
+        sex.add(1);
+        sex.add(2);
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Date date1 =new Date();
+        for(int j = 0; j < 100 ; j++) {
+            final int j1 = j;
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Random random = new Random();
+                        int size = sex.size();
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        int batchSize = 1000;
+                        int start = j1 * batchSize + 1;
+                        int end = start + batchSize;
+                        for (int i = start; i <= end; i++) {
+                            User user = new User();
+                            user.setId(i);
+                            user.setCreateTime(new Date());
+                            user.setLoginname("ln" + RandomUtils.getCharacterAndNumber(20));
+                            user.setNickname("nn" + RandomUtils.getCharacterAndNumber(20));
+                            user.setPassword(RandomUtils.getCharacterAndNumber(20));
+                            user.setPhone("135" + RandomUtils.getCharacterAndNumber(20));
+                            user.setEmail("gm" + RandomUtils.getCharacterAndNumber(20) + "@gmail.com");
+                            int index = random.nextInt(size);
+                            user.setSex(sex.get(index));
+
+                            IndexRequest request = new IndexRequest(
+                                    "chat",
+                                    "user",
+                                    String.valueOf(user.getId()));
+                            String json = objectMapper.writeValueAsString(user);
+                            request.source(json, XContentType.JSON);
+                            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+                            Assert.assertEquals(RestStatus.CREATED, response.status());
+                        }
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        executorService.shutdown();
+        while(!executorService.awaitTermination(1, TimeUnit.SECONDS));
+
+        Date date2 = new Date();
+        long milliseconds = date2.getTime() - date1.getTime();
+        logger.debug("耗时："+milliseconds+"毫秒");
     }
 }
