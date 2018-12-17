@@ -20,15 +20,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes={Config.class})
-public class UserRepositoryTest {
-	private final static Logger logger = LogManager.getLogger(UserRepositoryTest.class);
-	@Autowired
-	private UserRepository userRepository;
+public class UserRepositoryJDBCTest {
+	private final static Logger logger = LogManager.getLogger(UserRepositoryJDBCTest.class);
 
 	@Test
-	public void test() throws InterruptedException {
+	public void testInsertByUsingJDBC() throws InterruptedException {
+		String sql = "insert into t_user(id,createTime,loginname,nickname,password,phone,email,sex)" +
+				" values(?,?,?,?,?,?,?,?)";
+
 		List<Integer> sex = new ArrayList<Integer>();
 		sex.add(0);
 		sex.add(1);
@@ -36,23 +35,60 @@ public class UserRepositoryTest {
 
 		Date date1 = new Date();
 		ExecutorService executorService = Executors.newCachedThreadPool();
-		for(int j = 0; j < 100 ; j++) {
+		for(int j = 0; j < 1000 ; j++) {
+			final int j1 = j;
 			executorService.submit(new Runnable() {
 				@Override
 				public void run() {
-					Random random = new Random();
-					int size = sex.size();
-					for (int i = 0; i <10000; i++) {
-						User user = new User();
-						user.setCreateTime(new Date());
-						user.setLoginname("ln" + RandomUtils.getCharacterAndNumber(20));
-						user.setNickname("nn" + RandomUtils.getCharacterAndNumber(20));
-						user.setPassword(RandomUtils.getCharacterAndNumber(20));
-						user.setPhone("135" + RandomUtils.getCharacterAndNumber(20));
-						user.setEmail("gm"+RandomUtils.getCharacterAndNumber(20)+"@gmail.com");
-						int index = random.nextInt(size);
-						user.setSex(sex.get(index));
-						userRepository.save(user);
+					Connection conn = null;
+					PreparedStatement preparedStatement = null;
+					try {
+						String driver = "com.mysql.jdbc.Driver";
+						String url = "jdbc:mysql://192.168.1.153:3306/backend";
+						String username = "root";
+						String password = "Root@123";
+						Class.forName(driver); //classLoader,加载对应驱动
+						conn = (Connection) DriverManager.getConnection(url, username, password);
+
+						Random random = new Random();
+						int batchSize = 1000;
+						int size = sex.size();
+						int start = j1 * batchSize + 1;
+						int end = start + batchSize;
+						for (int i = start; i < end; i++) {
+							preparedStatement = (PreparedStatement) conn.prepareStatement(sql);
+							preparedStatement.setInt(1,i);
+							preparedStatement.setDate(2, new java.sql.Date(new Date().getTime()));
+							preparedStatement.setString(3, "ln" + RandomUtils.getCharacterAndNumber(20));
+							preparedStatement.setString(4, "nn" + RandomUtils.getCharacterAndNumber(20));
+							preparedStatement.setString(5,  RandomUtils.getCharacterAndNumber(20));
+							preparedStatement.setString(6, "135" + RandomUtils.getCharacterAndNumber(20));
+							preparedStatement.setString(7, "gm" + RandomUtils.getCharacterAndNumber(20) + "@gmail.com");
+							int index = random.nextInt(size);
+							preparedStatement.setInt(8, sex.get(index));
+							preparedStatement.executeUpdate();
+							preparedStatement.close();
+							preparedStatement = null;
+						}
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}finally {
+						if(preparedStatement != null){
+							try {
+								preparedStatement.close();
+								preparedStatement = null;
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+						if(conn != null){
+							try {
+								conn.close();
+								conn = null;
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
 					}
 				}
 			});
@@ -67,9 +103,13 @@ public class UserRepositoryTest {
 	}
 
 	@Test
-	public void testInsertByUsingJDBC() throws InterruptedException {
-		String sql = "insert into t_user(id,createTime,loginname,nickname,password,phone,email,sex)" +
-				" values(?,?,?,?,?,?,?,?)";
+	public void testInsertByUsingJDBCShardingTables() throws InterruptedException {
+		int tableCount = 4;
+		List<String> sqls = new ArrayList<String>();
+		for(int i = 1; i <= tableCount; i++){
+			sqls.add("insert into t_user"+i+"(id,createTime,loginname,nickname,password,phone,email,sex) "+
+					" values(?,?,?,?,?,?,?,?)");
+		}
 
 		List<Integer> sex = new ArrayList<Integer>();
 		sex.add(0);
@@ -78,7 +118,7 @@ public class UserRepositoryTest {
 
 		Date date1 = new Date();
 		ExecutorService executorService = Executors.newCachedThreadPool();
-		for(int j = 0; j < 100 ; j++) {
+		for(int j = 0; j < 1000 ; j++) {
 			final int j1 = j;
 			executorService.submit(new Runnable() {
 				@Override
@@ -86,15 +126,17 @@ public class UserRepositoryTest {
 					Connection conn = null;
 					PreparedStatement preparedStatement = null;
 					try {
+						int index1 = j1 % tableCount;
+						String sql = sqls.get(index1);
 						String driver = "com.mysql.jdbc.Driver";
-						String url = "jdbc:mysql://192.168.1.150:3306/backend";
+						String url = "jdbc:mysql://192.168.1.153:3306/backend";
 						String username = "root";
-						String password = "aa112233";
+						String password = "Root@123";
 						Class.forName(driver); //classLoader,加载对应驱动
 						conn = (Connection) DriverManager.getConnection(url, username, password);
 
 						Random random = new Random();
-						int batchSize = 10000;
+						int batchSize = 1000;
 						int size = sex.size();
 						int start = j1 * batchSize + 1;
 						int end = start + batchSize;
