@@ -35,7 +35,7 @@ public class UserRepositoryJDBCTest {
 
 		Date date1 = new Date();
 		ExecutorService executorService = Executors.newCachedThreadPool();
-		for(int j = 0; j < 100 ; j++) {
+		for(int j = 0; j < 200 ; j++) {
 			final int j1 = j;
 			executorService.submit(new Runnable() {
 				@Override
@@ -51,19 +51,25 @@ public class UserRepositoryJDBCTest {
 						conn = (Connection) DriverManager.getConnection(url, username, password);
 
 						Random random = new Random();
-						int batchSize = 10000;
+						int batchSize = 5000;
 						int size = sex.size();
 						int start = j1 * batchSize + 1;
 						int end = start + batchSize;
 						for (int i = start; i < end; i++) {
+							java.sql.Date date = new java.sql.Date(new Date().getTime());
+							String randomString = RandomUtils.getCharacterAndNumber(20);
+							String loginname = "ln" + randomString;
+							String nickname = "nn" + randomString;
+							String phone = "135" + randomString;
+							String email = "gm" + randomString + "@gmail.com";
 							preparedStatement = (PreparedStatement) conn.prepareStatement(sql);
 							preparedStatement.setInt(1,i);
-							preparedStatement.setDate(2, new java.sql.Date(new Date().getTime()));
-							preparedStatement.setString(3, "ln" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(4, "nn" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(5,  RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(6, "135" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(7, "gm" + RandomUtils.getCharacterAndNumber(20) + "@gmail.com");
+							preparedStatement.setDate(2, date);
+							preparedStatement.setString(3, loginname);
+							preparedStatement.setString(4, nickname);
+							preparedStatement.setString(5, randomString);
+							preparedStatement.setString(6, phone);
+							preparedStatement.setString(7, email);
 							int index = random.nextInt(size);
 							preparedStatement.setInt(8, sex.get(index));
 							preparedStatement.executeUpdate();
@@ -141,14 +147,20 @@ public class UserRepositoryJDBCTest {
 						int start = j1 * batchSize + 1;
 						int end = start + batchSize;
 						for (int i = start; i < end; i++) {
+							java.sql.Date date = new java.sql.Date(new Date().getTime());
+							String randomString = RandomUtils.getCharacterAndNumber(20);
+							String loginname = "ln" + randomString;
+							String nickname = "nn" + randomString;
+							String phone = "135" + randomString;
+							String email = "gm" + randomString + "@gmail.com";
 							preparedStatement = (PreparedStatement) conn.prepareStatement(sql);
 							preparedStatement.setInt(1,i);
-							preparedStatement.setDate(2, new java.sql.Date(new Date().getTime()));
-							preparedStatement.setString(3, "ln" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(4, "nn" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(5,  RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(6, "135" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(7, "gm" + RandomUtils.getCharacterAndNumber(20) + "@gmail.com");
+							preparedStatement.setDate(2, date);
+							preparedStatement.setString(3, loginname);
+							preparedStatement.setString(4, nickname);
+							preparedStatement.setString(5, randomString);
+							preparedStatement.setString(6, phone);
+							preparedStatement.setString(7, email);
 							int index = random.nextInt(size);
 							preparedStatement.setInt(8, sex.get(index));
 							preparedStatement.executeUpdate();
@@ -229,14 +241,20 @@ public class UserRepositoryJDBCTest {
 						int start = j1 * batchSize + 1;
 						int end = start + batchSize;
 						for (int i = start; i < end; i++) {
+							java.sql.Date date = new java.sql.Date(new Date().getTime());
+							String randomString = RandomUtils.getCharacterAndNumber(20);
+							String loginname = "ln" + randomString;
+							String nickname = "nn" + randomString;
+							String phone = "135" + randomString;
+							String email = "gm" + randomString + "@gmail.com";
 							preparedStatement = (PreparedStatement) conn.prepareStatement(sql);
 							preparedStatement.setInt(1,i);
-							preparedStatement.setDate(2, new java.sql.Date(new Date().getTime()));
-							preparedStatement.setString(3, "ln" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(4, "nn" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(5,  RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(6, "135" + RandomUtils.getCharacterAndNumber(20));
-							preparedStatement.setString(7, "gm" + RandomUtils.getCharacterAndNumber(20) + "@gmail.com");
+							preparedStatement.setDate(2, date);
+							preparedStatement.setString(3, loginname);
+							preparedStatement.setString(4, nickname);
+							preparedStatement.setString(5, randomString);
+							preparedStatement.setString(6, phone);
+							preparedStatement.setString(7, email);
 							int index = random.nextInt(size);
 							preparedStatement.setInt(8, sex.get(index));
 							preparedStatement.executeUpdate();
