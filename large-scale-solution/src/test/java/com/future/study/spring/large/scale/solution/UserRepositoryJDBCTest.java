@@ -23,6 +23,11 @@ import java.util.concurrent.TimeUnit;
 public class UserRepositoryJDBCTest {
 	private final static Logger logger = LogManager.getLogger(UserRepositoryJDBCTest.class);
 
+	/**
+	 * 耗时：224163毫秒
+     * 耗时：226739毫秒
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void testInsertByUsingJDBC() throws InterruptedException {
 		String sql = "insert into t_user(id,createTime,loginname,nickname,password,phone,email,sex)" +
@@ -108,6 +113,12 @@ public class UserRepositoryJDBCTest {
 		logger.debug("耗时："+ milliseconds + "毫秒");
 	}
 
+	/**
+	 * 耗时：218598毫秒
+	 * 耗时：218664毫秒
+	 * 对于写性能提升效果不明显
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void testInsertByUsingJDBCShardingTables() throws InterruptedException {
 		int tableCount = 4;
@@ -199,6 +210,12 @@ public class UserRepositoryJDBCTest {
 		logger.debug("耗时："+ milliseconds + "毫秒");
 	}
 
+	/**
+	 * 耗时：73886毫秒
+     * 耗时：68314毫秒
+     * 对于写性能提升效果显著
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void testInsertByUsingJDBCShardDatabases() throws InterruptedException {
 		List<String> urls = new ArrayList<String>();
