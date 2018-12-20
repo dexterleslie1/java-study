@@ -25,6 +25,7 @@
         <module>bootstrap</module>
 		<module>android-media-study-library-server</module>
 		<module>large-scale-solution</module>
+		<module>ansible-auto-deploy</module>
     </modules>
 
 	<build>
