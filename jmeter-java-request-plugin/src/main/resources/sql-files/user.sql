@@ -11,6 +11,7 @@ create table if not exists t_user(
   largeAvatar mediumBlob,/*用户大头像*/
   avatarVersion int default 0,/*头像版本号，每上传一次头像自动更新头像版本加1*/
   loginname varchar(50) not null,/*登录名称*/
-  isLoginnameReset int default 0/*是否已设置登录名*/
+  isLoginnameReset int default 0,/*是否已设置登录名*/
+  random bigint/*随机生成，用于随机sharding insert数据*/
 )engine=InnoDB default charset=utf8
 

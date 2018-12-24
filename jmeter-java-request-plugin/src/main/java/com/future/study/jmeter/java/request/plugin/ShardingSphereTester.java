@@ -18,11 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dexterleslie@gmail.com
  */
 public class ShardingSphereTester {
-    private String host = "192.168.1.153";
-    private int port = 3306;
     private DataSource dataSource;
-    private final static String SQL = "insert into t_user(createTime,loginname,nickname,password,phone,email,sex)" +
-            " values(?,?,?,?,?,?,?)";
+    private final static String SQL = "insert into t_user(createTime,loginname,nickname,password,phone,email,sex,random)" +
+            " values(?,?,?,?,?,?,?,?)";
     private final static List<Integer> sex = new ArrayList<Integer>();
     private Connection connection = null;
     private Random random = new Random();
@@ -40,18 +38,39 @@ public class ShardingSphereTester {
         // 配置第一个数据源
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://" + host + ":" + port + "/backend");
+        dataSource.setUrl("jdbc:mysql://192.168.1.153:3306/backend");
         dataSource.setUsername("root");
         dataSource.setPassword("Root@123");
         dataSourceMap.put("ds0", dataSource);
 
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://192.168.1.154:3306/backend");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Root@123");
+        dataSourceMap.put("ds1", dataSource);
+
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://192.168.1.155:3306/backend");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Root@123");
+        dataSourceMap.put("ds2", dataSource);
+
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://192.168.1.156:3306/backend");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Root@123");
+        dataSourceMap.put("ds3", dataSource);
+
         // 配置Order表规则
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
         orderTableRuleConfig.setLogicTable("t_user");
-        orderTableRuleConfig.setActualDataNodes("ds0.t_user");
+        orderTableRuleConfig.setActualDataNodes("ds${0..3}.t_user");
 
         // 配置分库 + 分表策略
-        orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "ds${id % 4}"));
+        orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("random", "ds${random % 4}"));
 
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
@@ -81,6 +100,8 @@ public class ShardingSphereTester {
             preparedStatement.setString(6, email);
             int index = random.nextInt(size);
             preparedStatement.setInt(7, sex.get(index));
+            int randonInt = random.nextInt(Integer.MAX_VALUE);
+            preparedStatement.setInt(8, randonInt);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             preparedStatement = null;
