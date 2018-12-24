@@ -27,6 +27,7 @@
 		<module>large-scale-solution</module>
 		<module>ansible-auto-deploy</module>
 		<module>jmeter-java-request-plugin</module>
+		<module>sharding-sphere</module>
     </modules>
 
 	<build>
