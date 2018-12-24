@@ -28,6 +28,7 @@
 		<module>ansible-auto-deploy</module>
 		<module>jmeter-java-request-plugin</module>
 		<module>sharding-sphere</module>
+		<module>redis-load-jmeter-plugin</module>
     </modules>
 
 	<build>
