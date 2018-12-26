@@ -26,7 +26,7 @@
 		<module>android-media-study-library-server</module>
 		<module>large-scale-solution</module>
 		<module>ansible-auto-deploy</module>
-		<module>jmeter-java-request-plugin</module>
+		<module>mysql-load-jmeter-plugin</module>
 		<module>sharding-sphere</module>
 		<module>redis-load-jmeter-plugin</module>
     </modules>

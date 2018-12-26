@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author dexterleslie@gmail.com
  */
-public class ShardingSphereTester {
+public class ShardingSphereWriteTester {
     private DataSource dataSource;
     private final static String SQL = "insert into t_user(createTime,loginname,nickname,password,phone,email,sex,random)" +
             " values(?,?,?,?,?,?,?,?)";
@@ -38,28 +38,28 @@ public class ShardingSphereTester {
         // 配置第一个数据源
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://192.168.1.153:3306/backend");
+        dataSource.setUrl("jdbc:mysql://192.168.1.153:3306/db");
         dataSource.setUsername("root");
         dataSource.setPassword("Root@123");
         dataSourceMap.put("ds0", dataSource);
 
         dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://192.168.1.154:3306/backend");
+        dataSource.setUrl("jdbc:mysql://192.168.1.154:3306/db");
         dataSource.setUsername("root");
         dataSource.setPassword("Root@123");
         dataSourceMap.put("ds1", dataSource);
 
         dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://192.168.1.155:3306/backend");
+        dataSource.setUrl("jdbc:mysql://192.168.1.155:3306/db");
         dataSource.setUsername("root");
         dataSource.setPassword("Root@123");
         dataSourceMap.put("ds2", dataSource);
 
         dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://192.168.1.156:3306/backend");
+        dataSource.setUrl("jdbc:mysql://192.168.1.156:3306/db");
         dataSource.setUsername("root");
         dataSource.setPassword("Root@123");
         dataSourceMap.put("ds3", dataSource);

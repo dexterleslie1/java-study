@@ -9,12 +9,12 @@ import java.sql.SQLException;
 /**
  * @author dexterleslie@gmail.com
  */
-public class ShardingSphereTesterTests {
-    private ShardingSphereTester shardingSphereTester = null;
+public class ShardingSphereWriteTesterTests {
+    private ShardingSphereWriteTester shardingSphereTester = null;
 
     @Before
     public void setup() throws SQLException {
-        this.shardingSphereTester = new ShardingSphereTester();
+        this.shardingSphereTester = new ShardingSphereWriteTester();
         this.shardingSphereTester.setup();
     }
 

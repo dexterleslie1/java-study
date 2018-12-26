@@ -1,18 +1,16 @@
 package com.future.study.jmeter.java.request.plugin;
 
-import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 /**
  * @author dexterleslie@gmail.com
  */
-public class JavaRequestSamplerDemo extends AbstractJavaSamplerClient {
-    private ShardingSphereTester shardingSphereTester = new ShardingSphereTester();
+public class JDBCWriteTest extends AbstractJavaSamplerClient {
+    private JDBCWriteTester tester = new JDBCWriteTester();
 
 //    @Override
 //    public Arguments getDefaultParameters() {
@@ -26,9 +24,9 @@ public class JavaRequestSamplerDemo extends AbstractJavaSamplerClient {
     @Override
     public void setupTest(JavaSamplerContext context) {
         try {
-            this.shardingSphereTester.setup();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            this.tester.setup();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -37,8 +35,8 @@ public class JavaRequestSamplerDemo extends AbstractJavaSamplerClient {
         SampleResult result = new SampleResult();
         result.sampleStart();
 
-        if(this.shardingSphereTester != null){
-            this.shardingSphereTester.doInsert();
+        if(this.tester != null){
+            this.tester.doInsert();
         }
 
         result.sampleEnd();
@@ -49,9 +47,9 @@ public class JavaRequestSamplerDemo extends AbstractJavaSamplerClient {
 
     @Override
     public void teardownTest(JavaSamplerContext context) {
-        if(this.shardingSphereTester != null){
+        if(this.tester != null){
             try {
-                this.shardingSphereTester.teardown();
+                this.tester.teardown();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
