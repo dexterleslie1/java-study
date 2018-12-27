@@ -29,6 +29,7 @@
 		<module>mysql-load-jmeter-plugin</module>
 		<module>sharding-sphere</module>
 		<module>redis-load-jmeter-plugin</module>
+		<module>zookeeper-load-jmeter-plugin</module>
     </modules>
 
 	<build>
