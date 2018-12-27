@@ -16,7 +16,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">2000</stringProp>
+          <stringProp name="LoopController.loops">3000</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">50</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -25,11 +25,25 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <JavaSampler guiclass="JavaTestSamplerGui" testclass="JavaSampler" testname="RedisReadLoad" enabled="false">
+          <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="classname">com.future.study.jmeter.plugin.redis.load.RedisReadLoadTest</stringProp>
+        </JavaSampler>
+        <hashTree/>
         <JavaSampler guiclass="JavaTestSamplerGui" testclass="JavaSampler" testname="RedisWriteLoad" enabled="false">
           <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="classname">com.future.study.jmeter.plugin.redis.load.RedisWriteLoadTest</stringProp>
+        </JavaSampler>
+        <hashTree/>
+        <JavaSampler guiclass="JavaTestSamplerGui" testclass="JavaSampler" testname="RedissonLockLoadTest" enabled="true">
+          <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="classname">com.future.study.jmeter.plugin.redis.load.LockLoadTest</stringProp>
         </JavaSampler>
         <hashTree/>
         <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
@@ -67,13 +81,6 @@
           </objProp>
           <stringProp name="filename"></stringProp>
         </ResultCollector>
-        <hashTree/>
-        <JavaSampler guiclass="JavaTestSamplerGui" testclass="JavaSampler" testname="RedisReadLoad" enabled="true">
-          <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="classname">com.future.study.jmeter.plugin.redis.load.RedisReadLoadTest</stringProp>
-        </JavaSampler>
         <hashTree/>
       </hashTree>
     </hashTree>
