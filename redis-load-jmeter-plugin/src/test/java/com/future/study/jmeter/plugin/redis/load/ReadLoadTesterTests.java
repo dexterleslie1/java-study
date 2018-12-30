@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -27,7 +28,7 @@ public class ReadLoadTesterTests {
     }
 
     @Test
-    public void doRead() throws JsonProcessingException {
+    public void doRead() throws IOException {
         for(int i = 0; i < 100; i++){
             this.tester.doRead();
         }

@@ -2,6 +2,7 @@ package com.future.study.jmeter.plugin.redis.load;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -68,9 +70,13 @@ public class ReadLoadTester {
         }
     }
 
-    public void doRead() throws JsonProcessingException {
+    public void doRead() throws IOException {
         int index = (int)random.nextInt(this.dbSize);
         String json = valueOperations.get(String.valueOf(index+1));
+        if(!StringUtils.isBlank(json)){
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.readValue(json, User.class);
+        }
     }
 
     public void teardown() {

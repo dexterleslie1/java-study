@@ -5,6 +5,8 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
+import java.io.IOException;
+
 /**
  * @author dexterleslie@gmail.com
  */
@@ -33,7 +35,7 @@ public class RedisReadLoadTest extends AbstractJavaSamplerClient {
         if(this.tester != null){
             try {
                 this.tester.doRead();
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
