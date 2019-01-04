@@ -34,9 +34,11 @@ public class JDBCWriteTester {
 
     public void setup() throws SQLException, ClassNotFoundException {
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://192.168.1.130:8066/backend";
+//        String url = "jdbc:mysql://192.168.1.153:8066/backend";
+//        String url = "jdbc:mysql://192.168.1.151:3306/backend";
+        String url = "jdbc:mysql:loadbalance://192.168.1.151:3306,192.168.1.152:3306,192.168.1.153:3306/backend";
         String username = "root";
-        String password = "aa112233";
+        String password = "Root@123";
         Class.forName(driver); //classLoader,加载对应驱动
         connection = DriverManager.getConnection(url, username, password);
     }
