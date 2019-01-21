@@ -31,6 +31,7 @@
 		<module>redis-load-jmeter-plugin</module>
 		<module>zookeeper-load-jmeter-plugin</module>
 		<module>spring-cloud/spring-cloud-eureka-server</module>
+		<module>spring-cloud/sc-helloworld</module>
     </modules>
 
 	<build>
