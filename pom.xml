@@ -30,6 +30,7 @@
 		<module>sharding-sphere</module>
 		<module>redis-load-jmeter-plugin</module>
 		<module>zookeeper-load-jmeter-plugin</module>
+		<module>spring-cloud/spring-cloud-eureka-server</module>
     </modules>
 
 	<build>
