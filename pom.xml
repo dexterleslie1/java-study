@@ -32,6 +32,7 @@
 		<module>zookeeper-load-jmeter-plugin</module>
 		<module>spring-cloud/spring-cloud-eureka-server</module>
 		<module>spring-cloud/sc-helloworld</module>
+		<module>spring-cloud/sc-config-server</module>
     </modules>
 
 	<build>
