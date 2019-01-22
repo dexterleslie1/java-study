@@ -35,6 +35,7 @@
 		<module>spring-cloud/sc-helloworld</module>
 		<module>spring-cloud/sc-config-server</module>
 		<module>spring-cloud/sc-config-client</module>
+		<module>spring-cloud/sc-ribbon-client</module>
     </modules>
 
 	<build>
