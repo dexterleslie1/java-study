@@ -36,6 +36,7 @@
 		<module>spring-cloud/sc-config-server</module>
 		<module>spring-cloud/sc-config-client</module>
 		<module>spring-cloud/sc-ribbon-client</module>
+		<module>spring-cloud/sc-feign-client</module>
     </modules>
 
 	<build>
