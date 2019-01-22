@@ -1,0 +1,17 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.120:8080/eureka/
+spring:
+  application:
+    name: config-client
+  cloud:
+    config:
+      label: master
+      profile: dev
+      #uri: http://192.168.1.120:8081/
+      discovery:
+        enabled: true
+        serviceId: config-server
+server:
+  port: 8082

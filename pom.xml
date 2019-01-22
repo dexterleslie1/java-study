@@ -33,6 +33,7 @@
 		<module>spring-cloud/spring-cloud-eureka-server</module>
 		<module>spring-cloud/sc-helloworld</module>
 		<module>spring-cloud/sc-config-server</module>
+		<module>spring-cloud/sc-config-client</module>
     </modules>
 
 	<build>
