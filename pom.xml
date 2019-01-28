@@ -37,6 +37,7 @@
 		<module>spring-cloud/sc-config-client</module>
 		<module>spring-cloud/sc-ribbon-client</module>
 		<module>spring-cloud/sc-feign-client</module>
+		<module>spring-boot-session-redis</module>
     </modules>
 
 	<build>
