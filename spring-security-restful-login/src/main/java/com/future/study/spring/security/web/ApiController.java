@@ -22,8 +22,26 @@ public class ApiController {
      * @param response
      * @return
      */
-    @PostMapping(value="a1")
+    @RequestMapping(value="a1")
     public ResponseEntity<Map<String,Object>> a1(
+            HttpServletRequest request,
+            HttpServletResponse response){
+        Map<String,Object> mapReturn=new HashMap<>();
+        mapReturn.put("dataObject",""+new Date());
+        ResponseEntity responseEntity=ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(mapReturn);
+        return responseEntity;
+    }
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value="a2")
+    public ResponseEntity<Map<String,Object>> a2(
             HttpServletRequest request,
             HttpServletResponse response){
         Map<String,Object> mapReturn=new HashMap<>();

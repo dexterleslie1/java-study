@@ -1,0 +1,1 @@
+演示基于spring-security-restful登录和权限验证
