@@ -32,11 +32,10 @@ public class Application {
         return new RestTemplate();
     }
 
-    @Autowired
-    private HelloService helloService;
     @RequestMapping("/")
     public String home() {
-        String string1 = this.helloService.getHelloContent();
+        RestTemplate restTemplate = restTemplate();
+        String string1 = restTemplate.getForObject("http://SERVICE-HELLOWORLD/",String.class);
         return string1;
     }
 }
