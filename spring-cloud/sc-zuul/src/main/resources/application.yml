@@ -8,6 +8,7 @@ zuul:
     api-a:
       path: /user/v1/**
       serviceId: SERVICE-HELLOWORLD
+      stripPrefix: false
 eureka:
   client:
     serviceUrl:

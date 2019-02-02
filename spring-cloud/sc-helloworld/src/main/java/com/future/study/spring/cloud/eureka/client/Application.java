@@ -24,7 +24,7 @@ public class Application {
 
     @Value("${server.port}")
     String port;
-    @RequestMapping("/")
+    @RequestMapping("/user/v1/login/interface1")
     public String home() {
         return "hello world from port " + port;
     }
