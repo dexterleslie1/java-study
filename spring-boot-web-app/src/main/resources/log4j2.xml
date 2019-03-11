@@ -50,7 +50,7 @@
         <!-- All < Trace < Debug < Info < Warn < Error < Fatal < OFF. -->
         　　　　 <!-- 程序会打印高于或等于所设置级别的日志，设置的日志等级越高，打印出来的日志就越少。-->
         <!-- 此level设置的日志级别，是过滤项目中输出的日志信息，和ThresholdFilter的level有所区别 -->
-        <Root level="DEBUG">
+        <Root level="ERROR">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender"/>
         </Root>
