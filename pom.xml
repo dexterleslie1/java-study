@@ -40,6 +40,7 @@
 		<module>spring-cloud/sc-zuul</module>
 		<module>spring-boot-session-redis</module>
 		<module>spring-boot-web-app</module>
+		<module>activemq-examples/activemq-basic-usage</module>
     </modules>
 
 	<build>
