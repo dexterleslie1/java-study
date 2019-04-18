@@ -41,6 +41,7 @@
 		<module>spring-boot-session-redis</module>
 		<module>spring-boot-web-app</module>
 		<module>activemq-examples/activemq-basic-usage</module>
+		<module>rabbitmq-examples/helloworld</module>
     </modules>
 
 	<build>
