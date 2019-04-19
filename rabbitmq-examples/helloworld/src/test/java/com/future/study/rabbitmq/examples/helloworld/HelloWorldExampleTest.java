@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -31,23 +34,36 @@ public class HelloWorldExampleTest {
 
         channel.queueDeclare(queueName, false, false, false, null);
 
-        String messageToPublish = UUID.randomUUID().toString();
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        int totalMessageProduce = 1000;
+        List<String> listMessageConsume = new ArrayList<String>();
+        CountDownLatch countDownLatch = new CountDownLatch(totalMessageProduce);
         DeliverCallback deliverCallback = new DeliverCallback() {
             @Override
             public void handle(String consumerTag, Delivery delivery) throws IOException {
-                messageConsume = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                listMessageConsume.add(message);
                 countDownLatch.countDown();
             }
         };
         // Ready to consume rabbitmq message
-        channel.basicConsume(queueName, deliverCallback, consumerTag -> {});
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
 
-        channel.basicPublish("", queueName, null, messageToPublish.getBytes(StandardCharsets.UTF_8));
+        List<String> listMessageProduce = new ArrayList<String>();
+        for(int i=0 ; i<totalMessageProduce; i++){
+            String message = UUID.randomUUID().toString();
+            listMessageProduce.add(message);
+        }
+        for(int i=0; i<totalMessageProduce; i++){
+            String message = listMessageProduce.get(i);
+            channel.basicPublish("", queueName, null, message.getBytes(StandardCharsets.UTF_8));
+        }
 
-        countDownLatch.await(2000, TimeUnit.MILLISECONDS);
+        countDownLatch.await(5000, TimeUnit.MILLISECONDS);
 
         connection.close();
-        Assert.assertEquals(messageToPublish, messageConsume);
+
+        Collections.sort(listMessageProduce);
+        Collections.sort(listMessageConsume);
+        Assert.assertArrayEquals(listMessageProduce.toArray(new String[]{}), listMessageConsume.toArray(new String[]{}));
     }
 }
