@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -30,7 +31,7 @@ public class HelloWorldExampleTest {
 
         channel.queueDeclare(queueName, false, false, false, null);
 
-        String messageToPublish = "Hello World!";
+        String messageToPublish = UUID.randomUUID().toString();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         DeliverCallback deliverCallback = new DeliverCallback() {
             @Override
