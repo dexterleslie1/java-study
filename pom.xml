@@ -42,6 +42,7 @@
 		<module>spring-boot-web-app</module>
 		<module>activemq-examples/activemq-basic-usage</module>
 		<module>rabbitmq-examples/helloworld</module>
+		<module>redisson/redisson-lock</module>
     </modules>
 
 	<build>
