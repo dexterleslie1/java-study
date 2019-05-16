@@ -43,6 +43,7 @@
 		<module>activemq-examples/activemq-basic-usage</module>
 		<module>rabbitmq-examples/helloworld</module>
 		<module>redisson/redisson-lock</module>
+		<module>curatorframework</module>
     </modules>
 
 	<build>
