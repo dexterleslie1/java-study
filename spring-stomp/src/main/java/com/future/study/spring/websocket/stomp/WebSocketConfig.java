@@ -1,5 +1,7 @@
 package com.future.study.spring.websocket.stomp;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -9,6 +11,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -16,13 +19,15 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import java.security.Principal;
 
 /**
- * @author Dexterleslie
- * @date 2018年08月06日
- * @time 12:20
+ *
  */
-//@Configuration
+@Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfigWithSockJS implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    private final static Logger logger = Logger.getLogger(WebSocketConfig.class);
+
+    @Autowired
+    private TaskScheduler taskScheduler = null;
 
     /**
      *
@@ -31,6 +36,8 @@ public class WebSocketConfigWithSockJS implements WebSocketMessageBrokerConfigur
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/portfolio").withSockJS();
+        // HTTP URL for the endpoint to which a WebSocket (or SockJS) client needs to connect for the WebSocket handshake.
+        registry.addEndpoint("/chatEndpointWithoutSockJS");
     }
 
     /**
@@ -39,8 +46,13 @@ public class WebSocketConfigWithSockJS implements WebSocketMessageBrokerConfigur
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        // STOMP messages whose destination header begins with /app are routed to @MessageMapping methods in @Controller classes.
         config.setApplicationDestinationPrefixes("/app");
-        config.enableSimpleBroker("/topic","/queue");
+        // Use the built-in message broker for subscriptions and broadcasting and route messages whose destination header begins with /topic `or `/queue to the broker.
+        // Note: For the built-in simple broker, the /topic and /queue prefixes do not have any special meaning. They are merely a convention to differentiate between pub-sub versus point-to-point messaging (that is, many subscribers versus one consumer). When you use an external broker, check the STOMP page of the broker to understand what kind of STOMP destinations and prefixes it supports.
+        config.enableSimpleBroker("/topic","/queue")
+                .setHeartbeatValue(new long []{10000, 0})
+                .setTaskScheduler(taskScheduler);
     }
 
     /**
@@ -55,36 +67,13 @@ public class WebSocketConfigWithSockJS implements WebSocketMessageBrokerConfigur
                 StompHeaderAccessor accessor =
                         MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    String userId=accessor.getFirstNativeHeader("userId");
-                    Principal user = new PrincipalObject(userId);
+                    String username = accessor.getFirstNativeHeader("username");
+                    Principal user = new PrincipalObject(username);
                     accessor.setUser(user);
+                    logger.debug("用户" + username + "连接stomp服务器");
                 }
                 return message;
             }
         });
-    }
-
-    /**
-     *
-     */
-    class PrincipalObject implements Principal{
-        private String userId;
-
-        /**
-         *
-         * @param userId
-         */
-        PrincipalObject(String userId){
-            this.userId=userId;
-        }
-
-        /**
-         *
-         * @return
-         */
-        @Override
-        public String getName() {
-           return this.userId;
-        }
     }
 }
