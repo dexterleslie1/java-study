@@ -8,24 +8,33 @@
 		<artifactId>all-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+
+	<properties>
+		<springboot.version>2.0.4.RELEASE</springboot.version>
+	</properties>
 	
 	<dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-			<version>2.0.4.RELEASE</version>
+			<version>${springboot.version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
-			<version>2.0.4.RELEASE</version>
+			<version>${springboot.version}</version>
 		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-			<version>2.0.4.RELEASE</version>
+			<version>${springboot.version}</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${springboot.version}</version>
+		</dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>

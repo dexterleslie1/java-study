@@ -17,6 +17,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 模拟A、B相互发送消息
@@ -29,7 +30,7 @@ public class SimulateAandBSendMessageTest {
      * @throws InterruptedException
      */
     @Test
-    public void testSendMessage() throws InterruptedException {
+    public void testSendMessage() throws InterruptedException, TimeoutException {
         String fromUsername = "A";
         String toUsername = "B";
         this.getStompClient(fromUsername, new StompSessionHandlerAdapter(){
@@ -96,7 +97,9 @@ public class SimulateAandBSendMessageTest {
                 countDownLatch.countDown();
             }
         });
-        while(!countDownLatch.await(10, TimeUnit.MILLISECONDS));
+        if(!countDownLatch.await(15000, TimeUnit.MILLISECONDS)){
+            throw new TimeoutException();
+        }
     }
 
     /**
