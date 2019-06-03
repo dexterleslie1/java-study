@@ -10,6 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -28,10 +29,10 @@ public class WebSocketClientTests {
     public void testConnect() throws ExecutionException, InterruptedException, IOException {
         WebSocketClient client = new StandardWebSocketClient();
         String url = "ws://localhost:8080/websocketEndpoint";
-        ListenableFuture<WebSocketSession> future = client.doHandshake(new AbstractWebSocketHandler() {
+        ListenableFuture<WebSocketSession> future = client.doHandshake(new TextWebSocketHandler(){
             @Override
-            public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-                super.afterConnectionEstablished(session);
+            protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+                logger.debug(message.toString());
             }
         }, url);
 
