@@ -44,6 +44,7 @@
 		<module>rabbitmq-examples/helloworld</module>
 		<module>redisson/redisson-lock</module>
 		<module>redisson/redisson-sentinel</module>
+		<module>redisson/redisson-cluster-lock</module>
 		<module>curatorframework</module>
 		<module>spring-websocket</module>
 		<module>redistemplate/redistemplate-sentinel</module>
