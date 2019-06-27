@@ -43,6 +43,7 @@
 		<module>activemq-examples/activemq-basic-usage</module>
 		<module>rabbitmq-examples/helloworld</module>
 		<module>redisson/redisson-lock</module>
+		<module>redisson/redisson-sentinel</module>
 		<module>curatorframework</module>
 		<module>spring-websocket</module>
     </modules>

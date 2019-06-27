@@ -32,7 +32,6 @@ public class RedissonLockPerformanceTests {
         ExecutorService executorService = Executors.newCachedThreadPool();
         for(int j=0; j<200; j++) {
             executorService.submit(new Runnable() {
-                @Override
                 public void run() {
                     for (int i = 0; i < 1000; i++) {
                         String key = UUID.randomUUID().toString();
