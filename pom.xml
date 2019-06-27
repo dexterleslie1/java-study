@@ -46,6 +46,8 @@
 		<module>redisson/redisson-sentinel</module>
 		<module>curatorframework</module>
 		<module>spring-websocket</module>
+		<module>redistemplate/redistemplate-sentinel</module>
+		<module>redistemplate/redistemplate-cluster</module>
     </modules>
 
 	<build>
