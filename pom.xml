@@ -50,6 +50,8 @@
 		<module>redistemplate/redistemplate-cluster</module>
 		<module>redis-jedis/jedis-standalone-load</module>
 		<module>redis-jedis/jedis-cluster-load</module>
+		<module>redis-jedis/jedis-cluster-pubsub</module>
+		<module>redis-jedis/jedis-cluster-keys-support</module>
     </modules>
 
 	<build>
