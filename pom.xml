@@ -49,6 +49,7 @@
 		<module>redistemplate/redistemplate-sentinel</module>
 		<module>redistemplate/redistemplate-cluster</module>
 		<module>redis-jedis/jedis-standalone-load</module>
+		<module>redis-jedis/jedis-cluster-load</module>
     </modules>
 
 	<build>
