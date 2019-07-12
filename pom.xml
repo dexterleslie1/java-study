@@ -42,6 +42,7 @@
 		<module>spring-boot-pom-basic-config</module>
 		<module>activemq-examples/activemq-basic-usage</module>
 		<module>rabbitmq-examples/helloworld</module>
+		<module>rabbitmq-examples/spring-amqp-rabbitmq-delayed-message-exchange</module>
 		<module>redisson/redisson-lock</module>
 		<module>redisson/redisson-sentinel</module>
 		<module>redisson/redisson-cluster-lock</module>
