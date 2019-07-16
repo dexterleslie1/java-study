@@ -56,6 +56,7 @@
 		<module>redis-jedis/jedis-cluster-pubsub</module>
 		<module>redis-jedis/jedis-cluster-keys-support</module>
 		<module>spring-commonsrequestloggingfilter</module>
+		<module>spring-boot-logback</module>
     </modules>
 
 	<build>
