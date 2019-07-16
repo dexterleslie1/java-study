@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <appender name="gatewayAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>loggingfilter.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>loggingfilter.%d{yyyyMMdd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%5p] - %m%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.future.study.spring.logging.filter.CustomCommonsRequestLoggingFilter" level="debug" additivity="false">
+        <appender-ref ref="gatewayAppender"/>
+    </logger>
+</configuration>
