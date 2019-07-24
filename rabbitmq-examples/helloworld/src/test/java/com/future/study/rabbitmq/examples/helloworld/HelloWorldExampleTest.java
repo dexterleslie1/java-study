@@ -19,7 +19,6 @@ import java.util.concurrent.TimeoutException;
  * @author Dexterleslie.Chan
  */
 public class HelloWorldExampleTest {
-    private String messageConsume = null;
     @Test
     public void test_tutorial_helloworld() throws IOException, TimeoutException, InterruptedException {
         String queueName = "rabbitmq-examples-tutorial-helloworld";
@@ -58,7 +57,9 @@ public class HelloWorldExampleTest {
             channel.basicPublish("", queueName, null, message.getBytes(StandardCharsets.UTF_8));
         }
 
-        countDownLatch.await(5000, TimeUnit.MILLISECONDS);
+        if(!countDownLatch.await(5000, TimeUnit.MILLISECONDS)){
+            throw new TimeoutException();
+        }
 
         connection.close();
 
