@@ -57,6 +57,7 @@
 		<module>redis-jedis/jedis-cluster-keys-support</module>
 		<module>spring-commonsrequestloggingfilter</module>
 		<module>spring-boot-logback</module>
+		<module>spring-boot-httptrace</module>
     </modules>
 
 	<build>
