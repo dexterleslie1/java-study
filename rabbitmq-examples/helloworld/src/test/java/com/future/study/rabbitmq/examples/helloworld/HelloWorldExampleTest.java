@@ -29,6 +29,8 @@ public class HelloWorldExampleTest {
         connectionFactory.setPassword(Config.RabbitMQPassword);
 
         Connection connection = connectionFactory.newConnection();
+        Connection connectionConsumer = connectionFactory.newConnection();
+
         Channel channel = connection.createChannel();
 
         channel.queueDeclare(queueName, false, false, false, null);
@@ -45,7 +47,8 @@ public class HelloWorldExampleTest {
             }
         };
         // Ready to consume rabbitmq message
-        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
+        Channel channelConsumer = connectionConsumer.createChannel();
+        channelConsumer.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
 
         List<String> listMessageProduce = new ArrayList<String>();
         for(int i=0 ; i<totalMessageProduce; i++){
@@ -62,6 +65,7 @@ public class HelloWorldExampleTest {
         }
 
         connection.close();
+        connectionConsumer.close();
 
         Collections.sort(listMessageProduce);
         Collections.sort(listMessageConsume);
