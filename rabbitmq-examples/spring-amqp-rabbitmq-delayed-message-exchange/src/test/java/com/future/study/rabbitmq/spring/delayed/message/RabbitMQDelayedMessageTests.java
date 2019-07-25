@@ -43,7 +43,7 @@ public class RabbitMQDelayedMessageTests {
             this.rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.QUEUE_NAME, "444", MessagePostProcessortVariable);
         }
 
-        if(!countDownLatch.await(10, TimeUnit.SECONDS)){
+        if(!countDownLatch.await(60, TimeUnit.SECONDS)){
             throw new TimeoutException();
         }
     }
