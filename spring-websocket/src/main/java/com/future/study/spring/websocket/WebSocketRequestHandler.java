@@ -2,7 +2,8 @@ package com.future.study.spring.websocket;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -16,7 +17,7 @@ import java.util.Map;
  *
  */
 public class WebSocketRequestHandler extends TextWebSocketHandler {
-    private final static Logger logger = Logger.getLogger(WebSocketRequestHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(WebSocketRequestHandler.class);
 
     private final static String KeyAction = "action";
 
@@ -24,7 +25,7 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        logger.debug("invoked afterConnectionEstablished");
+        logger.info("invoked afterConnectionEstablished");
         super.afterConnectionEstablished(session);
     }
 
@@ -46,7 +47,7 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
                     if(!StringUtils.isEmpty(username)){
                         session.getAttributes().put("username", username);
                         mapSessions.put(username, session);
-                        logger.debug("用户" + username + " 连接websocket服务器");
+                        logger.info("用户" + username + " 连接websocket服务器");
                     }
                 }else if("MESSAGE".equals(action)){
                     String toUser = data.get("toUser");
@@ -59,9 +60,9 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
                             messageMap.put("fromUser", fromUser);
                             messageMap.put("content", content);
                             toSession.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(messageMap)));
-                            logger.debug("用户" + fromUser +" 给用户" + toUser + " 发送消息 " + content);
+                            logger.info("用户" + fromUser +" 给用户" + toUser + " 发送消息 " + content);
                         }else {
-                            logger.debug("用户" + fromUser + " 尝试给用户" + toUser + " 发送消息，但不在线");
+                            logger.info("用户" + fromUser + " 尝试给用户" + toUser + " 发送消息，但不在线");
                         }
 
                     }
@@ -74,13 +75,13 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        logger.debug("invoked handleTransportError");
+        logger.info("invoked handleTransportError");
         super.handleTransportError(session, exception);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        logger.debug("invoked afterConnectionClosed");
+        logger.info("invoked afterConnectionClosed");
         super.afterConnectionClosed(session, status);
     }
 }
