@@ -45,6 +45,7 @@
 		<module>rabbitmq-examples/message-acknowledgment</module>
 		<module>rabbitmq-examples/spring-amqp-rabbitmq-delayed-message-exchange</module>
 		<module>rabbitmq-examples/message-qos</module>
+		<module>rabbitmq-examples/message-pubsub</module>
 		<module>redisson/redisson-lock</module>
 		<module>redisson/redisson-sentinel</module>
 		<module>redisson/redisson-cluster-lock</module>
