@@ -49,6 +49,7 @@
 		<module>rabbitmq-examples/message-routing</module>
 		<module>rabbitmq-examples/message-topic</module>
 		<module>rabbitmq-examples/spring-amqp-programatically-demo</module>
+		<module>rabbitmq-examples/spring-amqp-configuration-demo</module>
 		<module>redisson/redisson-lock</module>
 		<module>redisson/redisson-sentinel</module>
 		<module>redisson/redisson-cluster-lock</module>
