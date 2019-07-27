@@ -28,12 +28,7 @@ public class WebSocketClientTests {
     public void testConnect() throws ExecutionException, InterruptedException, IOException {
         WebSocketClient client = new StandardWebSocketClient();
         String url = "ws://localhost:8080/websocketEndpoint";
-        ListenableFuture<WebSocketSession> future = client.doHandshake(new TextWebSocketHandler(){
-            @Override
-            protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-                logger.debug(message.toString());
-            }
-        }, url);
+        ListenableFuture<WebSocketSession> future = client.doHandshake(new TextWebSocketHandler(), url);
 
         WebSocketSession socketSession = future.get();
 
