@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author Dexterleslie.Chan
@@ -24,8 +25,10 @@ public class ApplicationSpringAMQPConfigDemoTests {
     private Receiver receiver = null;
 
     @Test
-    public void test1() throws InterruptedException {
+    public void test1() throws InterruptedException, TimeoutException {
         amqpTemplate.convertAndSend(ConfigRabbitMQ.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ!");
-        receiver.getLatch().await(2000, TimeUnit.MILLISECONDS);
+        if(!receiver.getLatch().await(2000, TimeUnit.MILLISECONDS)) {
+            throw new TimeoutException();
+        }
     }
 }
