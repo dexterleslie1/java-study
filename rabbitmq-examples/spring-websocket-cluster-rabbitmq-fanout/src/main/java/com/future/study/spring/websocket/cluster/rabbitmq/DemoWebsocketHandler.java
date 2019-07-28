@@ -18,6 +18,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,8 +98,12 @@ public class DemoWebsocketHandler extends TextWebSocketHandler {
         super.afterConnectionClosed(session, status);
 
         String userId = (String)session.getAttributes().get("userId");
-        if(session.isOpen()) {
-            session.close();
+        try {
+            if (session.isOpen()) {
+                session.close();
+            }
+        }catch(IOException ex){
+            //
         }
         this.mqHandler.getSessionsRegistry().remove(userId);
         logger.info("用户" + userId + " 退出");
