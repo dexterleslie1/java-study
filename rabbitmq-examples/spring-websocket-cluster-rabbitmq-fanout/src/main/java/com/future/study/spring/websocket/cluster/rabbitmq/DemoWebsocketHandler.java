@@ -69,10 +69,18 @@ public class DemoWebsocketHandler extends TextWebSocketHandler {
 
             String toUserId = nodeToUserId.asText();
 
+            JsonNode nodeContent = node.get("content");
+            String content = null;
+            if(nodeContent == null){
+                content = "";
+            }else {
+                content = nodeContent.asText();
+            }
+
             ObjectNode messageObject = JsonNodeFactory.instance.objectNode();
             messageObject.put("fromUserId", (String)session.getAttributes().get("userId"));
             messageObject.put("toUserId", toUserId);
-            messageObject.put("content", "Hello " + toUserId);
+            messageObject.put("content", content);
 
             this.amqpTemplate.convertAndSend(ConfigRabbitMQ.ExchangeName, "",  messageObject.toString());
         }

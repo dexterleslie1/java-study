@@ -2,11 +2,9 @@ package com.future.study.spring.websocket.cluster.rabbitmq;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -16,12 +14,8 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -33,15 +27,14 @@ import java.util.concurrent.TimeoutException;
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
 public class ApplicationSpringWSClusterRMFanoutTests {
-    private final static Logger logger = LoggerFactory.getLogger(ApplicationSpringWSClusterRMFanoutTests.class);
-
-    @Autowired
-    private MQHandler mqHandler = null;
-
     @Test
     public void test1() throws ExecutionException, InterruptedException, IOException, TimeoutException {
         WebSocketClient client = new StandardWebSocketClient();
         String url = "ws://localhost:8080/websocketEndpoint";
+//        String url1 = "ws://localhost:8081/websocketEndpoint";
+
+        Map<String, Integer> sendCounter = new HashMap<>();
+        Map<String, Integer> receiveCounter = new HashMap<>();
 
         int total = 20;
         List<WebSocketSession> sessionList = new ArrayList<>();
@@ -57,7 +50,19 @@ public class ApplicationSpringWSClusterRMFanoutTests {
                     session.getAttributes().put("userId", userId);
                     session.sendMessage(new TextMessage(stringTemporary));
                 }
-            }, url);
+
+                @Override
+                protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+                    String userId = (String)session.getAttributes().get("userId");
+                    synchronized (receiveCounter) {
+                        if (!receiveCounter.containsKey(userId)) {
+                            receiveCounter.put(userId, 0);
+                        }
+                        int counter = receiveCounter.get(userId);
+                        receiveCounter.put(userId, counter+1);
+                    }
+                }
+            }, /*(i%2==0?url:url1)*/url);
 
             WebSocketSession socketSession = future.get();
             sessionList.add(socketSession);
@@ -66,10 +71,7 @@ public class ApplicationSpringWSClusterRMFanoutTests {
         // 等待websocket连接到服务器
         Thread.sleep(1000);
 
-        int countDown = 100;
-        this.mqHandler.setCountDown(countDown);
-
-        for(int i=0; i<countDown; i++) {
+        for(int i=0; i<100; i++) {
             WebSocketSession[] sessionsTemporary = randomPickupWebSocketSession(sessionList);
             WebSocketSession sessionFrom = sessionsTemporary[0];
             WebSocketSession sessionTo = sessionsTemporary[1];
@@ -77,16 +79,26 @@ public class ApplicationSpringWSClusterRMFanoutTests {
             ObjectNode request = JsonNodeFactory.instance.objectNode();
             request.put("action", "send");
             request.put("toUserId", toUserId);
+            request.put("content", UUID.randomUUID().toString());
+
+            if(!sendCounter.containsKey(toUserId)) {
+                sendCounter.put(toUserId, 0);
+            }
+            int counter = sendCounter.get(toUserId);
+            sendCounter.put(toUserId, counter+1);
+
             sessionFrom.sendMessage(new TextMessage(request.toString()));
         }
 
-        if(!this.mqHandler.getCountDownLatch().await(5, TimeUnit.SECONDS)) {
-            throw new TimeoutException();
-        }
+        Thread.sleep(3000);
 
         for(int i=0; i<sessionList.size(); i++){
             WebSocketSession socketSession = sessionList.get(i);
             socketSession.close();
+        }
+
+        for(String key : sendCounter.keySet()) {
+            Assert.assertEquals(sendCounter.get(key), receiveCounter.get(key));
         }
     }
 
