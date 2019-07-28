@@ -1,0 +1,1 @@
+spring-websocket服务器集群，使用spring-amqp+rabbitmq fanout实现
