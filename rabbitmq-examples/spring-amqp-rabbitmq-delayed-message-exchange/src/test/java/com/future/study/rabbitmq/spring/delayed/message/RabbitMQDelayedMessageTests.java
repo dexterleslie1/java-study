@@ -22,28 +22,31 @@ import java.util.concurrent.TimeoutException;
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
 public class RabbitMQDelayedMessageTests {
-    @Autowired
-    private RabbitMQListener rabbitMQListener = null;
+//    @Autowired
+//    private RabbitMQListener rabbitMQListener = null;
     @Autowired
     private AmqpTemplate rabbitTemplate;
+    @Autowired
+    private Receiver receiver = null;
 
     @Test
     public void test1() throws TimeoutException, InterruptedException {
-        int totalCount = 10000;
-        CountDownLatch countDownLatch = new CountDownLatch(totalCount);
-        MessageHandler handler = new MessageHandler() {
-            @Override
-            public void handle(String message) {
-                countDownLatch.countDown();
-            }
-        };
-        rabbitMQListener.messageHandler = handler;
+        int totalCount = 10;
+//        CountDownLatch countDownLatch = new CountDownLatch(totalCount);
+//        MessageHandler handler = new MessageHandler() {
+//            @Override
+//            public void handle(String message) {
+//                countDownLatch.countDown();
+//            }
+//        };
+//        rabbitMQListener.messageHandler = handler;
+        receiver.setCountDown(totalCount);
 
         for(int i=0; i<totalCount; i++){
-            this.rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.QUEUE_NAME, "444", MessagePostProcessortVariable);
+            this.rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, "routingKey1", "444", MessagePostProcessortVariable);
         }
 
-        if(!countDownLatch.await(60, TimeUnit.SECONDS)){
+        if(!receiver.getLatch().await(60, TimeUnit.SECONDS)){
             throw new TimeoutException();
         }
     }
