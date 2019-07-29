@@ -11,6 +11,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -20,7 +21,7 @@ public class MQHandler {
     private final static Logger logger = LoggerFactory.getLogger(MQHandler.class);
     private final static ObjectMapper OMInstance = new ObjectMapper();
 
-    private Map<String, WebSocketSession> sessionsRegistry = new HashMap<>();
+    private Map<String, WebSocketSession> sessionsRegistry = new ConcurrentHashMap<>();
 
     public Map<String, WebSocketSession> getSessionsRegistry() {
         return this.sessionsRegistry;

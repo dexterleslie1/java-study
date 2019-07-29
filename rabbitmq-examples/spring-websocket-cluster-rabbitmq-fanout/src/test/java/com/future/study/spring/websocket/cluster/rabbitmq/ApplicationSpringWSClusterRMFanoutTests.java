@@ -15,8 +15,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 /**
  * @author Dexterleslie.Chan
@@ -36,7 +35,7 @@ public class ApplicationSpringWSClusterRMFanoutTests {
         Map<String, Integer> sendCounter = new HashMap<>();
         Map<String, Integer> receiveCounter = new HashMap<>();
 
-        int total = 20;
+        int total = 100;
         List<WebSocketSession> sessionList = new ArrayList<>();
         for(int i=0; i<total; i++) {
             ListenableFuture<WebSocketSession> future = client.doHandshake(new TextWebSocketHandler() {
@@ -69,26 +68,53 @@ public class ApplicationSpringWSClusterRMFanoutTests {
         }
 
         // 等待websocket连接到服务器
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 
-        for(int i=0; i<100; i++) {
-            WebSocketSession[] sessionsTemporary = randomPickupWebSocketSession(sessionList);
-            WebSocketSession sessionFrom = sessionsTemporary[0];
-            WebSocketSession sessionTo = sessionsTemporary[1];
-            String toUserId = (String) sessionTo.getAttributes().get("userId");
-            ObjectNode request = JsonNodeFactory.instance.objectNode();
-            request.put("action", "send");
-            request.put("toUserId", toUserId);
-            request.put("content", UUID.randomUUID().toString());
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Random random = new Random();
+        int concurrentCount = 10;
+        for(int j=0; j<concurrentCount; j++) {
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 1000; i++) {
+                        WebSocketSession[] sessionsTemporary = randomPickupWebSocketSession(sessionList);
+                        WebSocketSession sessionFrom = sessionsTemporary[0];
+                        WebSocketSession sessionTo = sessionsTemporary[1];
+                        String toUserId = (String) sessionTo.getAttributes().get("userId");
+                        ObjectNode request = JsonNodeFactory.instance.objectNode();
+                        request.put("action", "send");
+                        request.put("toUserId", toUserId);
+                        request.put("content", UUID.randomUUID().toString());
 
-            if(!sendCounter.containsKey(toUserId)) {
-                sendCounter.put(toUserId, 0);
-            }
-            int counter = sendCounter.get(toUserId);
-            sendCounter.put(toUserId, counter+1);
+                        synchronized (sessionFrom) {
+                            if (!sendCounter.containsKey(toUserId)) {
+                                sendCounter.put(toUserId, 0);
+                            }
+                            int counter = sendCounter.get(toUserId);
+                            sendCounter.put(toUserId, counter + 1);
 
-            sessionFrom.sendMessage(new TextMessage(request.toString()));
+                            try {
+                                sessionFrom.sendMessage(new TextMessage(request.toString()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        int randomMilliseconds = random.nextInt(100);
+                        if(randomMilliseconds == 0) {
+                            randomMilliseconds = 10;
+                        }
+                        try {
+                            Thread.sleep(randomMilliseconds);
+                        } catch (InterruptedException e) {
+                            //
+                        }
+                    }
+                }
+            });
         }
+        executorService.shutdown();
+        while(!executorService.awaitTermination(100, TimeUnit.MILLISECONDS));
 
         Thread.sleep(3000);
 
@@ -97,6 +123,9 @@ public class ApplicationSpringWSClusterRMFanoutTests {
             socketSession.close();
         }
 
+        Thread.sleep(2000);
+
+        Assert.assertEquals(sendCounter.size(), receiveCounter.size());
         for(String key : sendCounter.keySet()) {
             Assert.assertEquals(sendCounter.get(key), receiveCounter.get(key));
         }
