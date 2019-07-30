@@ -19,5 +19,6 @@ CMD java \
         -Dcom.sun.management.jmxremote.authenticate=false \
         -Dcom.sun.management.jmxremote.local.only=false \
         -server \
+		-Xms1024m -Xmx4096m -XX:PermSize=512m -XX:MaxPermSize=512m \
         -jar \
 	/usr/local/bootstrap.jar
