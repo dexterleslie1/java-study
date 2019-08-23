@@ -60,6 +60,7 @@
 		<module>redistemplate/redistemplate-sentinel</module>
 		<module>redistemplate/redistemplate-cluster</module>
 		<module>redistemplate/redistemplate-hash-putall</module>
+        <module>redistemplate/redistemplate-list</module>
 		<module>redis-jedis/jedis-standalone-load</module>
 		<module>redis-jedis/jedis-cluster-load</module>
 		<module>redis-jedis/jedis-cluster-pubsub</module>
