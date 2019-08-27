@@ -23,7 +23,9 @@ public class ApplicationSpringAMQPFanoutTests {
 
     @Test
     public void test1() throws InterruptedException, TimeoutException {
-        amqpTemplate.convertAndSend(ConfigRabbitMQ.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ!");
+        for(int i=0; i<2; i++) {
+            amqpTemplate.convertAndSend(ConfigRabbitMQ.topicExchangeName, null, "Hello from RabbitMQ!" + i);
+        }
         if(!receiver.getLatch().await(2000, TimeUnit.MILLISECONDS)) {
             throw new TimeoutException();
         }

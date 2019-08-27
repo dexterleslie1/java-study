@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch;
 public class Receiver {
     private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
-    private CountDownLatch latch = new CountDownLatch(1);
+    private CountDownLatch latch = new CountDownLatch(2);
 
     public void receiveMessage(String message) {
         logger.info("Received <" + message + ">");
