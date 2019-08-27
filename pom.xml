@@ -52,6 +52,7 @@
 		<module>rabbitmq-examples/spring-amqp-configuration-demo</module>
 		<module>rabbitmq-examples/spring-amqp-fanout</module>
 		<module>rabbitmq-examples/spring-websocket-cluster-rabbitmq-fanout</module>
+		<module>rabbitmq-examples/spring-amqp-acknowledge</module>
 		<module>redisson/redisson-lock</module>
 		<module>redisson/redisson-sentinel</module>
 		<module>redisson/redisson-cluster-lock</module>
