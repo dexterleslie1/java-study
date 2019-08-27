@@ -58,7 +58,7 @@ public class ConfigRabbitMQ {
         container.setConnectionFactory(connectionFactory);
         container.addQueues(queue());
         container.setMessageListener(listenerAdapter);
-//        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return container;
     }
 
