@@ -71,6 +71,7 @@
 		<module>spring-commonsrequestloggingfilter</module>
 		<module>spring-boot-logback</module>
 		<module>spring-boot-httptrace</module>
+		<module>lombok-examples/lombok-annotation-builder</module>
     </modules>
 
 	<build>
