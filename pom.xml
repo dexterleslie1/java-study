@@ -73,6 +73,7 @@
 		<module>spring-boot-httptrace</module>
 		<module>lombok-examples/lombok-annotation-builder</module>
 		<module>ngrok</module>
+		<module>dom4j</module>
     </modules>
 
 	<build>
