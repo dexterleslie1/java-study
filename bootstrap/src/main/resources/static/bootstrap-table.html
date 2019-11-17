@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container" style="width:50%">
+        <p> .table 类普通表格:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .table-striped 类在 tbody 内添加斑马线形式的条纹 ( IE8 不支持):</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>提供商</th>
+                    <th>地区</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>P001</td>
+                    <td>Twilio</td>
+                    <td>United States</td>
+                </tr>
+                <tr>
+                    <td>P002</td>
+                    <td>Voxbone</td>
+                    <td>United States</td>
+                </tr>
+                <tr>
+                    <td>P003</td>
+                    <td>CM</td>
+                    <td>Hong Kong</td>
+                </tr>
+                <tr>
+                    <td>P004</td>
+                    <td>Nexmo</td>
+                    <td>United States</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p> .table-bordered 类为所有表格的单元格添加边框:</p>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .table-hover 类启用表格中 tbody 上的行的悬停效果：</p>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .table-condensed 类让表格更加紧凑:</p>
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .active 类将悬停的颜色应用在行或者单元格上:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr class="active">
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .success 类表示执行成功的操作：</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr class="success">
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .info 类表示信息变化的操作:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr class="info">
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .warning 类表示一个警告操作:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr class="warning">
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> .danger 类表示一个危险的操作:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>提供商</th>
+                <th>地区</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>P001</td>
+                <td>Twilio</td>
+                <td>United States</td>
+            </tr>
+            <tr class="danger">
+                <td>P002</td>
+                <td>Voxbone</td>
+                <td>United States</td>
+            </tr>
+            <tr>
+                <td>P003</td>
+                <td>CM</td>
+                <td>Hong Kong</td>
+            </tr>
+            <tr>
+                <td>P004</td>
+                <td>Nexmo</td>
+                <td>United States</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p> 通过把任意的 .table 包在 .table-responsive class 内，您可以让表格水平滚动以适应小型设备（小于 768px）。当在大于 768px 宽的大型设备上查看时，您将看不到任何的差别:</p>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>提供商</th>
+                    <th>地区</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>P001</td>
+                    <td>Twilio</td>
+                    <td>United States</td>
+                </tr>
+                <tr>
+                    <td>P002</td>
+                    <td>Voxbone</td>
+                    <td>United States</td>
+                </tr>
+                <tr>
+                    <td>P003</td>
+                    <td>CM</td>
+                    <td>Hong Kong</td>
+                </tr>
+                <tr>
+                    <td>P004</td>
+                    <td>Nexmo</td>
+                    <td>United States</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
