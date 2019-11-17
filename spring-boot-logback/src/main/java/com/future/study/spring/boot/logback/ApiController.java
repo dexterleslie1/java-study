@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Dexterleslie.Chan
+ * @author dexterleslie@gmail.com
  */
 @RestController
 @RequestMapping(value="/api")
