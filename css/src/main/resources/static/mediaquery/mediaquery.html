@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示mediaquery（媒体查询）使用</title>
+
+    <style type="text/css">
+        @media only screen and (max-width:600px) {
+            .divMaxWidth600px {
+                background-color:red;
+            }
+        }
+
+        .divMinWidthRange {
+            background-color: lightblue;
+        }
+        @media screen and (min-width: 400px) {
+            .divMinWidthRange {
+                background-color: lightgreen;
+            }
+        }
+        @media screen and (min-width: 800px) {
+            .divMinWidthRange {
+                background-color: lavender;
+            }
+        }
+
+        @media screen and (orientation: landscape) {
+            .divOrientation {
+                background-color:blue;
+            }
+        }
+
+        .divMaxWidth {
+            margin-left:50px;
+        }
+        @media (max-width:768px) {
+            .divMaxWidth {
+                margin-left:0px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="divMaxWidth600px">
+        @media only screen and (max-width:600px) background-color change
+    </div>
+
+    <div class="divMinWidthRange">
+        Div min-width background-color change
+    </div>
+
+    <div class="divOrientation">
+        Div orientation change
+    </div>
+
+    <div class="divMaxWidth">
+        Div max-width margin-left change
+    </div>
+</body>
+</html>
