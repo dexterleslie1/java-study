@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示pesudo-classes :not用法</title>
+
+    <style type="text/css">
+        .fancy {
+            text-shadow: 2px 2px 3px gold;
+        }
+        /* 类名不是 `.fancy` 的 <p> 元素 */
+        p:not(.fancy) {
+            color: green;
+        }
+        /* 非 <p> 元素 */
+        body :not(p) {
+            text-decoration: underline;
+        }
+        /* 非 <div> 或 <span> 的元素 */
+        body :not(div):not(span) {
+            font-size:2rem;
+            font-weight: bold;
+        }
+        /* 类名不是 `.crazy` or `.fancy` 的元素 */
+        /* 注意，此语法尚未被较好地支持。 */
+        body :not(.crazy, .fancy) {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <p>我是一个段落。</p>
+    <p class="fancy">我好看极了！</p>
+    <div>我不是一个段落。</div>
+    <br/>
+    <div>
+        <span>span标签内容</span>
+        <p>p标签内容</p>
+    </div>
+</body>
+</html>

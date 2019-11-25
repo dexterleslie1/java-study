@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示pesudo-classes :not用法</title>
+
+    <style type="text/css">
+        div:not(.colorRed) p{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span>
+            <p>1、文字1</p>
+        </span>
+    </div>
+    <div class="colorRed">
+        <span>
+            <p>2、文字2</p>
+        </span>
+    </div>
+    <div>
+        <span class="colorRed">
+            <p>3、文字3</p>
+        </span>
+    </div>
+</body>
+</html>

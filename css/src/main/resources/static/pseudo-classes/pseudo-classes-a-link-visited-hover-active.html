@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示pseudo-classes a link、visited、hover、active用法</title>
+
+    <style type="text/css">
+        a:link {color:#FF0000;} /* 未访问的链接 */
+        a:visited {color:#00FF00;} /* 已访问的链接 */
+        a:hover {color:#FF00FF;} /* 鼠标划过链接 */
+        a:active {color:#0000FF;} /* 已选中的链接 */
+    </style>
+</head>
+<body>
+    <strong>以下演示a link,visited,hover,active</strong>
+    <p><b><a href="#">这是一个链接</a></b></p>
+    <p><b>注意：</b> a:hover 必须在 a:link 和 a:visited 之后，需要严格按顺序才能看到效果。</p>
+    <p><b>注意：</b> a:active 必须在 a:hover 之后。</p>
+</body>
+</html>

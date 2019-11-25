@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>position:relative相对定位</title>
+    <style type="text/css">
+        div {
+            width:150px;
+            height:150px;
+            background-color:yellow;
+        }
+        .divParent {
+            position:relative;
+            left:150px;
+            top:40px;
+        }
+        .divTwo {
+            position:relative;
+            left:20px;
+            top:20px;
+            background-color:blue;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <div class="divParent">
+        <div>
+        </div>
+        <div class="divTwo">
+            此div设置了left和top使其相对于自己标准文档流位置定位
+        </div>
+        <div>
+        </div>
+    </div>
+</body>
+</html>
