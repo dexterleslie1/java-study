@@ -74,6 +74,10 @@
 		<module>lombok-examples/lombok-annotation-builder</module>
 		<module>ngrok</module>
 		<module>dom4j</module>
+
+		<module>spring-cloud-stream/stream-eureka</module>
+		<module>spring-cloud-stream/stream-producer</module>
+		<module>spring-cloud-stream/stream-consumer</module>
     </modules>
 
 	<build>

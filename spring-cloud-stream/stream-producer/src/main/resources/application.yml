@@ -1,0 +1,26 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8090/eureka/
+server:
+  port: 8080
+spring:
+  application:
+    name: streamProducer
+  cloud:
+    stream:
+      bindings:
+        outputCustomize:
+          destination: streamExchange
+          content-type: application/json
+          binder: streamRabbit
+      binders:
+        streamRabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 192.168.1.129
+                port: 5672
+                username: guest
+                password: guest
