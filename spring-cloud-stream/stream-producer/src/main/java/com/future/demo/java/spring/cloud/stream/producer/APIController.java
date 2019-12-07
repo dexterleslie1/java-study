@@ -35,4 +35,14 @@ public class APIController {
         this.producerService.produceDestination2();
         return ResponseEntity.ok("成功发布消息");
     }
+
+    /**
+     *
+     * @return
+     */
+    @GetMapping(path = "produceDelay", produces = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> produceDelay() {
+        this.producerService.produceDelay();
+        return ResponseEntity.ok("成功发布消息");
+    }
 }

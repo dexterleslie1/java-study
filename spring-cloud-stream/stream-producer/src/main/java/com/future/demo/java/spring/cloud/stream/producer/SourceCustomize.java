@@ -13,4 +13,11 @@ public interface SourceCustomize {
      */
     @Output("outputCustomize")
     MessageChannel outputCustomize();
+
+    /**
+     *
+     * @return
+     */
+    @Output("outputCustomizeDelay")
+    MessageChannel outputCustomizeDelay();
 }

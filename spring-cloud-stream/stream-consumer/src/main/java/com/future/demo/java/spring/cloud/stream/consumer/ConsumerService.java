@@ -40,4 +40,16 @@ public class ConsumerService {
         Map<String, String> payload = message.getPayload();
         logger.info("consume2收到消息payload：" + payload);
     }
+
+    /**
+     *
+     * @param message
+     */
+    @StreamListener(
+            target = SinkCustomize.InputCustomizeDelay,
+            condition = "headers['messageType']=='com.future.demo.java.stream.messageType3'")
+    public void consumeDelay(Message<Map<String, String>> message) {
+        Map<String, String> payload = message.getPayload();
+        logger.info("consumeDealy收到消息payload：" + payload);
+    }
 }

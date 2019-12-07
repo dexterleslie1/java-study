@@ -14,9 +14,20 @@ public interface SinkCustomize {
 
     /**
      *
+     */
+    String InputCustomizeDelay = "inputCustomizeDelay";
+
+    /**
+     *
      * @return
      */
     @Input(SinkCustomize.InputCustomize)
     SubscribableChannel inputCustomize();
 
+    /**
+     *
+     * @return
+     */
+    @Input(SinkCustomize.InputCustomizeDelay)
+    SubscribableChannel inputCustomizeDelay();
 }

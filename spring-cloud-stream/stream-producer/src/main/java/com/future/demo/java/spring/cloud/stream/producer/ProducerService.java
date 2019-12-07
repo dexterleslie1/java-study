@@ -49,4 +49,21 @@ public class ProducerService {
                         .build();
         this.sourceCustomize.outputCustomize().send(message);
     }
+
+    /**
+     *
+     */
+    public void produceDelay() {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("producer", "producerDelay");
+        Message<Map<String, String>> message =
+                MessageBuilder
+                        .withPayload(payload)
+                        .setHeader(
+                                "messageType",
+                                "com.future.demo.java.stream.messageType3")
+                        .setHeader("x-delay", 20000)
+                        .build();
+        this.sourceCustomize.outputCustomizeDelay().send(message);
+    }
 }

@@ -15,6 +15,16 @@ spring:
           content-type: application/json
           binder: streamRabbit
           group: streamGroup
+        inputCustomizeDelay:
+          destination: streamExchangeDelay
+          content-type: application/json
+          binder: streamRabbit
+          group: streamGroupDelay
+      rabbit:
+        bindings:
+          inputCustomizeDelay:
+            consumer:
+              delayed-exchange: true
       binders:
         streamRabbit:
           type: rabbit
