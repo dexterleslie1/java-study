@@ -78,6 +78,10 @@
 		<module>spring-cloud-stream/stream-eureka</module>
 		<module>spring-cloud-stream/stream-producer</module>
 		<module>spring-cloud-stream/stream-consumer</module>
+
+		<module>encryption</module>
+
+		<module>spring-boot-jstl-web</module>
     </modules>
 
 	<build>
