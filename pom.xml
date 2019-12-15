@@ -82,6 +82,7 @@
 		<module>encryption</module>
 
 		<module>spring-boot-jstl-web</module>
+		<module>spring-boot-condition</module>
     </modules>
 
 	<build>
