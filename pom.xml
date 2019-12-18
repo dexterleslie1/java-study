@@ -84,6 +84,9 @@
 		<module>spring-boot-jstl-web</module>
 		<module>spring-boot-condition</module>
 		<module>spring-boot-internationalization</module>
+
+		<module>spring-boot-handler-argument/pathvariable</module>
+		<module>spring-boot-handler-argument/requestbody</module>
     </modules>
 
 	<build>
