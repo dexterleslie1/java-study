@@ -87,6 +87,8 @@
 
 		<module>spring-boot-handler-argument/pathvariable</module>
 		<module>spring-boot-handler-argument/requestbody</module>
+
+		<module>jwt</module>
     </modules>
 
 	<build>
