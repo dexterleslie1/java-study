@@ -26,6 +26,14 @@ public class LibphonenumberTests {
         phoneNumber = phoneNumberUtil.parse(phone, null);
         phoneNumberType = phoneNumberUtil.getNumberType(phoneNumber);
         Assert.assertEquals(PhoneNumberUtil.PhoneNumberType.MOBILE, phoneNumberType);
+
+        try {
+            phone = "13560189481";
+            phoneNumberUtil.parse(phone, null);
+            Assert.fail("预期错误没有抛出");
+        } catch (NumberParseException ex) {
+            Assert.assertEquals("Missing or invalid default region.", ex.getMessage());
+        }
     }
 
     /**
