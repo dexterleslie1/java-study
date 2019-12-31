@@ -27,4 +27,52 @@ public class LibphonenumberTests {
         phoneNumberType = phoneNumberUtil.getNumberType(phoneNumber);
         Assert.assertEquals(PhoneNumberUtil.PhoneNumberType.MOBILE, phoneNumberType);
     }
+
+    /**
+     *
+     * @throws NumberParseException
+     */
+    @Test
+    public void test_parse_E164_phone_number() throws NumberParseException {
+        // 大陆手机
+        String phone = "+8613560189481";
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(phone, null);
+        int countryCode = phoneNumber.getCountryCode();
+        long nationalNumber = phoneNumber.getNationalNumber();
+        Assert.assertEquals(86, countryCode);
+        Assert.assertEquals(nationalNumber, 13560189481l);
+
+        // 大陆固定电话
+        phone = "+8607567750292";
+        phoneNumber = phoneNumberUtil.parse(phone, null);
+        countryCode = phoneNumber.getCountryCode();
+        nationalNumber = phoneNumber.getNationalNumber();
+        Assert.assertEquals(86, countryCode);
+        Assert.assertEquals(nationalNumber, 7567750292l);
+
+        // 香港号码
+        phone = "+85261500911";
+        phoneNumber = phoneNumberUtil.parse(phone, null);
+        countryCode = phoneNumber.getCountryCode();
+        nationalNumber = phoneNumber.getNationalNumber();
+        Assert.assertEquals(852, countryCode);
+        Assert.assertEquals(nationalNumber, 61500911l);
+
+        // 日本号码
+        phone = "+815055332721";
+        phoneNumber = phoneNumberUtil.parse(phone, null);
+        countryCode = phoneNumber.getCountryCode();
+        nationalNumber = phoneNumber.getNationalNumber();
+        Assert.assertEquals(81, countryCode);
+        Assert.assertEquals(nationalNumber, 5055332721l);
+
+        // 美国号码
+        phone = "+12027596693";
+        phoneNumber = phoneNumberUtil.parse(phone, null);
+        countryCode = phoneNumber.getCountryCode();
+        nationalNumber = phoneNumber.getNationalNumber();
+        Assert.assertEquals(1, countryCode);
+        Assert.assertEquals(nationalNumber, 2027596693l);
+    }
 }
