@@ -104,4 +104,30 @@ public class PinyinTests {
         }
         log.info(buffer.toString());
     }
+
+    @Test
+    public void testTraditionalChinese() throws BadHanyuPinyinOutputFormatCombination {
+        String chineseString = "在線繁體字轉換器";
+        StringBuffer buffer = new StringBuffer();
+        //字符串转换字节数组
+        char[] arr = chineseString.toCharArray();
+        HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
+        //转换类型（大写or小写）
+        defaultFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+        //定义中文声调的输出格式
+        defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+        //定义字符的输出格式
+        defaultFormat.setVCharType(HanyuPinyinVCharType.WITH_U_AND_COLON);
+        for (int i = 0; i < arr.length; i++) {
+            //判断是否是汉子字符
+            if (java.lang.Character.toString(arr[i]).matches("[\\u4E00-\\u9FA5]+")) {
+                String[] temp = PinyinHelper.toHanyuPinyinStringArray(arr[i], defaultFormat);
+                buffer.append(temp[0] + " ");
+            } else {
+                // 如果不是汉字字符，直接拼接
+                buffer.append(arr[i] + " ");
+            }
+        }
+        log.info(buffer.toString());
+    }
 }
