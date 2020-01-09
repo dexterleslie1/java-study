@@ -3,6 +3,7 @@ package com.future.demo.java.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Assert;
@@ -90,9 +91,14 @@ public class JacksonTests {
         JsonNode jsonNode = OMInstance.readTree(json);
         Assert.assertEquals(true, jsonNode.get("enable").asBoolean());
         Assert.assertEquals("dexter", jsonNode.get("loginname").asText());
+
+        objectNode = JsonNodeFactory.instance.objectNode();
+        objectNode.put("enable", true);
+        objectNode.put("loginname", "dexter");
+        Assert.assertEquals(true, jsonNode.get("enable").asBoolean());
+        Assert.assertEquals("dexter", jsonNode.get("loginname").asText());
     }
-
-
+    
     /**
      *
      * @throws IOException

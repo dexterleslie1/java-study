@@ -89,6 +89,7 @@
 		<module>spring-boot-handler-argument/requestbody</module>
 
 		<module>jwt</module>
+		<module>json-lib</module>
     </modules>
 
 	<build>
