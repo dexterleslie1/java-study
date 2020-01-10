@@ -90,6 +90,7 @@
 
 		<module>jwt</module>
 		<module>json-lib</module>
+		<module>commons-lang</module>
     </modules>
 
 	<build>
