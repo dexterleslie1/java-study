@@ -91,6 +91,8 @@
 		<module>jwt</module>
 		<module>json-lib</module>
 		<module>commons-lang</module>
+
+		<module>spring-resource</module>
     </modules>
 
 	<build>
