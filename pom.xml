@@ -95,6 +95,9 @@
 		<module>spring-resource</module>
 
 		<module>elasticsearch/elasticsearch-rest-high-level-client</module>
+
+		<module>sonatype-nexus/sonatype-nexus-distribution</module>
+		<module>sonatype-nexus/sonatype-nexus-reference</module>
     </modules>
 
 	<build>
