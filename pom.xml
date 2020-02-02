@@ -93,6 +93,8 @@
 		<module>commons-lang</module>
 
 		<module>spring-resource</module>
+
+		<module>elasticsearch/elasticsearch-rest-high-level-client</module>
     </modules>
 
 	<build>
