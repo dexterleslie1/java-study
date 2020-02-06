@@ -98,6 +98,8 @@
 
 		<module>sonatype-nexus/sonatype-nexus-distribution</module>
 		<module>sonatype-nexus/sonatype-nexus-reference</module>
+
+		<module>dockerfile-maven-plugin</module>
     </modules>
 
 	<build>
