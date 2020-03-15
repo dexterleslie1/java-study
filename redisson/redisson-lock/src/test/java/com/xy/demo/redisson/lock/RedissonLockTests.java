@@ -140,6 +140,55 @@ public class RedissonLockTests {
         Assert.assertEquals(totalThreads-1, atomicIntegerLocked.get());
     }
 
+    /**
+     * 测试tryLock函数leaseTime参数
+     * @throws InterruptedException
+     */
+    @Test
+    public void testTryLockLeaseTime() throws InterruptedException {
+        final AtomicInteger atomicInteger = new AtomicInteger();
+        final String key = "keyLease1";
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.submit(new Runnable() {
+            public void run() {
+                try {
+                    RLock rLock = redisson.getLock(key);
+                    rLock.tryLock(10, 5000, TimeUnit.MILLISECONDS);
+                    Thread.sleep(1000);
+                } catch(Exception ex) {
+
+                } finally {
+
+                }
+            }
+        });
+
+        Thread.sleep(1000);
+
+        executorService.submit(new Runnable() {
+            public void run() {
+                try {
+                    RLock rLock = redisson.getLock(key);
+                    while(!rLock.tryLock(10, 20, TimeUnit.MILLISECONDS)) {
+                        atomicInteger.incrementAndGet();
+                    }
+                } catch(Exception ex) {
+                } finally {
+                    RLock rLock = redisson.getLock(key);
+                    rLock.unlock();
+                }
+            }
+        });
+
+        executorService.shutdown();
+        while (!executorService.awaitTermination(100, TimeUnit.MILLISECONDS));
+
+        RLock rLock = redisson.getLock(key);
+        boolean isLocked = rLock.isLocked();
+        Assert.assertFalse(isLocked);
+        Assert.assertTrue(atomicInteger.get()>0);
+    }
+
     @Before
     public void setup(){
         Config config = new Config();
