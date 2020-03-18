@@ -12,9 +12,7 @@ import org.redisson.config.Config;
 
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -193,17 +191,22 @@ public class RedissonLockTests {
      * @throws InterruptedException
      */
     @Test
-    public void testUnlockByAnotherThreadWithExceptionExpected() throws InterruptedException {
+    public void testUnlockByAnotherThreadWithExceptionExpected() throws InterruptedException, ExecutionException {
         final AtomicInteger atomicIntegerException = new AtomicInteger();
         final AtomicInteger atomicIntegerExceptionCounter = new AtomicInteger();
         final String keyTemp = UUID.randomUUID().toString();
         ExecutorService executorService = Executors.newCachedThreadPool();
-        executorService.submit(new Runnable() {
+        Future future = executorService.submit(new Runnable() {
             public void run() {
                 try {
                     RLock rLock = redisson.getLock(keyTemp);
-                    rLock.tryLock(10, 50000, TimeUnit.MILLISECONDS);
-                    Thread.sleep(4000);
+                    boolean acquireLock = rLock.tryLock(10, 50000, TimeUnit.MILLISECONDS);
+                    Assert.assertTrue(acquireLock);
+                    boolean isHeldByCurrentThread = rLock.isHeldByCurrentThread();
+                    Assert.assertTrue(isHeldByCurrentThread);
+                    boolean isLocked = rLock.isLocked();
+                    Assert.assertTrue(isLocked);
+                    Thread.sleep(3000);
                 } catch (Exception ex) {
                     atomicIntegerException.incrementAndGet();
                 } finally {
@@ -213,18 +216,23 @@ public class RedissonLockTests {
             }
         });
 
-        Thread.sleep(500);
+        Thread.sleep(100);
 
-        executorService.submit(new Runnable() {
+        Future future1 = executorService.submit(new Runnable() {
             public void run() {
                 try {
                     RLock rLock = redisson.getLock(keyTemp);
-                    rLock.tryLock(10, 30000, TimeUnit.MILLISECONDS);
+                    boolean acquireLock = rLock.tryLock(10, 30000, TimeUnit.MILLISECONDS);
+                    Assert.assertFalse(acquireLock);
                 } catch (Exception ex) {
                     atomicIntegerException.incrementAndGet();
                 } finally {
                     try {
                         RLock rLock = redisson.getLock(keyTemp);
+                        boolean isHeldByCurrentThread = rLock.isHeldByCurrentThread();
+                        Assert.assertFalse(isHeldByCurrentThread);
+                        boolean isLocked = rLock.isLocked();
+                        Assert.assertTrue(isLocked);
                         rLock.unlock();
                     } catch (Exception ex) {
                         if(ex instanceof IllegalMonitorStateException) {
@@ -237,9 +245,11 @@ public class RedissonLockTests {
 
         executorService.shutdown();
         while(!executorService.awaitTermination(10, TimeUnit.MILLISECONDS));
+        future.get();
+        future1.get();
 
-        Assert.assertTrue(atomicIntegerExceptionCounter.get()>0);
-        Assert.assertTrue(atomicIntegerException.get()<=0);
+        Assert.assertTrue("Exception counter="+atomicIntegerExceptionCounter.get(), atomicIntegerExceptionCounter.get()>0);
+        Assert.assertTrue("Exception count="+atomicIntegerException.get(), atomicIntegerException.get()<=0);
     }
 
     /**
@@ -298,6 +308,33 @@ public class RedissonLockTests {
 
         Assert.assertEquals(1, atomicIntegerOwner.get());
         Assert.assertEquals(notOwnerCounter, atomicIntegerNotOwner.get());
+    }
+
+    /**
+     * 测试当线程结束是否自动释放锁
+     */
+    @Test
+    public void testIfUnlockAutomaticallyWhenThreadEnd() throws InterruptedException {
+        final String keyTemp = "keyTestUnlock";
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.submit(new Runnable() {
+            public void run() {
+                try {
+                    RLock rLock = redisson.getLock(keyTemp);
+                    rLock.tryLock(10, 10000, TimeUnit.MILLISECONDS);
+                } catch (Exception ex) {
+
+                }
+            }
+        });
+
+        executorService.shutdown();
+        while(!executorService.awaitTermination(10, TimeUnit.MILLISECONDS));
+
+        RLock rLock = redisson.getLock(keyTemp);
+        boolean isLocked = rLock.isLocked();
+        // 验证不会自动释放锁
+        Assert.assertTrue(isLocked);
     }
 
     @Before
