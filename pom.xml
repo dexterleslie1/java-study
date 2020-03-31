@@ -59,7 +59,7 @@
 		<module>redisson/redisson-sentinel</module>
 		<module>redisson/redisson-cluster-lock</module>
 		<module>curatorframework</module>
-		<module>spring-websocket</module>
+		<module>websocket/spring-websocket</module>
 		<module>redistemplate/redistemplate-sentinel</module>
 		<module>redistemplate/redistemplate-cluster</module>
 		<module>redistemplate/redistemplate-hash-putall</module>
@@ -101,6 +101,7 @@
 
         <module>commons-io</module>
 
+		<module>apns/getui-android/backend</module>
 		<module>aliyun-oss</module>
     </modules>
 
