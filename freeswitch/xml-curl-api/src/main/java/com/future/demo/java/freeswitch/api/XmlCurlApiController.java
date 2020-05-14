@@ -5,8 +5,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.freeswitch.esl.client.inbound.Client;
 import org.freeswitch.esl.client.transport.message.EslMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +28,107 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value="/api/v1/freeswitch")
 public class XmlCurlApiController {
+	private final static Logger logger = LoggerFactory.getLogger(XmlCurlApiController.class);
+	
 	@Autowired
 	private Client client = null;
+	
+	/**
+    *
+    * @param request
+    * @return
+    * @throws ServletRequestBindingException
+    */
+   @RequestMapping(value = "directory", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE)
+   public ResponseEntity<String> directory(HttpServletRequest request) throws ServletRequestBindingException {
+	   Document document = null;
+	   try {
+           String sipAuthUsername = ServletRequestUtils.getStringParameter(request, "user");
+//           long userId = 0;
+//           try {
+//               userId = Long.parseLong(sipAuthUsername);
+//           } catch (Exception ex) {
+//               logger.error(ex.getMessage(), ex);
+//           }
+
+//           SipInfoVO sipInfoVO = this.sipInfoService.get(userId);
+//           if (sipInfoVO == null) {
+//               document = DocumentHelper.createDocument();
+//               Element rootElement = document.addElement("document");
+//               rootElement.addAttribute("type", "freeswitch/xml");
+//
+//               Element sectionElement = rootElement.addElement("section");
+//               sectionElement.addAttribute("name", "result");
+//
+//               Element resultElement = sectionElement.addElement("result");
+//               resultElement.addAttribute("status", "not found");
+//           } else {
+               document = DocumentHelper.createDocument();
+               Element rootElement = document.addElement("document");
+               rootElement.addAttribute("type", "freeswitch/xml");
+
+               Element sectionElement = rootElement.addElement("section");
+               sectionElement.addAttribute("name", "directory");
+
+               Element domainElement = sectionElement.addElement("domain");
+               String keyValue = ServletRequestUtils.getStringParameter(request, "domain");
+               domainElement.addAttribute("name", keyValue);
+
+               Element paramsElement = domainElement.addElement("params");
+               Element paramElement = paramsElement.addElement("param");
+               paramElement.addAttribute("name", "dial-string");
+               paramElement.addAttribute("value", "{presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(${dialed_user}@${dialed_domain})}");
+
+               Element groupsElement = domainElement.addElement("groups");
+               Element groupElement = groupsElement.addElement("group");
+               groupElement.addAttribute("name", "default");
+               Element usersElement = groupElement.addElement("users");
+               Element userElement = usersElement.addElement("user");
+               userElement.addAttribute("id", sipAuthUsername);
+               Element variablesElement = userElement.addElement("variables");
+
+               Element variableElement = variablesElement.addElement("variable");
+               variableElement.addAttribute("name", "toll_allow");
+               variableElement.addAttribute("value", "domestic,international,local");
+
+               variableElement = variablesElement.addElement("variable");
+               variableElement.addAttribute("name", "accountcode");
+               variableElement.addAttribute("value", sipAuthUsername);
+
+               variableElement = variablesElement.addElement("variable");
+               variableElement.addAttribute("name", "user_context");
+               variableElement.addAttribute("value", "default");
+
+               variableElement = variablesElement.addElement("variable");
+               variableElement.addAttribute("name", "effective_caller_id_name");
+               variableElement.addAttribute("value", "Extension " + sipAuthUsername);
+
+               variableElement = variablesElement.addElement("variable");
+               variableElement.addAttribute("name", "effective_caller_id_number");
+               variableElement.addAttribute("value", sipAuthUsername);
+
+               variableElement = variablesElement.addElement("variable");
+               variableElement.addAttribute("name", "callgroup");
+               variableElement.addAttribute("value", "default");
+
+               paramsElement = userElement.addElement("params");
+               paramElement = paramsElement.addElement("param");
+               paramElement.addAttribute("name", "password");
+               paramElement.addAttribute("value", "123456");
+
+               paramElement = paramsElement.addElement("param");
+               paramElement.addAttribute("name", "vm-password");
+               paramElement.addAttribute("value", "123456");
+//           }
+       } catch (Exception exception) {
+           String sipAuthUsername = ServletRequestUtils.getStringParameter(request, "user");
+           String message = "尝试生成sip用户：" + sipAuthUsername + " 目录（directory）， 意料之外错误：" + exception.getMessage();
+           logger.error(message, exception);
+           return null;
+       }
+       String xml = document.asXML();
+       return ResponseEntity.ok(xml);
+   }
 	
     /**
      * 
