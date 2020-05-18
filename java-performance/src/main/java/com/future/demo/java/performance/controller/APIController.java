@@ -1,7 +1,6 @@
 package com.future.demo.java.performance.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -23,11 +22,11 @@ import net.sf.ehcache.Element;
 @RestController
 @RequestMapping(value="/api")
 public class APIController {
-    private final static Map<String, byte[]> MemoryHolderMapper = new HashMap<>();
-    
+	
     @Autowired
     private CacheManager cacheManager = null;
     private Cache cache1 = null;
+    private Cache cacheMemoryHolder = null;
     
     /**
      * 
@@ -35,8 +34,10 @@ public class APIController {
     @PostConstruct
     public void init() {
     	this.cache1 = this.cacheManager.getCache("cache1");
+    	this.cacheMemoryHolder = this.cacheManager.getCache("cacheMemoryHolder");
     }
 
+    private final static int BytesInMemory = 1024*1024*100;
     /**
      *
      * @return
@@ -44,15 +45,14 @@ public class APIController {
     @RequestMapping(value="memory/consume", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> memoryConsume(){
     	String key = UUID.randomUUID().toString();
-        byte []bytes = new byte[1024*1024*100];
+        byte []bytes = new byte[BytesInMemory];
         Random random = new Random();
         random.nextBytes(bytes);
-        MemoryHolderMapper.put(key, bytes);
-        long totalBytes = 0;
-        for(String keyTemporary : MemoryHolderMapper.keySet()) {
-        	byte [] bytesTemporary = MemoryHolderMapper.get(keyTemporary);
-        	totalBytes += bytesTemporary.length;
-        }
+        Element element = new Element(key, bytes);
+        element.setTimeToLive(1);
+        this.cacheMemoryHolder.put(element);
+        List<String> keys = this.cacheMemoryHolder.getKeys();
+        long totalBytes = keys.size()*BytesInMemory;
         return ResponseEntity.ok("成功分配内存 " + bytes.length/(1024*1024) + "MB，总消耗内存：" + totalBytes/(1024*1024) + "MB");
     }
     
