@@ -5,10 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author dexterleslie@gmail.com
@@ -25,7 +22,9 @@ public class TransactionTrackingModel implements Serializable{
 	@Id
 	private long id;
 	private String trackingId;
+	@Enumerated(EnumType.STRING)
 	private TransactionTrackingType type;
+	@Enumerated(EnumType.STRING)
 	private TransactionStatus status;
 	private String cause;
 	private String payload;
