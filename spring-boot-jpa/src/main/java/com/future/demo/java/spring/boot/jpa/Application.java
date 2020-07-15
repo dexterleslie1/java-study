@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author dexterleslie@gmail.com
  */
 @SpringBootApplication
-@EnableJpaRepositories(basePackages={"com.future.demo"})
 public class Application {
     /**
      *
