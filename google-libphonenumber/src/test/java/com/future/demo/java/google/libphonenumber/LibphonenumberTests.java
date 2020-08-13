@@ -83,4 +83,28 @@ public class LibphonenumberTests {
         Assert.assertEquals(1, countryCode);
         Assert.assertEquals(nationalNumber, 2027596693l);
     }
+
+    /**
+     * 判断号码格式是否正确
+     */
+    @Test
+    public void test_invalid_phone_number() throws NumberParseException {
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        String phone = "+110";
+        Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(phone, null);
+        boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
+        Assert.assertFalse(isValid);
+
+        phone = "+12027596693";
+        phoneNumber = phoneNumberUtil.parse(phone, null);
+        isValid = phoneNumberUtil.isValidNumber(phoneNumber);
+        Assert.assertTrue(isValid);
+
+        try {
+            phone = "*#130#";
+            phoneNumber = phoneNumberUtil.parse(phone, null);
+            Assert.fail("预期异常没有抛出");
+        } catch(NumberParseException ex) {
+        }
+    }
 }
