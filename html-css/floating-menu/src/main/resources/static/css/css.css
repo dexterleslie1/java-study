@@ -10,3 +10,14 @@
 	top:0px;
 	right:0px;
 }
+
+.floating-menu-top {
+	position:absolute;
+	top:0px;
+	right:0px;
+	margin-right:10px;
+}
+.floating-menu-top ul li {
+	display:inline;
+	padding-left:10px;
+}
