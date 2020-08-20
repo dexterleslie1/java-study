@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>jQuery animation demonstration</title>
+</head>
+<link rel="stylesheet" type="text/css" href="index.css"/>
+<script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="index.js"></script>
+<body style="margin:0px;">
+	<div>
+		<div><h3>fadeIn、fadeOut、fadeToggle、fadeTo</h3></div>
+		<div>
+			<div>
+				<input type="button" value="fadeIn" id="buttonFadeIn"/>
+				<input type="button" value="fadeOut" id="buttonFadeOut"/>
+			</div>
+			<div id="divFadeInOut" style="margin:5px;width:100px;height:100px;background-color:blue;"></div>
+		</div>
+		
+		<div>
+			<div>
+				<input type="button" value="fadeToggle" id="buttonFadeToggle"/>
+			</div>
+			<div id="divFadeToggle" style="margin:5px;width:100px;height:100px;background-color:blue;"></div>
+		</div>
+		
+		<div>
+			<div>
+				<input type="button" value="fadeToIn" id="buttonFadeToIn"/>
+				<input type="button" value="fadeToOut" id="buttonFadeToOut"/>
+			</div>
+			<div id="divFadeTo" style="margin:5px;width:100px;height:100px;background-color:blue;opacity:0.8;"></div>
+		</div>
+	</div>
+	
+	<div>
+		<div><h3>animate</h3></div>
+		<div>
+			<div>
+				<input type="button" value="animate" id="buttonAnimate"/>
+				<input type="button" value="reset" id="buttonReset"/>
+			</div>
+			<div id="divAnimate" style="position:absolute;display:none;opacity:0;left:5px;margin-top:5px;margin-bottom:5px;width:100px;height:100px;background-color:blue;"></div>
+		</div>
+	</div>
+</body>
+</html>

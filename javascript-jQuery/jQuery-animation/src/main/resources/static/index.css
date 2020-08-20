@@ -1,0 +1,27 @@
+div.fade-right {
+	float: left;
+	position: absolute;
+	display: none;
+}
+
+div.container {
+	padding: 20px;
+	background-color: black;
+	text-align: center;
+	width: 150px;
+}
+
+div.photo-text {
+	text-align: center;
+}
+
+div.photo-text span {
+	color: white;
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+div.photo-image img {
+	height: 50%;
+	width: 50%;
+}
