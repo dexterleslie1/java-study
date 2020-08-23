@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,7 +19,7 @@ public class ApiController {
      * @param response
      * @return
      */
-    @GetMapping(value="/hello")
+    @PostMapping(value="/hello")
     public ResponseEntity<String> hello(
             HttpServletRequest request,
             HttpServletResponse response){
