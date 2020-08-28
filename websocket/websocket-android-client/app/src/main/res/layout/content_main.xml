@@ -14,6 +14,11 @@
         android:layout_height="wrap_content"
         android:text="连接"/>
     <Button
+        android:id="@+id/buttonSend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送消息"/>
+    <Button
         android:id="@+id/buttonDisconnect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -19,6 +19,7 @@ import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onMessage(String message) {
-
+                        Log.d(TAG, "收到消息：" + message);
                     }
 
                     @Override
@@ -73,6 +74,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
                 webSocketClient.connect();
+            }
+        });
+
+        button = findViewById(R.id.buttonSend);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (webSocketClient != null) {
+                        webSocketClient.send("你好，" + new Date());
+                    }
+                } catch (Exception ex) {
+                    Log.e(TAG, ex.getMessage(), ex);
+                }
             }
         });
 

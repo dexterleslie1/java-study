@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: spring-cloud-zuul
+server:
+  port: 8081
+zuul:
+  routes:
+    api-a:
+      path: /api/v1/**
+      serviceId: spring-cloud-helloworld
+      stripPrefix: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka/

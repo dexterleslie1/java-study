@@ -4,14 +4,17 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.util.*;
 
 /**
  *
@@ -22,16 +25,54 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
     private final static String KeyAction = "action";
 
     private Map<String, WebSocketSession> mapSessions = new HashMap<>();
+    private List<WebSocketSession> sessionList = new ArrayList<>();
+    private Thread thread = null;
+    private boolean stopped = false;
+
+    @PostConstruct
+    public void init() {
+       thread = new Thread(new Runnable() {
+           @Override
+           public void run() {
+                while(!stopped) {
+                    try {
+                        for (WebSocketSession session : sessionList) {
+                            session.sendMessage(new TextMessage("jfkdjfkd" + new Date()));
+                        }
+                    } catch (Exception ex) {
+                        logger.error(ex.getMessage(), ex);
+                    }
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        //
+                    }
+                }
+           }
+       });
+       thread.start();
+    }
+
+    @PreDestroy
+    public void destroy() {
+        stopped = true;
+        if(thread!=null) {
+            thread = null;
+        }
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.info("invoked afterConnectionEstablished");
         super.afterConnectionEstablished(session);
+        sessionList.add(session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
+        logger.info("收到来自客户消息：" + payload);
         if(!StringUtils.isEmpty(payload)){
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> data = null;
@@ -75,13 +116,14 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        logger.info("invoked handleTransportError");
+        logger.error(exception.getMessage(), exception);
         super.handleTransportError(session, exception);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        logger.info("invoked afterConnectionClosed");
+        logger.info("invoked afterConnectionClosed,status="+status);
         super.afterConnectionClosed(session, status);
+        sessionList.remove(session);
     }
 }
