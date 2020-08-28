@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: spring-cloud-service-a
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        serviceName: ${spring.application.name}
+
+server:
+  port: 8081
