@@ -1,0 +1,24 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka/
+spring:
+  application:
+    name: txlcn-service-a
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/txlcn-demo?characterEncoding=utf8
+    username: ${mysql.username}
+    password: ${mysql.password}
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+server:
+  port: 8081
+
+tx-lcn:
+  client:
+    manager-address: 127.0.0.1:8079
