@@ -1,0 +1,14 @@
+LearningMode;
+SecRulesEnabled;
+#SecRulesDisabled;
+DeniedUrl "/RequestDenied";
+
+## Check & Blocking Rules
+CheckRule "$SQL >= 8" BLOCK;
+CheckRule "$RFI >= 8" BLOCK;
+CheckRule "$TRAVERSAL >= 4" BLOCK;
+CheckRule "$EVADE >= 4" BLOCK;
+CheckRule "$XSS >= 8" BLOCK;
+
+BasicRule wl:1000 "mz:$URL:/api/v1/update|URL";
+BasicRule wl:1000 "mz:$URL:/api/v1/update|$ARGS_VAR:param1";
