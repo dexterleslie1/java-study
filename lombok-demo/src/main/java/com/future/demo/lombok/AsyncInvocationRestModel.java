@@ -1,8 +1,7 @@
 package com.future.demo.lombok;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -10,6 +9,7 @@ import lombok.experimental.SuperBuilder;
  */
 @Getter
 @SuperBuilder
+@NoArgsConstructor
 public class AsyncInvocationRestModel extends AsyncInvocationModel{
     private String authenticationBasicUser;
     private String authenticationBasicPassword;

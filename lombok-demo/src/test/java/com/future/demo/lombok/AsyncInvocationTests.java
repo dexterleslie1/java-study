@@ -1,9 +1,5 @@
 package com.future.demo.lombok;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,7 +15,7 @@ public class AsyncInvocationTests {
      *
      */
     @Test
-    public void test() throws IOException {
+    public void test() {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("param1", "p1");
         String authenticationBasicUser = "user1";
@@ -44,13 +40,13 @@ public class AsyncInvocationTests {
         Assert.assertEquals(uri, asyncInvocationRestModel.getUri());
 
         // 测试lombok json
-        ObjectMapper OMInstance = new ObjectMapper();
-        String json = OMInstance.writeValueAsString(asyncInvocationRestModel);
-        JsonNode node = OMInstance.readTree(json);
-        Assert.assertEquals(parameters.get("param1"), node.get("parameters").get("param1").asText());
-        Assert.assertEquals(authenticationBasicUser, node.get("authenticationBasicUser").asText());
-        Assert.assertEquals(host, node.get("host").asText());
-        Assert.assertEquals(port , node.get("port").asInt());
-        Assert.assertEquals(uri, node.get("uri").asText());
+        String json = asyncInvocationRestModel.toJson();
+        AsyncInvocationRestModel asyncInvocationRestModelFromJson =
+                (AsyncInvocationRestModel)AsyncInvocationModel.fromJson(json, AsyncInvocationRestModel.class);
+        Assert.assertEquals(parameters.get("param1"), asyncInvocationRestModelFromJson.getParameters().get("param1"));
+        Assert.assertEquals(authenticationBasicUser, asyncInvocationRestModelFromJson.getAuthenticationBasicUser());
+        Assert.assertEquals(host, asyncInvocationRestModelFromJson.getHost());
+        Assert.assertEquals(port , asyncInvocationRestModelFromJson.getPort());
+        Assert.assertEquals(uri, asyncInvocationRestModelFromJson.getUri());
     }
 }
