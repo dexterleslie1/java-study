@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,14 +16,10 @@ public class ApiController {
 
     /**
      *
-     * @param request
-     * @param response
      * @return
      */
     @PostMapping(value="/hello")
-    public ResponseEntity<String> hello(
-            HttpServletRequest request,
-            HttpServletResponse response){
-        return ResponseEntity.ok("Hello Dexter");
+    public ResponseEntity<String> hello(@RequestParam(name = "name") String name){
+        return ResponseEntity.ok("Hello " + name);
     }
 }
