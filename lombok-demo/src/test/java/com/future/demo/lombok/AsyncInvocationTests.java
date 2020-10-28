@@ -3,7 +3,6 @@ package com.future.demo.lombok;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +25,6 @@ public class AsyncInvocationTests {
         // 测试创建RESTful类型AsyncInvocation
         AsyncInvocationRestModel asyncInvocationRestModel =
                 AsyncInvocationRestModel.builder()
-                        .type(AsyncInvocationType.REST)
                         .parameters(parameters)
                         .authenticationBasicUser(authenticationBasicUser)
                         .host(host)
@@ -38,6 +36,7 @@ public class AsyncInvocationTests {
         Assert.assertEquals(host, asyncInvocationRestModel.getHost());
         Assert.assertEquals(port , asyncInvocationRestModel.getPort());
         Assert.assertEquals(uri, asyncInvocationRestModel.getUri());
+        Assert.assertEquals(AsyncInvocationType.REST, asyncInvocationRestModel.getType());
 
         // 测试lombok json
         String json = asyncInvocationRestModel.toJson();
@@ -48,5 +47,6 @@ public class AsyncInvocationTests {
         Assert.assertEquals(host, asyncInvocationRestModelFromJson.getHost());
         Assert.assertEquals(port , asyncInvocationRestModelFromJson.getPort());
         Assert.assertEquals(uri, asyncInvocationRestModelFromJson.getUri());
+        Assert.assertEquals(AsyncInvocationType.REST, asyncInvocationRestModelFromJson.getType());
     }
 }

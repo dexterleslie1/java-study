@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.IOException;
@@ -13,8 +14,9 @@ import java.util.Map;
  *
  */
 @Getter
-@SuperBuilder
+@Setter
 @NoArgsConstructor
+@SuperBuilder
 public class AsyncInvocationModel {
     protected final static ObjectMapper OMInstance = new ObjectMapper();
 
