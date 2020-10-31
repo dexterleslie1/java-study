@@ -36,7 +36,6 @@ public class AsyncInvocationTests {
         Assert.assertEquals(host, asyncInvocationRestModel.getHost());
         Assert.assertEquals(port , asyncInvocationRestModel.getPort());
         Assert.assertEquals(uri, asyncInvocationRestModel.getUri());
-        Assert.assertEquals(AsyncInvocationType.REST, asyncInvocationRestModel.getType());
 
         // 测试lombok json
         String json = asyncInvocationRestModel.toJson();
@@ -47,6 +46,5 @@ public class AsyncInvocationTests {
         Assert.assertEquals(host, asyncInvocationRestModelFromJson.getHost());
         Assert.assertEquals(port , asyncInvocationRestModelFromJson.getPort());
         Assert.assertEquals(uri, asyncInvocationRestModelFromJson.getUri());
-        Assert.assertEquals(AsyncInvocationType.REST, asyncInvocationRestModelFromJson.getType());
     }
 }

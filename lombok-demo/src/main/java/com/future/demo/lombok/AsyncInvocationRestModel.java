@@ -17,7 +17,4 @@ public class AsyncInvocationRestModel extends AsyncInvocationModel{
     private String host;
     private int port;
     private String uri;
-
-    @Builder.Default
-    private AsyncInvocationType type = AsyncInvocationType.REST;
 }
