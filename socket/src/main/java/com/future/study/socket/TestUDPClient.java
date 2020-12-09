@@ -30,12 +30,8 @@ public class TestUDPClient {
 		try {
 			socket = new DatagramSocket(0);
 			int portLocal = socket.getLocalPort();
-			logger.info("客户端已打开本地端口 {} 准备和UDP服务器通讯", portLocal);
-		} catch (IOException e) {
-			logger.error("UDP客户端启动失败", e);
-		}
+			logger.info("UDP客户端已打开本地端口 {} 准备和UDP服务器通讯", portLocal);
 
-		try {
 			String message = "你好服务器";
 			byte[] bytes = message.getBytes();
 			InetAddress inetAddress = InetAddress.getByName(host);
@@ -43,14 +39,23 @@ public class TestUDPClient {
 			socket.send(packet);
 
 			InetSocketAddress socketAddress = (InetSocketAddress) packet.getSocketAddress();
-			logger.info("客户端发送消息 \"{}\" 给远程服务器 {}:{}", message, socketAddress.getAddress().getHostAddress(), socketAddress.getPort());
-		} catch (IOException e) {
-			logger.error("客户端发送UDP数据包出错", e);
-		}
+			logger.info("UDP客户端发送消息 \"{}\" 给远程服务器 {}:{}", message, socketAddress.getAddress().getHostAddress(), socketAddress.getPort());
 
-		if (socket != null) {
-			socket.close();
-			socket = null;
+			bytes = new byte[1024];
+			packet = new DatagramPacket(bytes, bytes.length);
+			socket.receive(packet);
+			message = new String(packet.getData(), 0, packet.getLength());
+			InetSocketAddress inetSocketAddress = (InetSocketAddress)packet.getSocketAddress();
+			String hostname = inetSocketAddress.getHostName();
+			int port = inetSocketAddress.getPort();
+			logger.info("UDP客户端收到UDP服务器回复 {}:{} 消息 \"{}\"", hostname, port, message);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+		} finally {
+			if (socket != null) {
+				socket.close();
+				socket = null;
+			}
 		}
 	}
 }
