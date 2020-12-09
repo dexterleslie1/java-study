@@ -32,7 +32,7 @@ public class TcpServer {
 	 * 
 	 */
 	public void start(){
-		logger.info("TcpServer服务已启动，端口："+this.serverSocket.getLocalPort());
+		logger.info("TcpServer服务已启动，监听端口："+this.serverSocket.getLocalPort());
 		while(!isStopped){
 			try{
 				if(serverSocket!=null){

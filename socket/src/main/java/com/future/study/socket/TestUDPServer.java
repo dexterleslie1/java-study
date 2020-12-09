@@ -1,9 +1,7 @@
 package com.future.study.socket;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.net.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,32 +20,34 @@ public class TestUDPServer {
 	 * @param args
 	 */
 	public static void main(String []args){
-		int port=8080;
-		DatagramSocket socket=null;
-		try {
-			socket=new DatagramSocket(port);
-		} catch (SocketException e) {
-			logger.error("UDP服务器启动失败",e);
-		}
-		
+		int port = 8080;
+		DatagramSocket socket = null;
 		try{
-			byte []bytes=new byte[1024];
-			DatagramPacket packet=new DatagramPacket(bytes,bytes.length);
-			socket.receive(packet);
-			String messageFromClient=new String(packet.getData());
-			logger.info("服务器收到客户端发来的消息："+messageFromClient);
-			
-			String welcomeString="欢迎连接服务器";
-			bytes=welcomeString.getBytes();
-			packet=new DatagramPacket(bytes,0,bytes.length,packet.getAddress(),packet.getPort());
-			socket.send(packet);
+			socket = new DatagramSocket(port);
+
+			InetSocketAddress inetSocketAddressLocal = (InetSocketAddress)socket.getLocalSocketAddress();
+			String canonicalHostNameLocal = inetSocketAddressLocal.getAddress().getHostAddress();
+			int portLocal = inetSocketAddressLocal.getPort();
+			logger.info("UDP服务已启动，本地监听 {}:{}", canonicalHostNameLocal, portLocal);
+
+			while(true) {
+				byte[] bytes = new byte[1024];
+				DatagramPacket packet = new DatagramPacket(bytes, bytes.length);
+				socket.receive(packet);
+				String message = new String(packet.getData(), 0, packet.getLength());
+				InetSocketAddress inetSocketAddress = (InetSocketAddress)packet.getSocketAddress();
+				String hostFromClient = inetSocketAddress.getHostName();
+				int portFromClient = inetSocketAddress.getPort();
+
+				logger.info("服务器收到客户端 {}:{} 发来的消息 \"{}\"", hostFromClient, portFromClient, message);
+			}
 		}catch(IOException e){
-			logger.error("服务器接收UDP数据包出错",e);
-		}
-		
-		if(socket!=null){
-			socket.close();
-			socket=null;
+			logger.error(e.getMessage(), e);
+		} finally {
+			if(socket!=null){
+				socket.close();
+				socket=null;
+			}
 		}
 	}
 }
