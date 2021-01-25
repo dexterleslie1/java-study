@@ -15,7 +15,7 @@ zuul:
     key-prefix: prefix
     enabled: true
     # 对应存储类型(用来统计存储统计信息)
-    repository: BUCKET4J_JCACHE
+    repository: BUCKET4J_INFINISPAN
     behind-proxy: true
     add-response-headers: false
     deny-request:
@@ -23,7 +23,6 @@ zuul:
     # 配置路由的策略
     policy-list:
       api-a:
-        # 每秒允许多少个请求
         - limit: 10
           # 刷新时间(单位秒)
           refresh-interval: 15
