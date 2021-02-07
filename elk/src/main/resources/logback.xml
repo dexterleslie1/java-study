@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <springProperty scope="context" name="logstash.url" source="spring.elk.logstash.tcp.url"/>
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- 日志禁止打印MDC -->
+            <!--<includeMdc>false</includeMdc>-->
+
+            <!-- 日志只打印MDC traceId -->
+            <!--<includeMdcKeyName>traceId</includeMdcKeyName>-->
+
+            <!-- 日志打印MDC 排除spanExportable、X-Span-Export -->
+            <!--<excludeMdcKeyName>spanExportable</excludeMdcKeyName>
+            <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>-->
+
+            <!-- 日志打印MDC traceId键修改为trace-id -->
+            <!--<mdcKeyFieldName>traceId=trace-id</mdcKeyFieldName>-->
+
+            <!-- Caller Info Fields -->
+            <!--<includeCallerData>true</includeCallerData>-->
+
+            <customFields>{"appname":"myWebservice","roles":["customerorder","auth"]}</customFields>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="consoleAppender"/>
+    </root>
+
+    <if condition='property("logstash.url").equals("")'>
+        <then>
+        </then>
+        <else>
+            <appender name="stash" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
+                <destination>${logstash.url}</destination>
+
+                <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                    <!-- 日志禁止打印MDC -->
+                    <!--<includeMdc>false</includeMdc>-->
+
+                    <!-- 日志只打印MDC traceId -->
+                    <!--<includeMdcKeyName>traceId</includeMdcKeyName>-->
+
+                    <!-- 日志打印MDC 排除spanExportable、X-Span-Export -->
+                    <!--<excludeMdcKeyName>spanExportable</excludeMdcKeyName>
+                    <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>-->
+
+                    <!-- 日志打印MDC traceId键修改为trace-id -->
+                    <!--<mdcKeyFieldName>traceId=trace-id</mdcKeyFieldName>-->
+
+                    <!-- Caller Info Fields -->
+                    <!--<includeCallerData>true</includeCallerData>-->
+
+                    <!--<customFields>{"appname":"myWebservice","roles":["customerorder","auth"]}</customFields>-->
+                </encoder>
+            </appender>
+            <root level="info">
+                <appender-ref ref="stash"/>
+            </root>
+        </else>
+    </if>
+</configuration>

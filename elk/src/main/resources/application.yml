@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: elk-demo
+  elk:
+    logstash:
+      tcp:
+        url: 192.168.3.14:5044
