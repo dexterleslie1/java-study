@@ -3,8 +3,9 @@ package com.future.demo.elk;
 import net.logstash.logback.argument.StructuredArguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -21,8 +22,8 @@ public class ApiController {
      *
      * @return
      */
-    @RequestMapping(value = "/api/v1/test1",method = RequestMethod.GET)
-    public void test1(){
+    @RequestMapping(value = "/api/v1/test1")
+    public ResponseEntity<String> test1(){
         logger.info("测试消息");
 
         Exception exception = new Exception("测试异常");
@@ -104,5 +105,21 @@ public class ApiController {
          * The formatted message will contain `myobject.toString()`
          */
         logger.info("log message {}", StructuredArguments.fields(foo));
+
+        return ResponseEntity.ok("你好世界！");
+    }
+
+    @RequestMapping(value = "/api/v1/test2")
+    public ResponseEntity<String> test2() throws Exception {
+        boolean b = true;
+        if(b) {
+            throw new Exception("测试错误");
+        }
+        return ResponseEntity.ok("你好世界2！");
+    }
+
+    @RequestMapping(value = "/api/v1/test3")
+    public ResponseEntity<String> test3() throws Exception {
+        return ResponseEntity.status(403).body("禁止访问");
     }
 }

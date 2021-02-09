@@ -2,61 +2,129 @@
 <configuration debug="false">
     <springProperty scope="context" name="logstash.url" source="spring.elk.logstash.tcp.url"/>
 
-    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <!-- 日志禁止打印MDC -->
-            <!--<includeMdc>false</includeMdc>-->
+    <!-- 开发环境启用控制台打印日志 -->
+    <springProfile name="dev">
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
+                    </timestamp>
+                    <logLevel/>
+                    <mdc>
+                        <includeMdcKeyName>traceId</includeMdcKeyName>
+                        <includeMdcKeyName>spanId</includeMdcKeyName>
+                    </mdc>
+                    <pattern>
+                        <pattern>
+                            {
+                            "log_type": "business"
+                            }
+                        </pattern>
+                    </pattern>
+                    <callerData/>
+                    <arguments/>
+                    <message/>
+                    <stackTrace/>
+                </providers>
+            </encoder>
+        </appender>
+        <logger name="com.future.demo.elk" level="debug" additivity="false">
+            <appender-ref ref="console"/>
+        </logger>
 
-            <!-- 日志只打印MDC traceId -->
-            <!--<includeMdcKeyName>traceId</includeMdcKeyName>-->
+        <appender name="consoleAccess" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
+                    </timestamp>
+                    <logLevel/>
+                    <mdc>
+                        <includeMdcKeyName>traceId</includeMdcKeyName>
+                        <includeMdcKeyName>spanId</includeMdcKeyName>
+                    </mdc>
+                    <pattern>
+                        <pattern>
+                            {
+                            "log_type": "access"
+                            }
+                        </pattern>
+                    </pattern>
+                    <arguments/>
+                    <stackTrace/>
+                </providers>
+            </encoder>
+        </appender>
+        <logger name="com.future.demo.elk.HttpTraceLoggingFilter" level="debug" additivity="false">
+            <appender-ref ref="consoleAccess"/>
+        </logger>
+    </springProfile>
 
-            <!-- 日志打印MDC 排除spanExportable、X-Span-Export -->
-            <!--<excludeMdcKeyName>spanExportable</excludeMdcKeyName>
-            <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>-->
-
-            <!-- 日志打印MDC traceId键修改为trace-id -->
-            <!--<mdcKeyFieldName>traceId=trace-id</mdcKeyFieldName>-->
-
-            <!-- Caller Info Fields -->
-            <!--<includeCallerData>true</includeCallerData>-->
-
-            <customFields>{"appname":"myWebservice","roles":["customerorder","auth"]}</customFields>
-        </encoder>
-    </appender>
-    <root level="info">
-        <appender-ref ref="consoleAppender"/>
-    </root>
-
+    <!-- application.properties配置spring.elk.logstash.tcp.url后才启用LogstashAppender -->
     <if condition='property("logstash.url").equals("")'>
         <then>
         </then>
         <else>
-            <appender name="stash" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
+            <appender name="logstash" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
                 <destination>${logstash.url}</destination>
 
-                <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-                    <!-- 日志禁止打印MDC -->
-                    <!--<includeMdc>false</includeMdc>-->
-
-                    <!-- 日志只打印MDC traceId -->
-                    <!--<includeMdcKeyName>traceId</includeMdcKeyName>-->
-
-                    <!-- 日志打印MDC 排除spanExportable、X-Span-Export -->
-                    <!--<excludeMdcKeyName>spanExportable</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>-->
-
-                    <!-- 日志打印MDC traceId键修改为trace-id -->
-                    <!--<mdcKeyFieldName>traceId=trace-id</mdcKeyFieldName>-->
-
-                    <!-- Caller Info Fields -->
-                    <!--<includeCallerData>true</includeCallerData>-->
-
-                    <!--<customFields>{"appname":"myWebservice","roles":["customerorder","auth"]}</customFields>-->
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <timestamp>
+                            <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
+                        </timestamp>
+                        <logLevel/>
+                        <mdc>
+                            <includeMdcKeyName>traceId</includeMdcKeyName>
+                            <includeMdcKeyName>spanId</includeMdcKeyName>
+                        </mdc>
+                        <pattern>
+                            <pattern>
+                                {
+                                "log_type": "business"
+                                }
+                            </pattern>
+                        </pattern>
+                        <callerData/>
+                        <arguments/>
+                        <message/>
+                        <stackTrace/>
+                    </providers>
                 </encoder>
             </appender>
-            <root level="info">
-                <appender-ref ref="stash"/>
-            </root>
+            <logger name="com.future.demo.elk" level="debug" additivity="false">
+                <appender-ref ref="logstash"/>
+            </logger>
+
+            <appender name="logstashAccess" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
+                <destination>${logstash.url}</destination>
+
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                    <providers>
+                        <timestamp>
+                            <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
+                        </timestamp>
+                        <logLevel/>
+                        <mdc>
+                            <includeMdcKeyName>traceId</includeMdcKeyName>
+                            <includeMdcKeyName>spanId</includeMdcKeyName>
+                        </mdc>
+                        <pattern>
+                            <pattern>
+                                {
+                                "log_type": "access"
+                                }
+                            </pattern>
+                        </pattern>
+                        <arguments/>
+                        <stackTrace/>
+                    </providers>
+                </encoder>
+            </appender>
+            <logger name="com.future.demo.elk.HttpTraceLoggingFilter" level="debug" additivity="false">
+                <appender-ref ref="logstashAccess"/>
+            </logger>
         </else>
     </if>
 </configuration>
