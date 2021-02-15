@@ -1,14 +1,13 @@
 package com.future.demo.rest.template;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -25,6 +24,26 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateTests {
     @Autowired
     private RestTemplate restTemplate = null;
+
+    /**
+     * body 参数测试
+     */
+    @Test
+    public void testPostWithBodyMap() {
+        ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+        objectNode.put("name", "Dexter1");
+        objectNode.put("age", 11);
+        String json = objectNode.toString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity httpEntity = new HttpEntity<>(json, headers);
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange("http://localhost:8080/api/v1/postWithBodyMap", HttpMethod.POST, httpEntity, String.class);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        String response = responseEntity.getBody();
+        String message = "你提交的body参数：" + json;
+        Assert.assertEquals(message, response);
+    }
 
     /**
      * 头参数

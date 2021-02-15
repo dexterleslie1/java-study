@@ -1,8 +1,12 @@
 package com.future.demo.rest.template;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  *
@@ -10,6 +14,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1")
 public class ApiController {
+    /**
+     *
+     * @param parameters
+     * @return
+     * @throws JsonProcessingException
+     */
+    @PostMapping(value = "postWithBodyMap")
+    ResponseEntity<String> postWithBodyMap(
+            @RequestBody(required = true) Map<String, Object> parameters) throws JsonProcessingException {
+        ObjectMapper OMInstance = new ObjectMapper();
+        String json = OMInstance.writeValueAsString(parameters);
+        return ResponseEntity.ok("你提交的body参数：" + json);
+    }
+
     /**
      * 不需要提交任何参数
      * @return
