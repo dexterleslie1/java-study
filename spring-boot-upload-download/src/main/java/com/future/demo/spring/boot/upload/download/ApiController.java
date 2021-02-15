@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,14 +35,10 @@ public class ApiController {
 
     /**
      * 下载文件
-     * @param request
-     * @param response
      * @return
      */
     @PostMapping(value = "download")
-    public ResponseEntity download(
-            HttpServletRequest request,
-            HttpServletResponse response){
+    public ResponseEntity download(){
         FileOutputStream fileOutputStream=null;
         FileInputStream fileInputStream=null;
         ResponseEntity responseEntity=null;
