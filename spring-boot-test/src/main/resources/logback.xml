@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{15}.%method\(%file:%line\) : %message%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logback-file.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logback-file.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>
+                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{15}.%method\(%file:%line\) : %message%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="package1Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logback-package1.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logback-package1.%d{yyyyMMdd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>
+                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{15}.%method\(%file:%line\) : %message%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="package2Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logback-package2.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logback-package2.%d{yyyyMMdd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>300MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>
+                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{15}.%method\(%file:%line\) : %message%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="consoleAppender" />
+        <appender-ref ref="fileAppender" />
+    </root>
+
+    <logger name="com.future.study.spring.boot.package1" level="debug" additivity="false">
+        <appender-ref ref="package1Appender"/>
+    </logger>
+    <logger name="com.future.study.spring.boot.package2" level="debug" additivity="false">
+        <appender-ref ref="package2Appender"/>
+    </logger>
+</configuration>
