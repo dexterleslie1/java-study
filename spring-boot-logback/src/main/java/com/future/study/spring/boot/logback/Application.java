@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author dexterleslie@gmail.com
  */
 @SpringBootApplication
-public class ApplicationLogback {
+public class Application {
     /**
      *
      * @param args
      */
     public static void main(String []args){
-        SpringApplication.run(ApplicationLogback.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
