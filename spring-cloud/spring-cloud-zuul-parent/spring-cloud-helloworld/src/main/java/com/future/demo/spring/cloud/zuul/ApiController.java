@@ -1,9 +1,7 @@
 package com.future.demo.spring.cloud.zuul;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -15,8 +13,13 @@ public class ApiController {
      * @param name
      * @return
      */
-    @RequestMapping(value = "/api/v1/sayHello", method = RequestMethod.GET)
+    @GetMapping("/api/v1/sayHello")
     public String sayHello(@RequestParam(value = "name", defaultValue = "") String name) {
         return "Hello " + name + "!!(Zuul)";
+    }
+
+    @GetMapping("/api/v1/test1")
+    public ResponseEntity<String> test1() {
+        return ResponseEntity.ok("成功调用helloworld test1接口");
     }
 }
