@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class ConfigSpringSecurity extends WebSecurityConfigurerAdapter {
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -22,10 +21,16 @@ public class ConfigSpringSecurity extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers("/api/v1/**").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilterBefore(httpTraceFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(httpTraceFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(contextInterceptorFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     public HttpTraceLoggingFilter httpTraceFilter(){
         return new HttpTraceLoggingFilter();
+    }
+
+    public ContextInterceptorFilter contextInterceptorFilter() {
+        ContextInterceptorFilter filter = new ContextInterceptorFilter();
+        return filter;
     }
 }

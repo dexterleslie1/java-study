@@ -1,71 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-    <springProperty scope="context" name="logstash.url" source="spring.elk.logstash.tcp.url"/>
+    <springProperty scope="context" name="logstash.url" source="spring.elk.logstash.tcp.url" defaultValue=""/>
+    <springProperty scope="context" name="applicationName" source="spring.application.name"/>
+    <springProperty scope="context" name="isProdution" source="spring.application.production"/>
 
     <!-- 开发环境启用控制台打印日志 -->
-    <springProfile name="dev">
-        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-                <providers>
-                    <timestamp>
-                        <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
-                    </timestamp>
-                    <logLevel/>
-                    <mdc>
-                        <includeMdcKeyName>traceId</includeMdcKeyName>
-                        <includeMdcKeyName>spanId</includeMdcKeyName>
-                    </mdc>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
+                </timestamp>
+                <logLevel/>
+                <mdc>
+                    <includeMdcKeyName>traceId</includeMdcKeyName>
+                    <includeMdcKeyName>spanId</includeMdcKeyName>
+                    <includeMdcKeyName>userId</includeMdcKeyName>
+                </mdc>
+                <pattern>
                     <pattern>
-                        <pattern>
-                            {
-                            "log_type": "business"
-                            }
-                        </pattern>
+                        {
+                        "module": "elk-demo",
+                        "log_type": "business"
+                        }
                     </pattern>
-                    <callerData/>
-                    <arguments/>
-                    <message/>
-                    <stackTrace/>
-                </providers>
-            </encoder>
-        </appender>
-        <logger name="com.future.demo.elk" level="debug" additivity="false">
-            <appender-ref ref="console"/>
-        </logger>
+                </pattern>
+                <callerData/>
+                <arguments/>
+                <message/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+    </appender>
 
-        <appender name="consoleAccess" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-                <providers>
-                    <timestamp>
-                        <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
-                    </timestamp>
-                    <logLevel/>
-                    <mdc>
-                        <includeMdcKeyName>traceId</includeMdcKeyName>
-                        <includeMdcKeyName>spanId</includeMdcKeyName>
-                    </mdc>
+    <appender name="consoleAccess" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
+                </timestamp>
+                <logLevel/>
+                <mdc>
+                    <includeMdcKeyName>traceId</includeMdcKeyName>
+                    <includeMdcKeyName>spanId</includeMdcKeyName>
+                    <includeMdcKeyName>userId</includeMdcKeyName>
+                </mdc>
+                <pattern>
                     <pattern>
-                        <pattern>
-                            {
-                            "log_type": "access"
-                            }
-                        </pattern>
+                        {
+                        "module": "elk-demo",
+                        "log_type": "access"
+                        }
                     </pattern>
-                    <arguments/>
-                    <stackTrace/>
-                </providers>
-            </encoder>
-        </appender>
-        <logger name="com.future.demo.elk.HttpTraceLoggingFilter" level="debug" additivity="false">
-            <appender-ref ref="consoleAccess"/>
-        </logger>
-    </springProfile>
+                </pattern>
+                <arguments/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+    </appender>
 
     <!-- application.properties配置spring.elk.logstash.tcp.url后才启用LogstashAppender -->
-    <if condition='property("logstash.url").equals("")'>
+    <if condition='!property("logstash.url").equals("")'>
         <then>
-        </then>
-        <else>
             <appender name="logstash" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
                 <destination>${logstash.url}</destination>
 
@@ -78,10 +74,12 @@
                         <mdc>
                             <includeMdcKeyName>traceId</includeMdcKeyName>
                             <includeMdcKeyName>spanId</includeMdcKeyName>
+                            <includeMdcKeyName>userId</includeMdcKeyName>
                         </mdc>
                         <pattern>
                             <pattern>
                                 {
+                                "module": "elk-demo",
                                 "log_type": "business"
                                 }
                             </pattern>
@@ -93,9 +91,6 @@
                     </providers>
                 </encoder>
             </appender>
-            <logger name="com.future.demo.elk" level="debug" additivity="false">
-                <appender-ref ref="logstash"/>
-            </logger>
 
             <appender name="logstashAccess" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
                 <destination>${logstash.url}</destination>
@@ -109,10 +104,12 @@
                         <mdc>
                             <includeMdcKeyName>traceId</includeMdcKeyName>
                             <includeMdcKeyName>spanId</includeMdcKeyName>
+                            <includeMdcKeyName>userId</includeMdcKeyName>
                         </mdc>
                         <pattern>
                             <pattern>
                                 {
+                                "module": "elk-demo",
                                 "log_type": "access"
                                 }
                             </pattern>
@@ -122,9 +119,47 @@
                     </providers>
                 </encoder>
             </appender>
-            <logger name="com.future.demo.elk.HttpTraceLoggingFilter" level="debug" additivity="false">
-                <appender-ref ref="logstashAccess"/>
-            </logger>
-        </else>
+        </then>
     </if>
+
+    <root level="debug">
+        <if condition='!property("isProdution").equals("true")'>
+            <then>
+                <appender-ref ref="console"/>
+            </then>
+        </if>
+        <if condition='!property("logstash.url").equals("")'>
+            <then>
+                <appender-ref ref="logstash"/>
+            </then>
+        </if>
+    </root>
+    <logger name="com.future.demo.elk" level="debug" additivity="false">
+        <if condition='!property("isProdution").equals("true")'>
+            <then>
+                <appender-ref ref="console"/>
+            </then>
+        </if>
+    </logger>
+    <logger name="com.future.demo.elk.HttpTraceLoggingFilter" level="debug" additivity="false">
+        <if condition='!property("isProdution").equals("true")'>
+            <then>
+                <appender-ref ref="consoleAccess"/>
+            </then>
+        </if>
+    </logger>
+    <logger name="com.future.demo.elk" level="debug" additivity="false">
+        <if condition='!property("logstash.url").equals("")'>
+            <then>
+                <appender-ref ref="logstash"/>
+            </then>
+        </if>
+    </logger>
+    <logger name="com.future.demo.elk.HttpTraceLoggingFilter" level="debug" additivity="false">
+        <if condition='!property("logstash.url").equals("")'>
+            <then>
+                <appender-ref ref="logstashAccess"/>
+            </then>
+        </if>
+    </logger>
 </configuration>
