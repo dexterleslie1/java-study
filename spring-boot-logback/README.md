@@ -1,5 +1,10 @@
+http://127.0.0.1:8080/api/v1/test
+http://127.0.0.1:8080/api/v1/test1
+http://127.0.0.1:8080/api/v1/test2
+
 变量定义和条件判断
 https://dennis-xlc.gitbooks.io/the-logback-manual/content/en/chapter-3-configuration/configuration-file-syntax/variable-substitution.html
+https://blog.csdn.net/wushengjun753/article/details/109510794
 
 property、springProperty使用
 https://blog.csdn.net/qq_34359363/article/details/104749341

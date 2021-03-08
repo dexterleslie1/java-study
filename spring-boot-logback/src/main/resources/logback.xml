@@ -5,18 +5,23 @@
         k1=v1
     -->
     <property file="${user.home}/chat/config-common.properties"/>
-    <springProperty name="varTemp2" source="k2" deaultValue="默认值"/>
+    <!--
+        注意：springboot要使用2.2.7.RELEASE或者更新版本，否则varTemp2会显示undefined变量
+    -->
+    <springProperty name="varTemp2" source="k2" defaultValue="默认值1"/>
+    <springProperty name="needConsole" source="spring.application.console"/>
+    <property name="k3" value="测试值3"/>
 
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{15}.%method\(%file:%line\) : %message [k1=${k1},k2=${varTemp2}] %n
+                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %logger{15}.%method\(%file:%line\) : %message [k1=${k1},k2=${varTemp2},k3=${k3}] %n
             </pattern>
         </encoder>
     </appender>
 
     <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logback-file.log</file>
+        <file>${user.home}/logback-file.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logback-file.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -30,7 +35,7 @@
     </appender>
 
     <appender name="package1Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logback-package1.log</file>
+        <file>${user.home}/logback-package1.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>logback-package1.%d{yyyyMMdd}.%i.log</FileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -47,7 +52,7 @@
     </appender>
 
     <appender name="package2Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logback-package2.log</file>
+        <file>${user.home}/logback-package2.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>logback-package2.%d{yyyyMMdd}.%i.log</FileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -64,7 +69,11 @@
     </appender>
 
     <root level="debug">
-        <appender-ref ref="consoleAppender" />
+        <if condition='!property("needConsole").equals("false")'>
+            <then>
+                <appender-ref ref="consoleAppender" />
+            </then>
+        </if>
         <appender-ref ref="fileAppender" />
     </root>
 

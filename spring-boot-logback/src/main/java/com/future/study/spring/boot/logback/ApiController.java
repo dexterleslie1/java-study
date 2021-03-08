@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author dexterleslie@gmail.com
  */
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/v1")
 public class ApiController {
     private final static Logger logger = LoggerFactory.getLogger(ApiController.class);
     /**
