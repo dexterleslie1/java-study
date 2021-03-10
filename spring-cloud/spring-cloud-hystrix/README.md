@@ -1,4 +1,9 @@
-此demo演示spring-cloud zuul route hystrix、feign hystrix、resttemplate hystrix用法
+此demo演示zuul route hystrix、feign hystrix、resttemplate hystrix用法
+
+turbine hystrix集群监控
+https://www.jianshu.com/p/590bad4c8947
+使用 turbine hystrix集群监控
+访问 trubine 服务http://localhost:8083/hystrix后，填入http://localhost:8083/turbine.stream，点击monitor按钮
 
 springcloud feign fallback，通过feign、HystrixCommand、FallbackProvider
 https://www.cnblogs.com/cearnach/p/9341593.html
@@ -22,6 +27,12 @@ https://www.cnblogs.com/-beyond/p/12856421.html
 
 RestTemplate hystrix整合
 https://blog.51cto.com/13538361/2426289
+
+feignclient FallbackFactory使用
+https://blog.csdn.net/qq_24504315/article/details/79120904
+
+设置 feignclient 各个方法hystrix超时
+http://www.saily.top/2020/04/19/springcloud/hystrix05/
 
 TODO: 写demo演示关闭ribbon、feign、resttemplate retry机制
 

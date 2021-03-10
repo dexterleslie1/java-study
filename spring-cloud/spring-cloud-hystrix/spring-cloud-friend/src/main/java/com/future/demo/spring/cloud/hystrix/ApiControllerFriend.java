@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class ApiControllerUser {
+@RequestMapping("/api/v1/friend")
+public class ApiControllerFriend {
     @Value("${spring.application.name}")
     String applicationName;
 

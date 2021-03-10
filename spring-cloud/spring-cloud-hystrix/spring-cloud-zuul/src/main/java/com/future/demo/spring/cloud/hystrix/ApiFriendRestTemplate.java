@@ -12,17 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class ApiUserRestTemplate {
+public class ApiFriendRestTemplate {
     @Autowired
     RestTemplate restTemplate;
 
     @HystrixCommand(fallbackMethod = "timeoutFallback",
-            commandKey = "circuit-api-user-rest-m1",
-            threadPoolKey = "thread-pool-api-user-rest-1",
             commandProperties = {
                     @HystrixProperty(name = "execution.isolation.strategy", value = "THREAD"),
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
@@ -32,15 +29,13 @@ public class ApiUserRestTemplate {
         multiValueParams.add("milliseconds", milliseconds);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity(multiValueParams, null);
 
-        return restTemplate.exchange("http://spring-cloud-user/api/v1/user/timeout",
+        return restTemplate.exchange("http://spring-cloud-friend/api/v1/friend/timeout",
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<ObjectResponse<String>>(){});
     }
 
     @HystrixCommand(fallbackMethod = "timeoutFallback2",
-            commandKey = "circuit-api-user-rest-m2",
-            threadPoolKey = "thread-pool-api-user-rest-2",
             commandProperties = {
                     @HystrixProperty(name = "execution.isolation.strategy", value = "THREAD"),
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"),
@@ -50,7 +45,7 @@ public class ApiUserRestTemplate {
         multiValueParams.add("milliseconds", milliseconds);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity(multiValueParams, null);
 
-        return restTemplate.exchange("http://spring-cloud-user/api/v1/user/timeout2",
+        return restTemplate.exchange("http://spring-cloud-friend/api/v1/friend/timeout2",
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<ObjectResponse<String>>(){});
@@ -59,14 +54,14 @@ public class ApiUserRestTemplate {
     ResponseEntity<ObjectResponse<String>> timeoutFallback(Integer milliseconds) {
         ObjectResponse<String> response = new ObjectResponse<>();
         response.setErrorCode(600);
-        response.setErrorMessage("User服务不可用，稍候...（来自ApiUserRestTemplate）");
+        response.setErrorMessage("Friend服务不可用，稍候...（来自ApiFriendRestTemplate）");
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
     }
 
     ResponseEntity<ObjectResponse<String>> timeoutFallback2(Integer milliseconds) {
         ObjectResponse<String> response = new ObjectResponse<>();
         response.setErrorCode(600);
-        response.setErrorMessage("User服务不可用，稍候...（来自ApiUserRestTemplate）");
+        response.setErrorMessage("Friend服务不可用，稍候...（来自ApiFriendRestTemplate）");
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
     }
 }

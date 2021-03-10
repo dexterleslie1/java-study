@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
+        <version>2.2.7.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -18,15 +18,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <springcloud.version>Finchley.RELEASE</springcloud.version>
+        <springcloud.version>Hoxton.SR10</springcloud.version>
         <lombok.version>1.18.0</lombok.version>
     </properties>
 
     <modules>
         <module>spring-cloud-common</module>
+        <module>spring-cloud-turbine</module>
         <module>spring-cloud-eureka</module>
         <module>spring-cloud-zuul</module>
         <module>spring-cloud-user</module>
+        <module>spring-cloud-friend</module>
     </modules>
 
     <dependencyManagement>
