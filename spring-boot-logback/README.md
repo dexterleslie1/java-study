@@ -6,6 +6,9 @@ http://127.0.0.1:8080/api/v1/test2
 https://dennis-xlc.gitbooks.io/the-logback-manual/content/en/chapter-3-configuration/configuration-file-syntax/variable-substitution.html
 https://blog.csdn.net/wushengjun753/article/details/109510794
 
+&& (logical and) and || (logical or) operators in Logback configuration (if statement)
+https://stackoverflow.com/questions/41939861/logical-and-and-logical-or-operators-in-logback-configuration-if-stat
+
 property、springProperty使用
 https://blog.csdn.net/qq_34359363/article/details/104749341
 1.该 <springProperty> 标签允许我们从Spring中显示属性，Environment 以便在Logback中使用。如果你想将 application.properties在回读配置中访问文件中的值，这将非常有用

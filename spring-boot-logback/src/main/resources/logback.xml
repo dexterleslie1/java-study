@@ -10,6 +10,7 @@
     -->
     <springProperty name="varTemp2" source="k2" defaultValue="默认值1"/>
     <springProperty name="needConsole" source="spring.application.console"/>
+    <springProperty name="disableConsole" source="spring.application.console.disable"/>
     <property name="k3" value="测试值3"/>
 
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
@@ -69,7 +70,7 @@
     </appender>
 
     <root level="debug">
-        <if condition='!property("needConsole").equals("false")'>
+        <if condition='!property("needConsole").equals("false") &amp;&amp; !property("disableConsole").equals("true")'>
             <then>
                 <appender-ref ref="consoleAppender" />
             </then>
