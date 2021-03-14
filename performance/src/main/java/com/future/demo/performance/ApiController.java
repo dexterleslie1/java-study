@@ -1,15 +1,18 @@
-package com.future.demo.java.performance.controller;
+package com.future.demo.performance;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.ehcache.Cache;
@@ -20,13 +23,25 @@ import net.sf.ehcache.Element;
  * @author dexterleslie@gmail.com
  */
 @RestController
-@RequestMapping(value="/api")
-public class APIController {
+@RequestMapping(value="/api/v1")
+public class ApiController {
 	
     @Autowired
     private CacheManager cacheManager = null;
     private Cache cache1 = null;
     private Cache cacheMemoryHolder = null;
+
+	@PostMapping("timeout")
+	ResponseEntity<String> timeout(@RequestParam(value = "timeout", defaultValue = "0") Integer timeout) {
+		if(timeout>0) {
+			try {
+				TimeUnit.MILLISECONDS.sleep(timeout);
+			} catch (InterruptedException e) {
+				//
+			}
+		}
+		return ResponseEntity.ok("成功调用timeout接口");
+	}
     
     /**
      * 

@@ -7,8 +7,8 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.future.study</groupId>
-	<artifactId>java-performance</artifactId>
+	<groupId>com.future.demo</groupId>
+	<artifactId>performance</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -33,7 +33,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>java-performance</finalName>
+		<finalName>performance</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
