@@ -1,13 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.future.demo</groupId>
 	<artifactId>json-lib</artifactId>
-	
-	<parent>
-		<groupId>com.future.study</groupId>
-		<artifactId>all-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+	<version>0.1</version>
 	
 	<dependencies>
 		<dependency>
@@ -39,15 +36,6 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
+		<finalName>json-lib</finalName>
 	</build>
 </project>

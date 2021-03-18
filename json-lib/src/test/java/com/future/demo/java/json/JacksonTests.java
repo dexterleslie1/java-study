@@ -144,4 +144,14 @@ public class JacksonTests {
         String json = OMInstance.writerWithDefaultPrettyPrinter().writeValueAsString(beanClass);
         log.info(json);
     }
+
+    @Test
+    public void jsonNodeToObjectNode() throws IOException {
+        String json = "{\"userId\":12345,\"loginname\":\"dexter\",\"createTime\":1577874822420,\"enable\":true}";
+        ObjectMapper OMInstance = new ObjectMapper();
+        JsonNode jsonNode = OMInstance.readTree(json);
+        ObjectNode objectNode = (ObjectNode)jsonNode;
+        log.info(jsonNode.toString());
+        log.info(objectNode.toString());
+    }
 }
