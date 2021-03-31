@@ -6,13 +6,16 @@ import com.future.demo.chat.server.common.PageResponse;
 import com.future.demo.chat.server.exception.BusinessException;
 import com.future.demo.chat.server.model.ChatMessageModel;
 import com.future.demo.chat.server.value.object.SendMessageResultVO;
-import com.future.demo.chat.server.websocket.WebSocketRequestHandler;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +35,16 @@ public class MessageService implements Serializable {
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
-    WebSocketRequestHandler webSocketRequestHandler;
+    DelayedService delayedService;
+    @Autowired
+    CacheManager cacheManager;
+
+    Cache cacheNotifyPullTimeout;
+
+    @PostConstruct
+    public void init1() {
+        cacheNotifyPullTimeout = this.cacheManager.getCache("cacheNotifyPullTimeout");
+    }
 
     /**
      *
@@ -82,7 +94,14 @@ public class MessageService implements Serializable {
             this.redisTemplate.opsForValue().set("message#" + id, json);
             this.redisTemplate.opsForList().rightPush("unreceived#" + usernameTo, String.valueOf(id));
 
-            this.webSocketRequestHandler.notifyPull(usernameTo);
+            String keyTemporary = "notifyPullTimeout#" + usernameTo;
+            Element element = this.cacheNotifyPullTimeout.get(keyTemporary);
+            if(element==null) {
+                element = new Element(keyTemporary, usernameTo);
+                element.setTimeToLive(2);
+                this.cacheNotifyPullTimeout.put(element);
+                this.delayedService.notifyPullDelay(usernameTo);
+            }
 
             SendMessageResultVO sendMessageResultVO = new SendMessageResultVO();
             sendMessageResultVO.setMessageId(id);

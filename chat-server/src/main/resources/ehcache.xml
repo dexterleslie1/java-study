@@ -1,0 +1,5 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir" />
+    <defaultCache maxElementsInMemory="10000"/>
+    <cache name="cacheNotifyPullTimeout" maxElementsInMemory="50000"/>
+</ehcache>
