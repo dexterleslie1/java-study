@@ -45,7 +45,7 @@ public class ServiceTests {
         }
 
         // 发送消息
-        int types[] = {1, 2, 3};
+        int types[] = {1, 2};
         Map<Long, ChatMessageModel> mapMessageSend = new HashMap<>();
         for(int j=0; j<types.length; j++) {
             int type = types[j];

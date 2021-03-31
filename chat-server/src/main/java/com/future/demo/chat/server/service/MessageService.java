@@ -2,31 +2,22 @@ package com.future.demo.chat.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.demo.chat.server.common.ObjectResponse;
 import com.future.demo.chat.server.common.PageResponse;
 import com.future.demo.chat.server.exception.BusinessException;
 import com.future.demo.chat.server.model.ChatMessageModel;
 import com.future.demo.chat.server.value.object.SendMessageResultVO;
 import com.future.demo.chat.server.websocket.WebSocketRequestHandler;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.DelayQueue;
 
 @Slf4j
 @Service
@@ -47,7 +38,7 @@ public class MessageService implements Serializable {
      *
      * @param usernameSelf
      * @param usernameTo
-     * @param type 1、文字 2、语音 3、图片
+     * @param type 1、文字 2、图片
      * @param content
      * @return
      * @throws BusinessException
@@ -62,8 +53,8 @@ public class MessageService implements Serializable {
         if(StringUtils.isEmpty(usernameTo)) {
             throw new BusinessException("没有提供usernameTo");
         }
-        if(type!=1 && type!=2 && type!=3) {
-            throw new BusinessException("消息类型type值[" + type + "]，取值范围1、文字 2、语音 3、图片");
+        if(type!=1 && type!=2) {
+            throw new BusinessException("消息类型type值[" + type + "]，取值范围1、文字 2、图片");
         }
         if(StringUtils.isEmpty(content)) {
             throw new BusinessException("没有提供content");

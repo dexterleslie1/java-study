@@ -47,7 +47,7 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
             ObjectResponse<ObjectNode> response = new ObjectResponse<>();
             ObjectNode node = OBJECT_MAPPER.createObjectNode();
             node.put("action", "login");
-            node.put("message", "成功连接socket服务器");
+            node.put("message", username + " 成功连接socket服务器");
             response.setData(node);
             sendMessage(session, response);
 
