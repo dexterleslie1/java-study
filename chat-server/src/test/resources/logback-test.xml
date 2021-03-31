@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="3 seconds">
+    <!-- Dim log level of variable -->
+    <property name="log_level" value="info" />
+
+    <!-- Output to Console (DEBUG,INFO) -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%-5level]%d{yyyy/MM/dd HH:mm:ss.SSS} Msg: %msg%n</pattern>
+            <!--<pattern>[%-5level]%d{yyyy/MM/dd HH:mm:ss.SSS}[%class:%line]Msg: %msg%n</pattern>-->
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="${log_level}">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

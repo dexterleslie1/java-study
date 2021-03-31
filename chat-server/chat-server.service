@@ -1,0 +1,12 @@
+[Unit]
+Description=Chat Server service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/local/chat/
+ExecStart=java -jar /usr/local/chat/chat-server.jar --chatVariableInternalRedisIp=127.0.0.1 --chatVariableInternalRedisPort=6379 --chatVariableInternalRedisPassword=
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
