@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS demojpa CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+USE demojpa;
+
 create table if not exists transaction_tracking (
   id bigint primary key auto_increment,
   trackingId varchar(64) not null,
@@ -7,4 +11,3 @@ create table if not exists transaction_tracking (
   payload varchar(2048) not null,
   createTime datetime not null
 ) engine=InnoDB default charset=utf8;
-
