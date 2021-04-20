@@ -10,9 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.UUID;
 
-/**
- * @author dexterleslie@gmail.com
- */
 public class DESTests {
     /**
      *
