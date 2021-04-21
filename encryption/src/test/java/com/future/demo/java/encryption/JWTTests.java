@@ -57,7 +57,7 @@ public class JWTTests {
     }
 
     @Test
-    public void signWithRSAAndVerity() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, SignatureException {
+    public void signWithRSAAndVerify() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, SignatureException {
         String publicKeyString = System.getenv("publicKey");
         String privateKeyString = System.getenv("privateKey");
         byte []privateKeyBytes = com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode(privateKeyString);
@@ -65,12 +65,15 @@ public class JWTTests {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         RSAPrivateKey privateKey = (RSAPrivateKey)keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
         RSAPublicKey publicKey = (RSAPublicKey)keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
-        Algorithm algorithm = Algorithm.RSA512(publicKey, privateKey);
+        Algorithm algorithm = Algorithm.RSA512(null, privateKey);
+
+        Long userId = 12345678l;
+        String loginname = "ak123456";
 
         String token = JWT.create()
                 // payload
-                .withClaim("userId", "12345")
-                .withClaim("loginname", "ak123456")
+                .withClaim("userId", userId)
+                .withClaim("loginname", loginname)
                 .sign(algorithm);
         Assert.assertNotNull(token);
 
@@ -94,7 +97,18 @@ public class JWTTests {
             JWTVerifier verifier = JWT.require(algorithm)
                     //more validations if needed
                     .build();
-            verifier.verify(token);
+            DecodedJWT decodedJWT = verifier.verify(token);
+            Map<String, Claim> claimMap = decodedJWT.getClaims();
+
+            Long claimUserId = claimMap.get("userId").asLong();
+            String claimLoginname = claimMap.get("loginname").asString();
+            Assert.assertEquals(userId, claimUserId);
+            Assert.assertEquals(loginname, claimLoginname);
+
+            Date issueAt  = decodedJWT.getIssuedAt();
+            Date expireAt = decodedJWT.getExpiresAt();
+            Assert.assertNull(issueAt);
+            Assert.assertNull(expireAt);
             verifyResult = true;
         } catch (Exception e){
             e.printStackTrace();
