@@ -1,6 +1,6 @@
 package com.future.demo.architecture.zuul;
 
-import com.future.demo.architecture.common.feign.HelloClient;
+import com.future.demo.architecture.common.feign.HelloworldClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/zuul")
 public class ApiController {
     @Autowired
-    HelloClient helloClient;
+    HelloworldClient helloworldClient;
 
     @GetMapping(value = "test1", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> test1() {
@@ -19,6 +19,6 @@ public class ApiController {
 
     @PostMapping(value = "test2", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> test2(@RequestParam(value = "param1", defaultValue = "") String param1) {
-        return helloClient.test2(param1);
+        return helloworldClient.test2(param1);
     }
 }
