@@ -14,6 +14,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>architecture-common</module>
 		<module>architecture-eureka</module>
 		<module>architecture-helloworld</module>
 		<module>architecture-zuul</module>
