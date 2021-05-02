@@ -2,6 +2,8 @@ package com.future.study.rabbitmq.examples.helloworld;
 
 import com.rabbitmq.client.*;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,14 +21,29 @@ import java.util.concurrent.TimeoutException;
  * @author Dexterleslie.Chan
  */
 public class HelloWorldExampleTest {
+    String host;
+    String username;
+    String password;
+
+    @Before
+    public void setup() {
+        String host = System.getenv("host");
+        String username = System.getenv("username");
+        String password = System.getenv("password");
+
+        this.host = host;
+        this.username = username;
+        this.password = password;
+    }
+
     @Test
     public void test_tutorial_helloworld() throws IOException, TimeoutException, InterruptedException {
         String queueName = "rabbitmq-examples-tutorial-helloworld";
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost(Config.RabbitMQServerHost);
-        connectionFactory.setUsername(Config.RabbitMQUsername);
-        connectionFactory.setPassword(Config.RabbitMQPassword);
+        connectionFactory.setHost(host);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
 
         Connection connection = connectionFactory.newConnection();
         Connection connectionConsumer = connectionFactory.newConnection();
