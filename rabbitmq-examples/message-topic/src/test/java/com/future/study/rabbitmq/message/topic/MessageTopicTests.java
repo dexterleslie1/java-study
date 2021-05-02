@@ -1,6 +1,8 @@
 package com.future.study.rabbitmq.message.topic;
 
 import com.rabbitmq.client.*;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -8,11 +10,27 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  */
 public class MessageTopicTests {
+    String host;
+    String username;
+    String password;
+
+    @Before
+    public void setup() {
+        String host = System.getenv("host");
+        String username = System.getenv("username");
+        String password = System.getenv("password");
+
+        this.host = host;
+        this.username = username;
+        this.password = password;
+    }
+
     /**
      * @throws IOException
      * @throws TimeoutException
@@ -26,13 +44,13 @@ public class MessageTopicTests {
         String routingKey1 = routingKey1Prefix + "*";
         String routingKey2 = routingKey2Prefix + "*";
 
-        CountDownLatch countDownLatchQueue1 = new CountDownLatch(2);
-        CountDownLatch countDownLatchQueue2 = new CountDownLatch(5);
+        AtomicInteger atomicInteger1 = new AtomicInteger(0);
+        AtomicInteger atomicInteger2 = new AtomicInteger(0);
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost(Config.RabbitMQServerHost);
-        connectionFactory.setUsername(Config.RabbitMQUsername);
-        connectionFactory.setPassword(Config.RabbitMQPassword);
+        connectionFactory.setHost(host);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
 
         Connection connectionExchange = connectionFactory.newConnection();
         Connection connectionQueue1 = connectionFactory.newConnection();
@@ -47,7 +65,7 @@ public class MessageTopicTests {
         channel.basicConsume(queueName1, true, new DeliverCallback() {
             @Override
             public void handle(String consumerTag, Delivery delivery) throws IOException {
-                countDownLatchQueue1.countDown();
+                atomicInteger1.incrementAndGet();
             }
         }, consumerTag -> {});
 
@@ -58,7 +76,7 @@ public class MessageTopicTests {
         channel.basicConsume(queueName2, true, new DeliverCallback() {
             @Override
             public void handle(String consumerTag, Delivery delivery) throws IOException {
-                countDownLatchQueue2.countDown();
+                atomicInteger2.incrementAndGet();
             }
         }, consumerTag -> {});
 
@@ -74,13 +92,13 @@ public class MessageTopicTests {
         message = UUID.randomUUID().toString();
         channelExchange.basicPublish(exchangeName, routingKey2Prefix + message, null, message.getBytes());
 
-        if(!countDownLatchQueue1.await(5, TimeUnit.SECONDS)
-            || !countDownLatchQueue2.await(5, TimeUnit.SECONDS)){
-            throw new TimeoutException();
-        }
+        Thread.sleep(1000);
 
         connectionExchange.close();
         connectionQueue1.close();
         connectionQueue2.close();
+
+        Assert.assertEquals(2, atomicInteger1.get());
+        Assert.assertEquals(5, atomicInteger2.get());
     }
 }
