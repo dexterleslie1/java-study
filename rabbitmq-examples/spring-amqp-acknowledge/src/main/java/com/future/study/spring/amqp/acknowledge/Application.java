@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Dexterleslie.Chan
  */
 @SpringBootApplication
-public class ApplicationSpringAMQPAcknowledge {
+public class Application {
     /**
      *
      * @param args
      */
     public static void main(String []args){
-        SpringApplication.run(ApplicationSpringAMQPAcknowledge.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
