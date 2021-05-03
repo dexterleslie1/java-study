@@ -1,8 +1,5 @@
 package com.future.study.spring.amqp.annotation.rabbitlistener;
 
-import com.future.study.spring.amqp.annotation.rabbitlistener.ApplicationSpringAMQPAnnotationRabbitListener;
-import com.future.study.spring.amqp.annotation.rabbitlistener.ConfigRabbitMQ;
-import com.future.study.spring.amqp.annotation.rabbitlistener.Receiver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -17,8 +14,8 @@ import java.util.concurrent.TimeoutException;
  * @author Dexterleslie.Chan
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes={ApplicationSpringAMQPAnnotationRabbitListener.class})
-public class ApplicationSpringAMQPAnnotationRabbitListenerTests {
+@SpringBootTest(classes={Application.class})
+public class ApplicationTests {
     @Autowired
     private AmqpTemplate amqpTemplate = null;
     @Autowired
@@ -27,7 +24,7 @@ public class ApplicationSpringAMQPAnnotationRabbitListenerTests {
     @Test
     public void test1() throws InterruptedException, TimeoutException {
         for(int i=0; i<2; i++) {
-            amqpTemplate.convertAndSend(ConfigRabbitMQ.exchangeName, null, "Hello from RabbitMQ!" + i);
+            amqpTemplate.convertAndSend(Config.exchangeName, null, "Hello from RabbitMQ!" + i);
         }
         if(!receiver.getLatch().await(2000, TimeUnit.MILLISECONDS)) {
             throw new TimeoutException();

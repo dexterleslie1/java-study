@@ -4,14 +4,11 @@ import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.*;
-import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -19,8 +16,8 @@ import java.util.concurrent.CountDownLatch;
  */
 @Component
 @RabbitListener(bindings = @QueueBinding(
-        value = @Queue(value = ConfigRabbitMQ.queueName, autoDelete = "true"),
-        exchange = @Exchange(value=ConfigRabbitMQ.exchangeName, type=ExchangeTypes.FANOUT),
+        value = @Queue(value = Config.queueName, autoDelete = "true"),
+        exchange = @Exchange(value= Config.exchangeName, type=ExchangeTypes.FANOUT),
         key = ""
 ), containerFactory = "rabbitListenerContainerFactory")
 public class Receiver {

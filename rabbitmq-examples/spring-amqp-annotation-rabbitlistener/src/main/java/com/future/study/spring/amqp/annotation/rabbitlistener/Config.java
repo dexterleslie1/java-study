@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Dexterleslie.Chan
  */
 @Configuration
-public class ConfigRabbitMQ {
+public class Config {
 
     public static final String exchangeName = "spring-amqp-annotaion-rabbitlistener-exchange-demo";
     static final String queueName = "spring-amqp-annotaion-rabbitlistener-queue-demo";
@@ -24,11 +24,5 @@ public class ConfigRabbitMQ {
         factory.setConcurrentConsumers(3);
         factory.setMaxConcurrentConsumers(10);
         return factory;
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
-        AmqpTemplate amqpTemplate = new RabbitTemplate(connectionFactory);
-        return amqpTemplate;
     }
 }
