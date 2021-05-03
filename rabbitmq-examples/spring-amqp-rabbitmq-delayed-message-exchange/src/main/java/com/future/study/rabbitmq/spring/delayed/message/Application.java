@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-public class SpringAMQPRabbitMQDelayedMessageApplication {
+public class Application {
     /**
      *
      * @param args
      */
     public static void main(String []args) {
-        SpringApplication.run(SpringAMQPRabbitMQDelayedMessageApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

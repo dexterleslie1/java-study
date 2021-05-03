@@ -11,13 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class RabbitMQConfig {
-//    public static final String QUEUE_NAME="ak_message_queue"; // 队列名称
+public class Config {
     public static final String EXCHANGE_NAME="ak_message_exchange"; // 交换器名称
 
     @Bean
     public Queue queue(){
-//        return new Queue(QUEUE_NAME);
         return new AnonymousQueue();
     }
 
