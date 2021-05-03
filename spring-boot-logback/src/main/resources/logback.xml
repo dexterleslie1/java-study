@@ -84,4 +84,7 @@
     <logger name="com.future.study.spring.boot.package2" level="debug" additivity="false">
         <appender-ref ref="package2Appender"/>
     </logger>
+    <logger name="com.future.study.spring.boot.package1.TestAdditivity" level="debug" additivity="false">
+        <appender-ref ref="package1Appender"/>
+    </logger>
 </configuration>
