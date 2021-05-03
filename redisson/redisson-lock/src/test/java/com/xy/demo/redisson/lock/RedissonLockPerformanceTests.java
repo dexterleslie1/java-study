@@ -19,10 +19,6 @@ import java.util.concurrent.TimeUnit;
 public class RedissonLockPerformanceTests {
     private final static Logger logger = Logger.getLogger(RedissonLockPerformanceTests.class);
 
-    private String redisHost = "192.168.1.229";
-    private int redisPort = 6379;
-    private String redisPassword = "123456";
-
     private RedissonClient redisson = null;
     private Random random = new Random();
 
@@ -67,8 +63,12 @@ public class RedissonLockPerformanceTests {
 
     @Before
     public void setup(){
+        String host = System.getenv("host");
+        int port = Integer.parseInt(System.getenv("port"));
+        String password = System.getenv("password");
+
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://"+redisHost+":"+redisPort).setPassword(redisPassword);
+        config.useSingleServer().setAddress("redis://" + host + ":" + port).setPassword(password);
         redisson = Redisson.create(config);
     }
 

@@ -22,10 +22,6 @@ public class RedissonLockTests {
     private final static Logger logger = Logger.getLogger(RedissonLockTests.class);
     private final static java.util.Random Random = new Random();
 
-    private String redisHost = "192.168.1.225";
-    private int redisPort = 6379;
-    private String redisPassword = "123456";
-
     private RedissonClient redisson = null;
 
     @Test
@@ -339,8 +335,12 @@ public class RedissonLockTests {
 
     @Before
     public void setup(){
+        String host = System.getenv("host");
+        int port = Integer.parseInt(System.getenv("port"));
+        String password = System.getenv("password");
+
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://"+redisHost+":"+redisPort).setPassword(redisPassword);
+        config.useSingleServer().setAddress("redis://" + host + ":" + port).setPassword(password);
         redisson = Redisson.create(config);
     }
 
