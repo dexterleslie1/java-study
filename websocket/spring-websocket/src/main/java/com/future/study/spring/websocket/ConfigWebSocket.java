@@ -4,14 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.EventListener;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-/**
- *
- */
 @Configuration
 @EnableWebSocket
 public class ConfigWebSocket implements WebSocketConfigurer {
@@ -23,7 +17,7 @@ public class ConfigWebSocket implements WebSocketConfigurer {
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(createWebSocketHandler(), "/websocketEndpoint");
+        registry.addHandler(createWebSocketHandler(), "/websocketEndpoint").addInterceptors(websocketInterceptor());
     }
 
     /**
@@ -31,8 +25,14 @@ public class ConfigWebSocket implements WebSocketConfigurer {
      * @return
      */
     @Bean
-    public WebSocketHandler createWebSocketHandler(){
-        WebSocketHandler webSocketHandler = new WebSocketRequestHandler();
+    public WebSocketRequestHandler createWebSocketHandler(){
+        WebSocketRequestHandler webSocketHandler = new WebSocketRequestHandler();
         return webSocketHandler;
+    }
+
+    @Bean
+    WebsocketInterceptor websocketInterceptor() {
+        WebsocketInterceptor interceptor = new WebsocketInterceptor();
+        return interceptor;
     }
 }

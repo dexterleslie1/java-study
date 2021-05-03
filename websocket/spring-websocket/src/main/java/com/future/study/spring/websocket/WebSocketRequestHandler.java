@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.PingMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -15,6 +16,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  *
@@ -25,48 +27,54 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
     private final static String KeyAction = "action";
 
     private Map<String, WebSocketSession> mapSessions = new HashMap<>();
+//    private Map<String, Runnable> mapRunnables = new HashMap<>();
     private List<WebSocketSession> sessionList = new ArrayList<>();
-    private Thread thread = null;
-    private boolean stopped = false;
+
+//    private ScheduledExecutorService scheduledExecutorService = null;
 
     @PostConstruct
     public void init() {
-       thread = new Thread(new Runnable() {
-           @Override
-           public void run() {
-                while(!stopped) {
-                    try {
-                        for (WebSocketSession session : sessionList) {
-                            session.sendMessage(new TextMessage("jfkdjfkd" + new Date()));
-                        }
-                    } catch (Exception ex) {
-                        logger.error(ex.getMessage(), ex);
-                    }
-
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        //
-                    }
-                }
-           }
-       });
-       thread.start();
+//        if(this.scheduledExecutorService==null) {
+//            this.scheduledExecutorService = Executors.newScheduledThreadPool(2);
+//        }
     }
 
     @PreDestroy
-    public void destroy() {
-        stopped = true;
-        if(thread!=null) {
-            thread = null;
-        }
+    public void destroy() throws InterruptedException {
+//        if(this.scheduledExecutorService!=null) {
+//            this.scheduledExecutorService.shutdown();
+//            this.scheduledExecutorService.awaitTermination(5, TimeUnit.SECONDS);
+//        }
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        logger.info("invoked afterConnectionEstablished");
+    public synchronized void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
+        String username = (String)session.getAttributes().get("username");
+        if(StringUtils.isEmpty(username)) {
+            CloseStatus closeStatus = CloseStatus.NORMAL.withReason("没有提供username");
+            session.close(closeStatus);
+        }
+
         sessionList.add(session);
+
+        if (!StringUtils.isEmpty(username)) {
+            // 关闭之前socket
+            if(mapSessions.containsKey(username)) {
+                mapSessions.get(username).close();
+            }
+//            if(mapRunnables.containsKey(username)) {
+//                Runnable runnable = mapRunnables.get(username);
+//                ((ScheduledThreadPoolExecutor) this.scheduledExecutorService).remove(runnable);
+//            }
+
+            mapSessions.put(username, session);
+//            Runnable runnable = new HeartbeatRunnabe(session);
+//            this.scheduledExecutorService.scheduleAtFixedRate(runnable, 5, 5, TimeUnit.SECONDS);
+//            mapRunnables.put(username, runnable);
+
+            logger.info("用户" + username + " 连接websocket服务器");
+        }
     }
 
     @Override
@@ -83,14 +91,7 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
             }
             if(data != null && data.containsKey(KeyAction)){
                 String action = data.get(KeyAction);
-                if("CONNECT".equals(action)){
-                    String username = data.get("username");
-                    if(!StringUtils.isEmpty(username)){
-                        session.getAttributes().put("username", username);
-                        mapSessions.put(username, session);
-                        logger.info("用户" + username + " 连接websocket服务器");
-                    }
-                }else if("MESSAGE".equals(action)){
+                if("MESSAGE".equals(action)){
                     String toUser = data.get("toUser");
                     if(!StringUtils.isEmpty(toUser)){
                         WebSocketSession toSession = mapSessions.get(toUser);
@@ -122,8 +123,26 @@ public class WebSocketRequestHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        logger.info("invoked afterConnectionClosed,status="+status);
         super.afterConnectionClosed(session, status);
+
         sessionList.remove(session);
+
+        String username = (String)session.getAttributes().get("username");
+        if(!StringUtils.isEmpty(username)) {
+            mapSessions.remove(username);
+
+//            Runnable runnable = this.mapRunnables.get(username);
+//            if(runnable!=null) {
+//                ((ScheduledThreadPoolExecutor) this.scheduledExecutorService).remove(runnable);
+//            }
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<WebSocketSession> getSessionList() {
+        return this.sessionList;
     }
 }

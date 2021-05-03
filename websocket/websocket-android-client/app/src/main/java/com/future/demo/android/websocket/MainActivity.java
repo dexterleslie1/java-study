@@ -14,12 +14,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -51,11 +57,19 @@ public class MainActivity extends AppCompatActivity {
                     webSocketClient = null;
                 }
 
-                URI uri = URI.create("ws://192.168.1.112:8080/websocketEndpoint");
-                webSocketClient = new WebSocketClient(uri, new Draft_6455(), null, 8000) {
+                URI uri = URI.create("ws://192.168.1.203:8080/websocketEndpoint");
+                String username = "";
+                try {
+                    username = URLEncoder.encode("A用户", "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                }
+                Map<String, String> headers = new HashMap<>();
+                headers.put("username", username);
+                webSocketClient = new WebSocketClient(uri, new Draft_6455(), headers, 8000) {
                     @Override
                     public void onOpen(ServerHandshake handshakedata) {
-
+                        Log.d(TAG, "onOpen");
                     }
 
                     @Override
@@ -71,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Exception ex) {
                         Log.e(TAG, ex.getMessage(), ex);
+                    }
+
+                    @Override
+                    public void onWebsocketPing(WebSocket conn, Framedata f) {
+                        super.onWebsocketPing(conn, f);
                     }
                 };
                 webSocketClient.connect();
