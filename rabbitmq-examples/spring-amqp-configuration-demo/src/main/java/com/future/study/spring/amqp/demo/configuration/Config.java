@@ -13,29 +13,9 @@ import org.springframework.context.annotation.Configuration;
  * @author Dexterleslie.Chan
  */
 @Configuration
-public class ConfigRabbitMQ {
-    static final String rabbitMQHost = "192.168.1.158";
-    static final int rabbitMQPort = 5672;
-    static final String rabbitMQUsername = "guest";
-    static final String rabbitMQPassword = "guest";
-
+public class Config {
     public static final String topicExchangeName = "spring-boot-exchange";
     static final String queueName = "spring-boot";
-
-    @Bean
-    public ConnectionFactory connectionFactory(){
-        CachingConnectionFactory connectionFactory =
-                new CachingConnectionFactory(rabbitMQHost, rabbitMQPort);
-        connectionFactory.setUsername(rabbitMQUsername);
-        connectionFactory.setPassword(rabbitMQPassword);
-        return connectionFactory;
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
-        AmqpTemplate amqpTemplate = new RabbitTemplate(connectionFactory);
-        return amqpTemplate;
-    }
 
     @Bean
     Queue queue() {
