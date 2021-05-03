@@ -14,8 +14,8 @@ import java.util.concurrent.TimeoutException;
  * @author Dexterleslie.Chan
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes={ApplicationSpringAMQPFanout.class})
-public class ApplicationSpringAMQPFanoutTests {
+@SpringBootTest(classes={Application.class})
+public class ApplicationTests {
     @Autowired
     private AmqpTemplate amqpTemplate = null;
     @Autowired
@@ -24,7 +24,7 @@ public class ApplicationSpringAMQPFanoutTests {
     @Test
     public void test1() throws InterruptedException, TimeoutException {
         for(int i=0; i<2; i++) {
-            amqpTemplate.convertAndSend(ConfigRabbitMQ.topicExchangeName, null, "Hello from RabbitMQ!" + i);
+            amqpTemplate.convertAndSend(Config.topicExchangeName, null, "Hello from RabbitMQ!" + i);
         }
         if(!receiver.getLatch().await(2000, TimeUnit.MILLISECONDS)) {
             throw new TimeoutException();
