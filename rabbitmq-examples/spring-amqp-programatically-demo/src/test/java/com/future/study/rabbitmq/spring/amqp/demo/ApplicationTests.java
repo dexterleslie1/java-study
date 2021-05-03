@@ -1,5 +1,6 @@
 package com.future.study.rabbitmq.spring.amqp.demo;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -16,15 +17,30 @@ import java.util.concurrent.TimeoutException;
 /**
  *
  */
-public class SpringAMQPDemoTests {
+public class ApplicationTests {
+    String host;
+    String username;
+    String password;
+
+    @Before
+    public void setup() {
+        String host = System.getenv("host");
+        String username = System.getenv("username");
+        String password = System.getenv("password");
+
+        this.host = host;
+        this.username = username;
+        this.password = password;
+    }
+
     /**
      *
      */
     @Test
     public void test1() throws InterruptedException, TimeoutException {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(Config.RabbitMQServerHost);
-        connectionFactory.setUsername(Config.RabbitMQUsername);
-        connectionFactory.setPassword(Config.RabbitMQPassword);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
 
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
         String exchangename = "chat.message.push.exchange";
