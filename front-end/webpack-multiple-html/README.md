@@ -11,3 +11,12 @@ npm install css-loader --save-dev
 
 安装mini-css-extract-plugin
 npm install mini-css-extract-plugin --save-dev
+
+安装webpack-dev-server
+npm install webpack-dev-server --save-dev
+
+编译发布
+npm run build
+
+运行开发者服务器
+npm run dev

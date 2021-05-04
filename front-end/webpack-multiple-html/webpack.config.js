@@ -43,5 +43,17 @@ module.exports = {
             filename: "all-in-on.css"
         })
     ],
-    mode: "development"
+
+    mode: "production",
+
+    // webpack5 自动刷新浏览器
+    target: "web",
+    // webpack dev server配置
+    devServer: {
+        port: 3000,
+        // 编译时使用gzip压缩
+        compress: true,
+        // 编译后自动打开浏览器
+        open: true
+    }
 }
