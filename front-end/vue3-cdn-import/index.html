@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue3 cdn引入</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="app">
+    {{message}}
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          message: "This is a test"
+        }
+      }
+    }).mount("#app");
+
+    app.message = "Hello Vuejs";
+  </script>
+</body>
+</html>
