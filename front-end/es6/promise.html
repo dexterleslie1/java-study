@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise用法</title>
+</head>
+<body>
+  <script>
+    // 注意：then方法声明error回调函数，catch函数不会被回调导致调用链继续执行
+    // https://www.jianshu.com/p/eff3173d9dc1
+    let min = 0;
+    let max = 1;
+    new Promise((resolve, reject) => {
+      console.log("开始模拟第一个ajax调用");
+      setTimeout(() => {
+        let randomInt = Math.floor(Math.random()*(max - min + 1)) + min;
+        if(randomInt==0) {
+          resolve();
+        } else {
+          reject();
+        }
+      }, 1000);
+    }).then(result => {
+      console.log("第一个promise成功回调");
+
+      return new Promise((resolve, reject) => {
+        console.log("开始模拟第二个ajax调用");
+        setTimeout(() => {
+          let randomInt = Math.floor(Math.random()*(max - min + 1)) + min;
+          if(randomInt==0) {
+            resolve();
+          } else {
+            reject();
+          }
+        }, 1000);
+      });
+    }).then(result => {
+      console.log("第二个promise成功回调");
+    }).catch(reason => {
+      console.log("执行catch回调");
+    }).finally(() => {
+      console.log("执行finally回调");
+    });
+
+    // 并发请求
+    Promise.all([
+            new Promise((resolve, reject) => {
+              setTimeout(()=>{
+                resolve("回调参数1");
+              },1000);
+            }),
+            new Promise((resolve, reject) => {
+              setTimeout(()=>{
+                resolve("回调参数2");
+              }, 3000);
+            })
+    ]).then((result) => {
+      console.log(result);
+    });
+  </script>
+</body>
+</html>
