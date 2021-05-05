@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>类、类继承、构造函数</title>
+</head>
+<body>
+  <script>
+    class Person {
+      constructor(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+
+      say() {
+        let string = `name=${this.name},age=${this.age}`;
+        return string;
+      }
+    }
+
+    class Student extends Person {
+      constructor(name, age, no) {
+        super(name, age);
+        this.no = no;
+      }
+
+      say() {
+        let string = super.say();
+        string += `,no=${this.no}`;
+        return string;
+      }
+    }
+
+    let instance = new Student("Dexterleslie", 21, "10001");
+    let string = instance.say();
+    console.log(string);
+  </script>
+</body>
+</html>

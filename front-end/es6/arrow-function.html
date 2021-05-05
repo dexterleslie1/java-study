@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>箭头函数使用</title>
+</head>
+<body>
+  <script>
+    // 注意：箭头函数没有构造函数，不能使用new创建，需要使用传统javascript匿名函数方式实现
+
+    const arrowFunction1 = (x, y) => {
+      let sum = x + y;
+      return sum;
+    }
+    console.log(arrowFunction1(100, 30));
+
+    // 无参箭头函数
+    const arrowFunctionWithoutParameters = () => {
+      return "Hello world!!!";
+    };
+    console.log(arrowFunctionWithoutParameters());
+
+    // 箭头函数数组排序
+    let varArray = [3, 2, 7, 44, 77, 32, 32, 5];
+    varArray = varArray.sort((a, b) => {
+      return b-a;
+    });
+    console.log(varArray);
+
+    // 箭头函数返回对象
+    const arrowFunction2 = (id, name) => {
+      return {id: id, name: name};
+    };
+    let varObject = arrowFunction2(1001, "张三");
+    console.log("id=" + varObject.id + ",name=" + varObject.name);
+
+    // this用法说明：
+    // 普通函数的this：指向他的调用者，如果没有调用者则默认指向window
+    // 箭头函数的this：定义该函数时所在的作用域指向的对象，而不是使用时所在的作用域指向的对象。
+    // 参考：https://zhuanlan.zhihu.com/p/57204184
+
+    // 普通函数
+    var varNormalFunctionThis = {
+      fun: function() {
+        // 指向varNormalFunctionThis对象
+        console.log(this);
+      }
+    }
+    varNormalFunctionThis.fun();
+
+    function normalFunctionThisWindow() {
+      // 指向window对象
+      console.log(this);
+    }
+    normalFunctionThisWindow();
+
+    function normalFunctionThisSetTimeout() {
+      setTimeout(function() {
+        // 指向window对象，因为window调用setTimeout方法
+        console.log(this);
+      }, 1000);
+    }
+    normalFunctionThisSetTimeout();
+
+    var name = 'window'; // 其实是window.name = 'window'
+    var A = {
+      name: 'A',
+      sayHello: function(){
+        console.log(this.name)
+      }
+    }
+    A.sayHello();// 输出A
+    var B = {
+      name: 'B'
+    }
+    A.sayHello.call(B);//输出B
+    A.sayHello.call();//不传参数指向全局window对象，输出window.name也就是window
+
+    // es6 this用法
+    console.log("--------es6 this用法----------")
+    var name = 'window';
+    var A = {
+      name: 'A',
+      sayHello: function(){
+        var s = () => console.log(this.name)
+        return s//返回箭头函数s
+      }
+    }
+    var sayHello = A.sayHello();
+    sayHello();// 输出A
+    var B = {
+      name: 'B'
+    }
+    sayHello.call(B); //还是A
+    sayHello.call(); //还是A
+  </script>
+</body>
+</html>
