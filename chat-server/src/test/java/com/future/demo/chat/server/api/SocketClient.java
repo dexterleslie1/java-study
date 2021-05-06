@@ -34,12 +34,17 @@ public abstract class SocketClient {
     public abstract void onMessage(String message) throws Exception;
 
     public WebSocketSession connect() throws ExecutionException, InterruptedException, IOException, TimeoutException {
-        URI uri = URI.create("ws://" + apiHost + ":8080/chat");
-        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        String uriString = "ws://" + apiHost + ":8080/chat";
         if(!StringUtils.isEmpty(username)) {
             username = URLEncoder.encode(username, "utf-8");
+            uriString = uriString + "?usernameSelf=" + username;
         }
-        headers.put("usernameSelf", Arrays.asList(username));
+        URI uri = URI.create(uriString);
+//        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+//        if(!StringUtils.isEmpty(username)) {
+//            username = URLEncoder.encode(username, "utf-8");
+//        }
+//        headers.put("usernameSelf", Arrays.asList(username));
         ListenableFuture<WebSocketSession> future = webSocketClient.doHandshake(new TextWebSocketHandler() {
             @Override
             protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -49,7 +54,7 @@ public abstract class SocketClient {
             public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
                 log.warn(status.toString());
             }
-        }, headers, uri);
+        }, null, uri);
 
         session = future.get();
         return session;

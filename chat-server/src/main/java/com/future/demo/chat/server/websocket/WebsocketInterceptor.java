@@ -16,7 +16,7 @@ public class WebsocketInterceptor extends HttpSessionHandshakeInterceptor {
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         if(request instanceof ServletServerHttpRequest) {
             ServletServerHttpRequest servletServerHttpRequest = (ServletServerHttpRequest) request;
-            String username = servletServerHttpRequest.getServletRequest().getHeader("usernameSelf");
+            String username = servletServerHttpRequest.getServletRequest().getParameter("usernameSelf");
             if(!StringUtils.isEmpty(username)) {
                 username = URLDecoder.decode(username, "utf-8");
                 attributes.put("usernameSelf", username);
