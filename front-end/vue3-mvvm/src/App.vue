@@ -1,9 +1,9 @@
 <template>
   num: {{num}}
   <br>
-  <input type="button" value="-" @click="sub()"/>
+  <input type="button" value="-" v-on:click="sub()"/>
   <input type="text" size="5" v-model="num"/>
-  <input type="button" value="+" @click="add()"/>
+  <input type="button" value="+" v-on:click="add()"/>
 </template>
 
 <script>
