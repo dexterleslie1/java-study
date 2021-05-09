@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "architecture-helloworld")
+@FeignClient(value = "service-helloworld")
 public interface HelloworldClient {
     @PostMapping(value = "/api/v1/test2", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> test2(@RequestParam(value = "param1") String param1);
