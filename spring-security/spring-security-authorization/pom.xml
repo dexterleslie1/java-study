@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.future.demo</groupId>
-    <artifactId>spring-security-customize-login</artifactId>
+    <artifactId>spring-security-authorization</artifactId>
     <version>1.0</version>
 
     <dependencies>
