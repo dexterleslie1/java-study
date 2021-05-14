@@ -7,7 +7,6 @@
 <body>
   <script>
     // 注意：箭头函数没有构造函数，不能使用new创建，需要使用传统javascript匿名函数方式实现
-
     const arrowFunction1 = (x, y) => {
       let sum = x + y;
       return sum;
@@ -40,7 +39,7 @@
     // 参考：https://zhuanlan.zhihu.com/p/57204184
 
     // 普通函数
-    var varNormalFunctionThis = {
+    let varNormalFunctionThis = {
       fun: function() {
         // 指向varNormalFunctionThis对象
         console.log(this);
@@ -93,6 +92,16 @@
     }
     sayHello.call(B); //还是A
     sayHello.call(); //还是A
+
+    // 箭头函数默认值
+    // JavaScript ES6 Arrow Function Default Parameters & Multiple Return Values
+    // https://www.techiediaries.com/javascript-arrow-function-default-parameters/
+
+    const withDefaultParameter = (parameters={a:100, b:"bParameter"})=>{
+        console.log("箭头函数默认值：b=" + parameters.a + ",b=" + parameters.b);
+    }
+    withDefaultParameter();
+    withDefaultParameter({a:101, b:"bP1"});
   </script>
 </body>
 </html>
