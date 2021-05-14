@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>try、catch、finally演示</title>
+</head>
+<body>
+    <script>
+        let json = "kkkk";
+        try {
+            JSON.parse(json);
+        } catch (error) {
+            console.log("catch对应解析json=" + json + "，error=" + error);
+        } finally {
+            console.log("finally对应解析json=" + json);
+        }
+
+        json = JSON.stringify({a:"你好"});
+        try {
+            JSON.parse(json);
+        } catch (error) {
+            console.log("catch对应解析json=" + json + "，error=" + error);
+        } finally {
+            console.log("finally对应解析json=" + json);
+        }
+    </script>
+</body>
+</html>
