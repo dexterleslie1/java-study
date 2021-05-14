@@ -1,0 +1,20 @@
+{
+  "name": "com.future.demo.h5-storage",
+  "version": "1.0.0",
+  "description": "演示h5 sessionStorage、localStorage用法",
+  "main": "./src/index.js",
+  "scripts": {
+    "dev": "webpack serve",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^5.2.4",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.6.0",
+    "webpack": "^5.37.0",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
