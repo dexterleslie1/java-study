@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示align-items用法</title>
+    <style>
+      /**
+        align-items用法参考
+        https://www.runoob.com/cssref/css3-pr-align-items.html
+       */
+      /* container1 */
+      .container1 {
+          width: 800px;
+          height: 60px;
+          display: flex;
+          border-style: solid;
+          border-width: 1px;
+          border-color: red;
+          align-items: flex-start;
+      }
+
+      .container1 .box1 {
+          width: 100px;
+          height: 20px;
+          background-color: #2c3e50;
+      }
+
+      .container1 .box2 {
+          width: 100px;
+          height: 30px;
+          background-color: #42b983;
+      }
+
+      .container1 .box3 {
+          width: 100px;
+          height: 40px;
+          background-color: #888888;
+      }
+
+      /* container2 */
+      .container2 {
+          width: 800px;
+          height: 60px;
+          display: flex;
+          border-style: solid;
+          border-width: 1px;
+          border-color: red;
+          align-items: flex-end;
+      }
+
+      .container2 .box1 {
+          width: 100px;
+          height: 20px;
+          background-color: #2c3e50;
+      }
+
+      .container2 .box2 {
+          width: 100px;
+          height: 30px;
+          background-color: #42b983;
+      }
+
+      .container2 .box3 {
+          width: 100px;
+          height: 40px;
+          background-color: #888888;
+      }
+
+      /* container3 */
+      .container3 {
+          width: 800px;
+          height: 60px;
+          display: flex;
+          border-style: solid;
+          border-width: 1px;
+          border-color: red;
+          align-items: center;
+      }
+
+      .container3 .box1 {
+          width: 100px;
+          height: 20px;
+          background-color: #2c3e50;
+      }
+
+      .container3 .box2 {
+          width: 100px;
+          height: 30px;
+          background-color: #42b983;
+      }
+
+      .container3 .box3 {
+          width: 100px;
+          height: 40px;
+          background-color: #888888;
+      }
+
+      /* container4 */
+      .container4 {
+          width: 800px;
+          height: 60px;
+          display: flex;
+          border-style: solid;
+          border-width: 1px;
+          border-color: red;
+          align-items: stretch;
+      }
+
+      .container4 .box1 {
+          width: 100px;
+          /* 注意：使用align-items: stretch不能指定元素高度 */
+          /*height: 20px;*/
+          background-color: #2c3e50;
+      }
+
+      .container4 .box2 {
+          width: 100px;
+          /* 注意：使用align-items: stretch不能指定元素高度 */
+          /*height: 30px;*/
+          background-color: #42b983;
+      }
+
+      .container4 .box3 {
+          width: 100px;
+          /* 注意：使用align-items: stretch不能指定元素高度 */
+          /*height: 40px;*/
+          background-color: #888888;
+      }
+    </style>
+</head>
+<body>
+<div>align-items: flex-start</div>
+<div class="container1">
+  <div class="box1"></div>
+  <div class="box2"></div>
+  <div class="box3"></div>
+</div>
+<hr>
+
+<div>align-items: flex-end</div>
+<div class="container2">
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+</div>
+<hr>
+
+<div>align-items: center</div>
+<div class="container3">
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+</div>
+<hr>
+
+<div>align-items: stretch</div>
+<div class="container4">
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+</div>
+<hr>
+</body>
+</html>
