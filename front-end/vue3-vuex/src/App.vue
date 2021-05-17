@@ -1,8 +1,14 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/vuex/mutations">Mutations</router-link> |
+    <router-link to="/vuex/getters">Getters</router-link> |
+    <router-link to="/vuex/actions">Actions</router-link>
   </div>
+
+  <hr/>
+
   <router-view/>
 </template>
 

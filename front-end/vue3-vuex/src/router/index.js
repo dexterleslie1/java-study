@@ -1,11 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Mutations from "@/views/Mutations";
+import Getters from "@/views/Getters";
+import Actions from "@/views/Actions";
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: "/vuex/mutations",
+    name: "Mutations",
+    component: Mutations
+  },
+  {
+    path: "/vuex/getters",
+    name: "Getters",
+    component: Getters
+  },
+  {
+    path: "/vuex/actions",
+    name: "Actions",
+    component: Actions
   },
   {
     path: '/about',
