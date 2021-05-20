@@ -1,5 +1,6 @@
 package com.future.demo.security.uaa.config;
 
+import com.future.demo.security.uaa.service.ClientDetailsServiceImpl;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,13 +25,12 @@ import java.security.spec.X509EncodedKeySpec;
 @Configuration
 @EnableAuthorizationServer
 public class ConfigAuthorizationServer extends AuthorizationServerConfigurerAdapter {
-    // 所有客户端密码
-    private final static String ClientSecret = "123";
-
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    ClientDetailsServiceImpl clientDetailsService;
 
     // 使用JwtAccessTokenConverter转换器转jwt token
     @Bean
@@ -70,36 +70,39 @@ public class ConfigAuthorizationServer extends AuthorizationServerConfigurerAdap
     // 配置客户端详情服务(ClientDetailsService),ClientDetailsService负责查找ClientDetails
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("client1")
-                .secret(passwordEncoder.encode(ClientSecret))
-//                .resourceIds("resource1")
-                // authorization_code 授权码模式，，跳转到登录页面需要用户登录后并授权后才能够获取token
-                // implicit 静默授权模式，跳转到登录页面需要用户登录后并授权才能够获取token
-                .authorizedGrantTypes("authorization_code", "implicit")
-                .scopes("all")
-                .redirectUris("http://www.baidu.com")
-
-                .and()
-                .withClient("client2")
-                .secret(passwordEncoder.encode(ClientSecret))
-//                .resourceIds("resouce1")
-                // password 密码模式，用户提供账号密码后不需要登录授权直接获取token
-                .authorizedGrantTypes("password")
-                .scopes("write")
-
-                .and().withClient("client3")
-                .secret(passwordEncoder.encode(ClientSecret))
-//                .resourceIds("resource1")
-                // client_credentails 客户端模式，不需要提供用户账号密码信息即可获取token
-                .authorizedGrantTypes("client_credentials")
-                .scopes("all")
-
-                // order-service客户端
-                .and().withClient("order-service-resource")
-                .secret(passwordEncoder.encode(ClientSecret))
-                .authorizedGrantTypes("client_credentials")
-                .scopes("all");
+        // 集成数据库配置客户端详情
+        clients.withClientDetails(clientDetailsService);
+//        // 客户端详情内存配置
+//        clients.inMemory()
+//                .withClient("client1")
+//                .secret(passwordEncoder.encode(ClientSecret))
+////                .resourceIds("resource1")
+//                // authorization_code 授权码模式，，跳转到登录页面需要用户登录后并授权后才能够获取token
+//                // implicit 静默授权模式，跳转到登录页面需要用户登录后并授权才能够获取token
+//                .authorizedGrantTypes("authorization_code", "implicit")
+//                .scopes("all")
+//                .redirectUris("http://www.baidu.com")
+//
+//                .and()
+//                .withClient("client2")
+//                .secret(passwordEncoder.encode(ClientSecret))
+////                .resourceIds("resouce1")
+//                // password 密码模式，用户提供账号密码后不需要登录授权直接获取token
+//                .authorizedGrantTypes("password")
+//                .scopes("write")
+//
+//                .and().withClient("client3")
+//                .secret(passwordEncoder.encode(ClientSecret))
+////                .resourceIds("resource1")
+//                // client_credentails 客户端模式，不需要提供用户账号密码信息即可获取token
+//                .authorizedGrantTypes("client_credentials")
+//                .scopes("all")
+//
+//                // order-service客户端
+//                .and().withClient("order-service-resource")
+//                .secret(passwordEncoder.encode(ClientSecret))
+//                .authorizedGrantTypes("client_credentials")
+//                .scopes("all");
     }
 
     // 配置令牌访问端点
