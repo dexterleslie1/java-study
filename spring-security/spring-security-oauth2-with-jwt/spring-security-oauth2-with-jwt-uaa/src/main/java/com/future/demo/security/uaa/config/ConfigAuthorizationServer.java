@@ -1,18 +1,24 @@
 package com.future.demo.security.uaa.config;
 
+import com.future.demo.security.uaa.exception.OAuth2ExceptionWithCustomizeJson;
 import com.future.demo.security.uaa.service.ClientDetailsServiceImpl;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -112,7 +118,19 @@ public class ConfigAuthorizationServer extends AuthorizationServerConfigurerAdap
                 .tokenStore(tokenStore())
                 // 密码模式，用户提供账号密码不需要登录直接校验通过并获取token
                 .authenticationManager(authenticationManager)
-                .accessTokenConverter(jwtAccessTokenConverter());
+                .accessTokenConverter(jwtAccessTokenConverter())
+                // 自定义oauth2认证失败响应
+                .exceptionTranslator((Exception e) -> {
+                    // http不缓存
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.add(HttpHeaders.CACHE_CONTROL, "no-store");
+                    headers.add(HttpHeaders.PRAGMA, "no-cache");
+
+                    HttpStatus status = HttpStatus.BAD_REQUEST;
+
+                    OAuth2Exception exception = new OAuth2ExceptionWithCustomizeJson("oauth2登录失败！");
+                    return ResponseEntity.status(status).headers(headers).body(exception);
+                });
     }
 
     // 配置授权服务器端点安全
