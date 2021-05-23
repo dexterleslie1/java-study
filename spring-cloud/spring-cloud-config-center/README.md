@@ -1,0 +1,3 @@
+演示spring-cloud配置中心用法
+
+项目config-center-repository为demo配置中心配置文件仓库

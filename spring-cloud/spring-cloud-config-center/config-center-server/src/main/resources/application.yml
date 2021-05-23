@@ -1,0 +1,20 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9090/eureka/
+server:
+  port: 8888
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.118899.net/dexterleslie1/spring-cloud-config-center-repository.git
+          # 配置文件分支
+          default-label: main
+          # 配置文件所在根目录
+          search-paths: spring-cloud/spring-cloud-config-ceneter/config-center-repository/src/main/resources
+          # 跳过ssl证书验签
+          skip-ssl-validation: true
+  application:
+    name: config-center-server
