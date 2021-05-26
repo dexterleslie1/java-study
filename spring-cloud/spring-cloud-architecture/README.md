@@ -1,8 +1,10 @@
 演示基于springcloud项目架构
 
 项目命名规则
-1、服务模块，service-xxx命名规则，例如：service-zuul
-2、公共引用非服务模块，component-xxx命名规则，例如：component-common
+architecture-common
+architecture-eureka
+architecture-helloworld
+architecture-zuul
 
 springcloud zuul route忽略指定url
 https://stackoverflow.com/questions/37167629/how-to-exclude-or-ignore-special-paths-or-routes-from-zuul-routing

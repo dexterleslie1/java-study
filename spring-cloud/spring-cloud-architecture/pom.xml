@@ -14,10 +14,10 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>component-common</module>
-		<module>service-eureka</module>
-		<module>service-helloworld</module>
-		<module>service-zuul</module>
+		<module>architecture-common</module>
+		<module>architecture-eureka</module>
+		<module>architecture-helloworld</module>
+		<module>architecture-zuul</module>
 	</modules>
 
 	<dependencies>
