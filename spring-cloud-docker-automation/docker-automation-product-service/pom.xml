@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>docker-automation-parent</artifactId>
+        <groupId>com.future.demo</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>docker-automation-product-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.future.demo</groupId>
+            <artifactId>docker-automation-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wwwwu8899</groupId>
+            <artifactId>yyd-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <!-- maven package命令会调用此插件生成镜像 -->
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>com.future.demo/docker-automation-product-service</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <!-- 参数传递到Dockerfile -->
+                        <jarFile>${project.build.finalName}.jar</jarFile>
+                    </buildArgs>
+                    <!--
+                        https://github.com/spotify/dockerfile-maven/issues/87
+                        mvn package -Ddockerfile.skip=true 跳过docker镜像生成
+                    -->
+                    <skip>${dockerfile.skip}</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

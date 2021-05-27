@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: docker-automation-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: api-product-service
+          uri: lb://docker-automation-product-service
+          predicates:
+            - Path=/api/v1/product/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://docker-automation-eureka:9999/eureka

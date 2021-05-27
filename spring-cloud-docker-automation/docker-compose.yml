@@ -1,0 +1,38 @@
+version: "3.0"
+
+# 创建网络
+networks:
+  net1:
+
+services:
+  # 启动mariadb
+  docker_automation_db:
+    container_name: docker-automation-db
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d:ro
+      - ~/docker-automation-db:/var/lib/mysql:rw
+    networks:
+      - net1
+  # 启动eureka
+  docker_automation_eureka:
+    container_name: docker-automation-eureka
+    image: com.future.demo/docker-automation-eureka:1.0.0
+    networks:
+      - net1
+  # 启动gateway
+  docker_automation_gateway:
+    container_name: docker-automation-gateway
+    image: com.future.demo/docker-automation-gateway:1.0.0
+    ports:
+      - 8080:8080
+    networks:
+      - net1
+  # 启动product-service
+  docker_automation_product_service:
+    container_name: docker-automation-product-service
+    image: com.future.demo/docker-automation-product-service:1.0.0
+    networks:
+      - net1
