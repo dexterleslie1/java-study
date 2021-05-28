@@ -41,7 +41,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>com.future.demo/docker-automation-gateway</repository>
+                    <repository>${dockerRegistryPrefix}/docker-automation-gateway</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                         <!-- 参数传递到Dockerfile -->

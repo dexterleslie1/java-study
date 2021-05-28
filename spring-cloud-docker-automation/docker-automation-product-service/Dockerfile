@@ -4,4 +4,4 @@ FROM openjdk:8-jre
 ARG jarFile
 ADD target/${jarFile} /usr/share/com.future.demo/app.jar
 
-ENTRYPOINT ["java", "-jar", "/usr/share/com.future.demo/app.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/share/com.future.demo/app.jar", "--spring.profiles.active=prod"]

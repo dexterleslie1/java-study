@@ -58,7 +58,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>com.future.demo/docker-automation-product-service</repository>
+                    <repository>${dockerRegistryPrefix}/docker-automation-product-service</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                         <!-- 参数传递到Dockerfile -->

@@ -7,11 +7,27 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://docker-automation-db:3306/demo_docker_automation?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+  profiles:
+    active: dev
 eureka:
   client:
     service-url:
       defaultZone: http://docker-automation-eureka:9999/eureka
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
+
+---
+# dev profile
+spring:
+  datasource:
+    password: 123456
+  profiles: dev
+
+---
+# prod profile
+spring:
+  datasource:
+    password: ${dbPassword}
+  profiles: prod

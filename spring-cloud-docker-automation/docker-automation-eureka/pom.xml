@@ -37,7 +37,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>com.future.demo/docker-automation-eureka</repository>
+                    <repository>${dockerRegistryPrefix}/docker-automation-eureka</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                         <!-- 参数传递到Dockerfile -->

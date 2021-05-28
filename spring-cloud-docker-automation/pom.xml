@@ -28,6 +28,8 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <lombok.version>1.18.20</lombok.version>
         <mysql-connector.version>8.0.23</mysql-connector.version>
+        <!-- docker镜像仓库前缀 -->
+        <dockerRegistryPrefix>registry.cn-hangzhou.aliyuncs.com/yyda</dockerRegistryPrefix>
     </properties>
 
     <dependencyManagement>
