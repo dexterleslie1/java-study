@@ -44,3 +44,6 @@ https://github.com/spotify/dockerfile-maven/issues/153
 
 ##### docker compose传递环境变量
 https://docs.docker.com/compose/environment-variables/
+
+##### dockerfile指定jvm参数
+https://blog.csdn.net/rubbertree/article/details/95068681
