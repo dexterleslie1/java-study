@@ -18,6 +18,18 @@ docker compose pull
 docker compose up
 ```
 
+> 推送镜像到远程仓库
+```shell script
+# 生成本地镜像
+mvn clean package
+
+# 登录远程仓库
+docker login --username=xxxx registry.cn-hangzhou.aliyuncs.com
+
+# 推送本地镜像到远程仓库
+mvn dockerfile:push
+```
+
 ##### 官方参考
 https://github.com/spotify/dockerfile-maven
 
