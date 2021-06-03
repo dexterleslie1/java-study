@@ -31,7 +31,9 @@ public class ApiController {
     // 测试@RequestBody
     // {"id":30004,"name":"产品222","price":34.6665}
     @PostMapping("add")
-    public String add(@RequestBody(required = false) Product product) {
+    public String add(@RequestHeader(value = "customHeader") String customHeader,
+                      @RequestBody(required = false) Product product) {
+        log.info("customHeader=" + customHeader);
         if(product!=null) {
             log.info(product.toString());
         }

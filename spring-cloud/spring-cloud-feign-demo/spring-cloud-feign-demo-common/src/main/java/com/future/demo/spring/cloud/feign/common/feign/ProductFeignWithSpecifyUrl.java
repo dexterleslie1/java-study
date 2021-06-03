@@ -4,9 +4,11 @@ import com.future.demo.spring.cloud.feign.common.entity.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "spring-cloud-feign-demo-provider")
-@RequestMapping("/api/v1/product")
-public interface ProductFeign {
+@FeignClient(
+        value = "productFeignWithSpecifyUrl",
+        url = "http://localhost:8090",
+        path = "/api/v1/product")
+public interface ProductFeignWithSpecifyUrl {
     @GetMapping("{productId}")
     Product info(@PathVariable("productId") Integer productId);
 
