@@ -4,7 +4,7 @@
 
 	<groupId>com.future.demo</groupId>
 	<artifactId>sonatype-nexus-reference</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
 	<dependencies>
@@ -17,20 +17,21 @@
 		<dependency>
 			<groupId>com.future.demo</groupId>
 			<artifactId>sonatype-nexus-distribution</artifactId>
+			<!-- 版本SNAPSHOT会自动发布到snapshot仓库 -->
 			<version>0.0.1-SNAPSHOT</version>
+			<!-- 版本没有SNAPSHOT会自动发布到release仓库 -->
+			<!-- <version>0.0.1</version> -->
 		</dependency>
 	</dependencies>
 
-	<repositories>
+	<distributionManagement>
 		<repository>
 			<id>nexus-user-deploy</id>
-			<url>http://23.91.97.126:44990/nexus/content/groups/public/</url>
+			<url>http://localhost:8081/repository/maven-releases/</url>
 		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
+		<snapshotRepository>
 			<id>nexus-user-deploy</id>
-			<url>http://23.91.97.126:44990/nexus/content/groups/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
+			<url>http://localhost:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
