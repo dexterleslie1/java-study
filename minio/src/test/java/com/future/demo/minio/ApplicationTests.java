@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.ByteArrayInputStream;
@@ -32,7 +33,7 @@ public class ApplicationTests {
     MinioClient minioClient;
 
     @Test
-    public void test() throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, InternalException, XmlParserException, ErrorResponseException, InvalidBucketNameException, RegionConflictException {
+    public void test() throws IOException, InvalidKeyException, InvalidResponseException, InsufficientDataException, NoSuchAlgorithmException, InternalException, XmlParserException, ErrorResponseException, InvalidBucketNameException, RegionConflictException, InvalidExpiresRangeException {
         // 判断bucket是否存在
         String bucketName = "test-bucket";
         boolean exists = this.minioClient.bucketExists(bucketName);
@@ -53,6 +54,14 @@ public class ApplicationTests {
         // 获取bucket中object内容
         InputStream inputStream = this.minioClient.getObject(bucketName, objectName);
         String content = IOUtils.toString(inputStream, "utf-8");
+        inputStream.close();
+        Assert.assertEquals("这是一个测试文件", content);
+
+        // 获取bucket中object presigned
+        String presignedUrl = this.minioClient.presignedGetObject(bucketName, objectName);
+        UrlResource urlResource = new UrlResource(presignedUrl);
+        inputStream = urlResource.getInputStream();
+        content = IOUtils.toString(inputStream, "utf-8");
         inputStream.close();
         Assert.assertEquals("这是一个测试文件", content);
 
