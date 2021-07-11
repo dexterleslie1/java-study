@@ -11,7 +11,7 @@ local maxBlockedTimeout = 3600;
 -- 客户端在黑名单中
 local blocked = ngx.shared.recordStore:get("blocked#" .. clientIp);
 if blocked then
-	ngx.log(ngx.WARN, "客户端" .. clientIp .. "被列入黑名单，拒绝请求");
+        common.log(ngx.WARN, "blocked#" .. clientIp, "客户端" .. clientIp .. "被列入黑名单，拒绝请求");
 	return ngx.exit(503);
 end
 
@@ -71,7 +71,7 @@ if not delay then
 		if not firstCommittedTime then
 			local timeNow = ngx.now()*1000;
 			ngx.shared.recordStore:set("firstCommittedTime#" .. clientIp, timeNow, 120);
-			ngx.log(ngx.DEBUG, "客户端" .. clientIp .. "超出连接数限制记录第一次犯规时间");
+			ngx.log(ngx.WARN, "客户端" .. clientIp .. "超出连接数限制记录第一次犯规时间");
 		end
 
 		-- 距离上次犯规时间超过1秒则增加当前犯规次数
@@ -80,7 +80,7 @@ if not delay then
 			local timeNow = ngx.now()*1000-2000;
 			ngx.shared.recordStore:set("latestCommittedTime#" .. clientIp, timeNow);
 			latestCommittedTime = timeNow;
-			ngx.log(ngx.DEBUG, "客户端" .. clientIp .. "超出连接数限制第一次犯规并首次记录最近犯规时间");
+			ngx.log(ngx.WARN, "客户端" .. clientIp .. "超出连接数限制第一次犯规并首次记录最近犯规时间");
 		end
     		
 		local timeNow = ngx.now()*1000;
@@ -89,7 +89,7 @@ if not delay then
 			-- 犯规次数增加1
                 	ngx.shared.recordStore:incr("committedCount#" .. clientIp, 1, 0);
 			ngx.shared.recordStore:set("latestCommittedTime#" .. clientIp, timeNow);
-			ngx.log(ngx.DEBUG, "客户端" .. clientIp .. "超出连接数限制，犯规次数+1");
+			ngx.log(ngx.WARN, "客户端" .. clientIp .. "超出连接数限制，犯规次数+1");
 		end
 		ngx.shared.recordStore:incr("committedCountAll#" .. clientIp, 1, 0);
 
@@ -116,7 +116,7 @@ if delay >= 0.001 then
 	-- we intentionally delay it here a bit to conform to the
 	-- 200 connection limit.
 	-- ngx.log(ngx.WARN, "delaying")
-	ngx.log(ngx.WARN, "客户端连接数超出服务器限制进入burst延迟队列,delay=" .. delay);
+        -- ngx.log(ngx.WARN, "客户端连接数超出服务器限制进入burst延迟队列,delay=" .. delay);
 	ngx.sleep(delay)
 end
 end
@@ -149,7 +149,7 @@ if not delay then
                 if not firstCommittedTime then
                         local timeNow = ngx.now()*1000;
                         ngx.shared.recordStore:set("firstCommittedTime#" .. clientIp, timeNow, 120);
-                        ngx.log(ngx.DEBUG, "客户端" .. clientIp .. "超出请求频率限制记录第一次犯规时间");
+                        ngx.log(ngx.WARN, "客户端" .. clientIp .. "超出请求频率限制记录第一次犯规时间");
                 end
 
                 -- 距离上次犯规时间超过1秒则增加当前犯规次数
@@ -158,7 +158,7 @@ if not delay then
                         local timeNow = ngx.now()*1000-2000;
                         ngx.shared.recordStore:set("latestCommittedTime#" .. clientIp, timeNow);
                         latestCommittedTime = timeNow;
-                        ngx.log(ngx.DEBUG, "客户端" .. clientIp .. "超出请求频率限制第一次犯规并首次记录最近犯规时间");
+                        ngx.log(ngx.WARN, "客户端" .. clientIp .. "超出请求频率限制第一次犯规并首次记录最近犯规时间");
                 end
 
                 local timeNow = ngx.now()*1000;
@@ -167,7 +167,7 @@ if not delay then
                         -- 犯规次数增加1
                         ngx.shared.recordStore:incr("committedCount#" .. clientIp, 1, 0);
                         ngx.shared.recordStore:set("latestCommittedTime#" .. clientIp, timeNow);
-                        ngx.log(ngx.DEBUG, "客户端" .. clientIp .. "超出请求频率限制，犯规次数+1");
+                        ngx.log(ngx.WARN, "客户端" .. clientIp .. "超出请求频率限制，犯规次数+1");
                 end
 		ngx.shared.recordStore:incr("committedCountAll#" .. clientIp, 1, 0);
 
@@ -187,7 +187,7 @@ if delay >= 0.001 then
 	-- the request exceeding the 200 req/sec but below 300 req/sec,
 	-- so we intentionally delay it here a bit to conform to the
 	-- 200 req/sec rate.
-	ngx.log(ngx.WARN, "客户端请求频率超出服务器限制进入到burst队列，delay=" .. delay);
+	-- ngx.log(ngx.WARN, "客户端请求频率超出服务器限制进入到burst队列，delay=" .. delay);
 	ngx.sleep(delay)
 end
 end
