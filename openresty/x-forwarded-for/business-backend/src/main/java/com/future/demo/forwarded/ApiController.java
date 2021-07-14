@@ -1,5 +1,6 @@
 package com.future.demo.forwarded;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,12 @@ public class ApiController {
         StringBuilder builder = new StringBuilder();
         String remoteAddress = request.getRemoteAddr();
         String xForwardedFor = request.getHeader("x-forwarded-for");
-        String clientIp = xForwardedFor.split(",")[0];
+        String clientIp;
+        if(!StringUtils.isEmpty(xForwardedFor)) {
+            clientIp = xForwardedFor.split(",")[0];
+        } else {
+            clientIp = "未知ip地址";
+        }
         builder.append("remoteAddress=" + remoteAddress + "<br/>");
         builder.append("x-forwarded-for=" + xForwardedFor + "<br/>");
         builder.append("客户端ip地址=" + clientIp);

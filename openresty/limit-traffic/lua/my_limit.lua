@@ -1,3 +1,8 @@
+-- 使用lua脚本操作x-forwarded-for
+-- https://github.com/openresty/lua-nginx-module/issues/801
+ngx.req.clear_header("x-forwarded-for");
+ngx.req.set_header("x-forwarded-for", ngx.var.remote_addr);
+
 -- 获取客户端真实ip地址
 local common = require("my_common");
 local clientIp = common.getClientIp();

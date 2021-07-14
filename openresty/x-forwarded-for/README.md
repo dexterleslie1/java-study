@@ -7,3 +7,8 @@ https://www.runoob.com/w3cnote/http-x-forwarded-for.html
 ```shell script
 docker run --rm --net=host --name=openresty-backend -v $(pwd)/nginx-backend.conf:/usr/local/openresty/nginx/conf/nginx.conf openresty/openresty
 ```
+
+##### 启动前端用户代理
+```shell script
+docker run --rm --net=host --name=openresty-client -v $(pwd)/nginx-client.conf:/usr/local/openresty/nginx/conf/nginx.conf openresty/openresty
+```

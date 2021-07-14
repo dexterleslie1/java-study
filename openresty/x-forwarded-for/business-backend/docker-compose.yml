@@ -1,0 +1,10 @@
+version: "3.0"
+
+services:
+  com-future-demo-business-backend:
+    container_name: com-future-demo-business-backend
+    image: registry.cn-hangzhou.aliyuncs.com/yyda/com-future-demo-business-backend:1.0.0
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - 8080:8080
